@@ -1,0 +1,25 @@
+# Godot 4+ generated files
+.godot/
+
+# Imported/generated assets from older Godot versions
+.import/
+
+# Mono/C# generated files (caso o projeto passe a usar C#)
+.mono/
+
+# Exported builds
+build/
+builds/
+export/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Temporary / backup files
+*.tmp
+*.bak
+*~

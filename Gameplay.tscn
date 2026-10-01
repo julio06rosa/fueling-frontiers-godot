@@ -1,0 +1,283 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://GameplayEnhanced.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://Player.tscn" id="2_player"]
+
+[node name="Gameplay" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Stars" type="CPUParticles2D" parent="."]
+position = Vector2(640, 360)
+amount = 60
+lifetime = 8.0
+preprocess = 8.0
+emission_shape = 3
+emission_rect_extents = Vector2(640, 360)
+gravity = Vector2(-20, 0)
+scale_amount_min = 1.0
+scale_amount_max = 2.5
+color = Color(1, 1, 1, 0.3)
+
+[node name="Thrusters" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 40
+lifetime = 0.5
+preprocess = 0.1
+emission_shape = 1
+emission_sphere_radius = 5.0
+direction = Vector2(-1, 0)
+spread = 20.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 200.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color = Color(1, 0.38, 0, 0.8)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(250, 460)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TopHUD" type="Panel" parent="CanvasLayer"]
+offset_right = 1280.0
+offset_bottom = 50.0
+
+[node name="HBox" type="HBoxContainer" parent="CanvasLayer/TopHUD"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = -20.0
+offset_right = 500.0
+offset_bottom = 20.0
+grow_vertical = 2
+
+[node name="CreditsLabel" type="Label" parent="CanvasLayer/TopHUD/HBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Créditos: 1000"
+
+[node name="Sep" type="VSeparator" parent="CanvasLayer/TopHUD/HBox"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+
+[node name="ReputationLabel" type="Label" parent="CanvasLayer/TopHUD/HBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Reputação: 50%"
+
+[node name="MenuButton" type="Button" parent="CanvasLayer/TopHUD"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -18.0
+offset_right = -20.0
+offset_bottom = 18.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Voltar ao Menu"
+
+[node name="HUDPanel" type="Panel" parent="CanvasLayer"]
+offset_left = 30.0
+offset_top = 80.0
+offset_right = 380.0
+offset_bottom = 350.0
+
+[node name="Title" type="Label" parent="CanvasLayer/HUDPanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 250.0
+offset_bottom = 35.0
+theme_override_colors/font_color = Color(0.12, 0.66, 0.63, 1)
+theme_override_font_sizes/font_size = 18
+text = "MANIFESTO DE CARGA"
+
+[node name="ShipNameLabel" type="Label" parent="CanvasLayer/HUDPanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 45.0
+offset_right = 300.0
+offset_bottom = 70.0
+text = "Nave: MR-118"
+
+[node name="OriginLabel" type="Label" parent="CanvasLayer/HUDPanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 75.0
+offset_right = 300.0
+offset_bottom = 100.0
+text = "Origem: Marte"
+
+[node name="FuelFormulaLabel" type="Label" parent="CanvasLayer/HUDPanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 105.0
+offset_right = 330.0
+offset_bottom = 130.0
+text = "Fórmula: 3 Plasma-X : 1 Hidrogênio-Y"
+
+[node name="VolumeLabel" type="Label" parent="CanvasLayer/HUDPanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 135.0
+offset_right = 300.0
+offset_bottom = 160.0
+text = "Volume: 150 UF"
+
+[node name="TargetHelperLabel" type="Label" parent="CanvasLayer/HUDPanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 165.0
+offset_right = 330.0
+offset_bottom = 190.0
+theme_override_colors/font_color = Color(0.93, 0.94, 0.97, 0.7)
+theme_override_font_sizes/font_size = 13
+text = "Calcule a proporção correta!"
+
+[node name="TankTitle" type="Label" parent="CanvasLayer/HUDPanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 195.0
+offset_right = 200.0
+offset_bottom = 220.0
+text = "Nível do Tanque:"
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/HUDPanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 225.0
+offset_right = 330.0
+offset_bottom = 250.0
+
+[node name="ValvePanel" type="Panel" parent="CanvasLayer"]
+offset_left = 900.0
+offset_top = 80.0
+offset_right = 1250.0
+offset_bottom = 350.0
+
+[node name="Title" type="Label" parent="CanvasLayer/ValvePanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 250.0
+offset_bottom = 35.0
+theme_override_colors/font_color = Color(0.12, 0.66, 0.63, 1)
+theme_override_font_sizes/font_size = 18
+text = "MISTURADOR QUÍMICO"
+
+[node name="SliderA" type="HSlider" parent="CanvasLayer/ValvePanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 70.0
+offset_right = 330.0
+offset_bottom = 90.0
+value = 50.0
+
+[node name="LabelA" type="Label" parent="CanvasLayer/ValvePanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 45.0
+offset_right = 200.0
+offset_bottom = 70.0
+text = "Plasma-X: 50%"
+
+[node name="LabelB" type="Label" parent="CanvasLayer/ValvePanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 100.0
+offset_right = 200.0
+offset_bottom = 125.0
+text = "Hidrogênio-Y: 50%"
+
+[node name="RatioFeedbackLabel" type="Label" parent="CanvasLayer/ValvePanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 135.0
+offset_right = 330.0
+offset_bottom = 160.0
+theme_override_colors/font_color = Color(0.85, 0.25, 0.25, 1)
+text = "Mistura Instável!"
+horizontal_alignment = 1
+
+[node name="PumpButton" type="Button" parent="CanvasLayer/ValvePanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 180.0
+offset_right = 330.0
+offset_bottom = 245.0
+theme_override_font_sizes/font_size = 22
+text = "Ativar Bomba"
+
+[node name="AriaPanel" type="Panel" parent="CanvasLayer"]
+offset_left = 30.0
+offset_top = 580.0
+offset_right = 1250.0
+offset_bottom = 690.0
+
+[node name="AriaAvatar" type="ColorRect" parent="CanvasLayer/AriaPanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 95.0
+offset_bottom = 95.0
+color = Color(0.12, 0.66, 0.63, 0.3)
+
+[node name="AvatarLabel" type="Label" parent="CanvasLayer/AriaPanel/AriaAvatar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.12, 0.66, 0.63, 1)
+theme_override_font_sizes/font_size = 16
+text = "A.R.I.A."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AriaLabel" type="Label" parent="CanvasLayer/AriaPanel"]
+layout_mode = 1
+offset_left = 120.0
+offset_top = 15.0
+offset_right = 1200.0
+offset_bottom = 95.0
+theme_override_font_sizes/font_size = 18
+text = "ARIA: Bem-vindo de volta, Engenheiro Zorome. Aguardando naves..."
+autowrap_mode = 3
+
+[node name="TimerLabel" type="Label" parent="CanvasLayer"]
+offset_left = 900.0
+offset_top = 55.0
+offset_right = 1250.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(0.9, 0.7, 0.1, 1)
+theme_override_font_sizes/font_size = 16
+text = "Tempo Restante: 45s"
+horizontal_alignment = 2
+
+[node name="StatusLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -100.0
+offset_right = 400.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 32
+text = "ABASTECIMENTO PERFEITO!
++400 Créditos"
+horizontal_alignment = 1
+vertical_alignment = 1

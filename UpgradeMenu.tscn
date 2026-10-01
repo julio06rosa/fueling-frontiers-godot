@@ -1,0 +1,194 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://UpgradePresentation.gd" id="1_script"]
+
+[node name="UpgradeMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.043, 0.071, 0.125, 1)
+
+[node name="Stars" type="CPUParticles2D" parent="."]
+position = Vector2(640, 360)
+amount = 40
+lifetime = 6.0
+preprocess = 6.0
+emission_shape = 3
+emission_rect_extents = Vector2(640, 360)
+gravity = Vector2(-10, 0)
+scale_amount_min = 1.0
+scale_amount_max = 2.0
+color = Color(0.8, 0.85, 1, 0.2)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_top = 50.0
+offset_right = 400.0
+offset_bottom = 100.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.12, 0.66, 0.63, 1)
+theme_override_font_sizes/font_size = 36
+text = "ALMOXARIFADO DE UPGRADES"
+horizontal_alignment = 1
+
+[node name="CreditsLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_top = 110.0
+offset_right = 400.0
+offset_bottom = 145.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 20
+text = "Créditos Disponíveis: 1000"
+horizontal_alignment = 1
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -180.0
+offset_right = 450.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="SpeedUpgrade" type="HBoxContainer" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Info" type="VBoxContainer" parent="Panel/VBox/SpeedUpgrade"]
+custom_minimum_size = Vector2(550, 0)
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Panel/VBox/SpeedUpgrade/Info"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.41, 0.18, 1)
+theme_override_font_sizes/font_size = 18
+text = "Bomba de Alta Vazão"
+
+[node name="Desc" type="Label" parent="Panel/VBox/SpeedUpgrade/Info"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Aumenta a velocidade do fluxo de combustível em +50% por nível."
+
+[node name="BuyButton" type="Button" parent="Panel/VBox/SpeedUpgrade"]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Comprar - 500 C"
+
+[node name="ValveUpgrade" type="HBoxContainer" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Info" type="VBoxContainer" parent="Panel/VBox/ValveUpgrade"]
+custom_minimum_size = Vector2(550, 0)
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Panel/VBox/ValveUpgrade/Info"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.41, 0.18, 1)
+theme_override_font_sizes/font_size = 18
+text = "Válvula de Segurança Automática"
+
+[node name="Desc" type="Label" parent="Panel/VBox/ValveUpgrade/Info"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Fecha a bomba automaticamente ao atingir exatamente o volume total necessário."
+
+[node name="BuyButton" type="Button" parent="Panel/VBox/ValveUpgrade"]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Comprar - 800 C"
+
+[node name="HelperUpgrade" type="HBoxContainer" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Info" type="VBoxContainer" parent="Panel/VBox/HelperUpgrade"]
+custom_minimum_size = Vector2(550, 0)
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Panel/VBox/HelperUpgrade/Info"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.41, 0.18, 1)
+theme_override_font_sizes/font_size = 18
+text = "Sensor Holográfico (HUD Helper)"
+
+[node name="Desc" type="Label" parent="Panel/VBox/HelperUpgrade/Info"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Exibe no HUD a porcentagem exata que o jogador deve misturar para cada combustível."
+
+[node name="BuyButton" type="Button" parent="Panel/VBox/HelperUpgrade"]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Comprar - 400 C"
+
+[node name="BackButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = -100.0
+offset_right = 250.0
+offset_bottom = -50.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 18
+text = "Menu Principal"
+
+[node name="PlayButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -100.0
+offset_right = -50.0
+offset_bottom = -50.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "Ir para o Hangar"
