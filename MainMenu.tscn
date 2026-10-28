@@ -1,6 +1,148 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=14 format=3]
 
-[ext_resource type="Script" path="res://MainMenu.gd" id="1_script"]
+[ext_resource type="Script" path="res://MainMenu.gd" id="1_menu"]
+
+[sub_resource type="StyleBoxFlat" id="PanelMain"]
+bg_color = Color(0.043, 0.094, 0.14, 0.96)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.16, 0.31, 0.4, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.28)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="PanelStatus"]
+bg_color = Color(0.035, 0.075, 0.115, 0.96)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.16, 0.31, 0.4, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.28)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="PrimaryNormal"]
+bg_color = Color(0.09, 0.39, 0.42, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.31, 0.78, 0.77, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+
+[sub_resource type="StyleBoxFlat" id="PrimaryHover"]
+bg_color = Color(0.14, 0.5, 0.54, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.45, 0.9, 0.87, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+
+[sub_resource type="StyleBoxFlat" id="SecondaryNormal"]
+bg_color = Color(0.09, 0.18, 0.25, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.19, 0.32, 0.4, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+
+[sub_resource type="StyleBoxFlat" id="SecondaryHover"]
+bg_color = Color(0.13, 0.31, 0.4, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.45, 0.88, 0.86, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+
+[sub_resource type="StyleBoxFlat" id="Mars"]
+bg_color = Color(0.47, 0.18, 0.12, 1)
+corner_radius_top_left = 260
+corner_radius_top_right = 260
+corner_radius_bottom_right = 260
+corner_radius_bottom_left = 260
+shadow_color = Color(0.95, 0.35, 0.14, 0.12)
+shadow_size = 28
+
+[sub_resource type="StyleBoxFlat" id="MarsGlow"]
+bg_color = Color(0.62, 0.27, 0.17, 0.62)
+corner_radius_top_left = 190
+corner_radius_top_right = 190
+corner_radius_bottom_right = 190
+corner_radius_bottom_left = 190
+
+[sub_resource type="StyleBoxFlat" id="OverlayCard"]
+bg_color = Color(0.045, 0.095, 0.14, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.27, 0.48, 0.56, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 14
+
+[sub_resource type="StyleBoxFlat" id="TinyPanel"]
+bg_color = Color(0.07, 0.14, 0.2, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.18, 0.35, 0.43, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="DangerNormal"]
+bg_color = Color(0.18, 0.12, 0.13, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.42, 0.25, 0.25, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="DangerHover"]
+bg_color = Color(0.31, 0.16, 0.16, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.82, 0.4, 0.35, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -9,7 +151,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_script")
+script = ExtResource("1_menu")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -18,95 +160,502 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.043, 0.071, 0.125, 1)
+color = Color(0.025, 0.055, 0.095, 1)
+mouse_filter = 2
 
-[node name="Stars" type="CPUParticles2D" parent="."]
-position = Vector2(640, 360)
-amount = 80
-lifetime = 6.0
-preprocess = 6.0
-emission_shape = 3
-emission_rect_extents = Vector2(640, 360)
-gravity = Vector2(-10, 0)
-scale_amount_min = 1.0
-scale_amount_max = 3.0
-color = Color(0.8, 0.85, 1, 0.4)
-
-[node name="Title" type="Label" parent="."]
+[node name="Horizon" type="ColorRect" parent="."]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -400.0
-offset_top = 100.0
-offset_right = 400.0
-offset_bottom = 160.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0.85, 0.41, 0.18, 1)
-theme_override_font_sizes/font_size = 48
-text = "FUELING FRONTIERS"
-horizontal_alignment = 1
-
-[node name="Subtitle" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -400.0
-offset_top = 170.0
-offset_right = 400.0
-offset_bottom = 210.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0.12, 0.66, 0.63, 1)
-theme_override_font_sizes/font_size = 24
-text = "MARS STATION — VERTICAL SLICE"
-horizontal_alignment = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -160.0
-offset_top = -20.0
-offset_right = 160.0
-offset_bottom = 160.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 15
-
-[node name="StartButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Iniciar Reabastecimento"
-
-[node name="UpgradeButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Menu de Upgrades"
-
-[node name="ExitButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Sair"
-
-[node name="Credits" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 12
 anchor_top = 1.0
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -500.0
-offset_top = -80.0
-offset_right = 500.0
-offset_bottom = -20.0
+offset_top = -238.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.93, 0.94, 0.97, 0.6)
+color = Color(0.038, 0.085, 0.125, 1)
+mouse_filter = 2
+
+[node name="Stars" type="CPUParticles2D" parent="."]
+position = Vector2(640, 320)
+amount = 110
+lifetime = 12.0
+preprocess = 12.0
+emission_shape = 3
+emission_rect_extents = Vector2(650, 350)
+direction = Vector2(-1, 0)
+spread = 15.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 4.0
+scale_amount_min = 0.6
+scale_amount_max = 1.8
+color = Color(0.72, 0.86, 1, 0.42)
+
+[node name="Mars" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 465.0
+offset_right = 1450.0
+offset_bottom = 915.0
+theme_override_styles/panel = SubResource("Mars")
+mouse_filter = 2
+
+[node name="MarsGlow" type="Panel" parent="Mars"]
+layout_mode = 0
+offset_left = 52.0
+offset_top = 36.0
+offset_right = 380.0
+offset_bottom = 364.0
+theme_override_styles/panel = SubResource("MarsGlow")
+mouse_filter = 2
+
+[node name="DockLine" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 555.0
+offset_top = 546.0
+offset_right = 1120.0
+offset_bottom = 554.0
+rotation = -0.015
+color = Color(0.12, 0.26, 0.33, 0.9)
+mouse_filter = 2
+
+[node name="DockLine2" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 655.0
+offset_top = 512.0
+offset_right = 1045.0
+offset_bottom = 517.0
+rotation = -0.015
+color = Color(0.08, 0.2, 0.27, 0.9)
+mouse_filter = 2
+
+[node name="Interface" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Kicker" type="Label" parent="Interface"]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 31.0
+offset_right = 665.0
+offset_bottom = 55.0
+theme_override_colors/font_color = Color(0.39, 0.84, 0.82, 1)
 theme_override_font_sizes/font_size = 14
-text = "Desenvolvido por: Rafael da Rocha da Silva e Júlio César Duarte da Rosa
-Curso de Engenharia de Software — Católica de Santa Catarina — 2026"
+text = "MARS STATION  /  FRONTIER OPERATIONS"
+
+[node name="Build" type="Label" parent="Interface"]
+layout_mode = 0
+offset_left = 905.0
+offset_top = 31.0
+offset_right = 1220.0
+offset_bottom = 55.0
+theme_override_colors/font_color = Color(0.53, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "BUILD 0.9.2  •  SISTEMA ONLINE"
+horizontal_alignment = 2
+
+[node name="TitleA" type="Label" parent="Interface"]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 70.0
+offset_right = 650.0
+offset_bottom = 130.0
+theme_override_colors/font_color = Color(0.93, 0.96, 0.97, 1)
+theme_override_font_sizes/font_size = 48
+text = "FUELING"
+
+[node name="TitleB" type="Label" parent="Interface"]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 121.0
+offset_right = 650.0
+offset_bottom = 181.0
+theme_override_colors/font_color = Color(0.94, 0.52, 0.28, 1)
+theme_override_font_sizes/font_size = 48
+text = "FRONTIERS"
+
+[node name="Subtitle" type="Label" parent="Interface"]
+layout_mode = 0
+offset_left = 61.0
+offset_top = 187.0
+offset_right = 790.0
+offset_bottom = 218.0
+theme_override_colors/font_color = Color(0.39, 0.83, 0.81, 1)
+theme_override_font_sizes/font_size = 20
+text = "MARS STATION"
+
+[node name="Description" type="Label" parent="Interface"]
+layout_mode = 0
+offset_left = 61.0
+offset_top = 220.0
+offset_right = 795.0
+offset_bottom = 251.0
+theme_override_colors/font_color = Color(0.55, 0.66, 0.73, 1)
+theme_override_font_sizes/font_size = 16
+text = "Você comanda uma doca de abastecimento no limite da civilização."
+
+[node name="MainPanel" type="Panel" parent="Interface"]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 277.0
+offset_right = 586.0
+offset_bottom = 599.0
+theme_override_styles/panel = SubResource("PanelMain")
+
+[node name="Kicker" type="Label" parent="Interface/MainPanel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 21.0
+offset_right = 350.0
+offset_bottom = 44.0
+theme_override_colors/font_color = Color(0.4, 0.84, 0.82, 1)
+theme_override_font_sizes/font_size = 13
+text = "PAINEL DE OPERAÇÕES"
+
+[node name="Heading" type="Label" parent="Interface/MainPanel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 52.0
+offset_right = 492.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.9, 0.94, 0.96, 1)
+theme_override_font_sizes/font_size = 24
+text = "Pronto para o próximo turno?"
+
+[node name="Text" type="Label" parent="Interface/MainPanel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 92.0
+offset_right = 492.0
+offset_bottom = 146.0
+theme_override_colors/font_color = Color(0.57, 0.68, 0.75, 1)
+theme_override_font_sizes/font_size = 16
+text = "Atenda naves, ajuste misturas, controle o volume e invista os créditos na estação."
+autowrap_mode = 2
+
+[node name="StartButton" type="Button" parent="Interface/MainPanel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 166.0
+offset_right = 503.0
+offset_bottom = 219.0
+theme_override_colors/font_color = Color(0.94, 0.99, 0.99, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("PrimaryNormal")
+theme_override_styles/hover = SubResource("PrimaryHover")
+theme_override_styles/pressed = SubResource("SecondaryNormal")
+text = "INICIAR TURNO   >"
+
+[node name="UpgradeButton" type="Button" parent="Interface/MainPanel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 232.0
+offset_right = 257.0
+offset_bottom = 279.0
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("SecondaryNormal")
+theme_override_styles/hover = SubResource("SecondaryHover")
+text = "OFICINA DE UPGRADES"
+
+[node name="TutorialButton" type="Button" parent="Interface/MainPanel"]
+layout_mode = 0
+offset_left = 271.0
+offset_top = 232.0
+offset_right = 503.0
+offset_bottom = 279.0
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("SecondaryNormal")
+theme_override_styles/hover = SubResource("SecondaryHover")
+text = "COMO JOGAR"
+
+[node name="StatusPanel" type="Panel" parent="Interface"]
+layout_mode = 0
+offset_left = 611.0
+offset_top = 277.0
+offset_right = 1222.0
+offset_bottom = 599.0
+theme_override_styles/panel = SubResource("PanelStatus")
+
+[node name="Kicker" type="Label" parent="Interface/StatusPanel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 21.0
+offset_right = 330.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(0.4, 0.84, 0.82, 1)
+theme_override_font_sizes/font_size = 13
+text = "STATUS DA ESTAÇÃO"
+
+[node name="StationStatus" type="Label" parent="Interface/StatusPanel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 55.0
+offset_right = 580.0
+offset_bottom = 127.0
+theme_override_colors/font_color = Color(0.9, 0.95, 0.97, 1)
+theme_override_font_sizes/font_size = 19
+text = "ENGENHEIRO DE TURNO\n1000 CR disponíveis  •  Reputação 50%\n0 módulos instalados"
+
+[node name="Divider" type="ColorRect" parent="Interface/StatusPanel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 141.0
+offset_right = 580.0
+offset_bottom = 142.0
+color = Color(0.25, 0.45, 0.54, 0.4)
+
+[node name="Stats" type="Label" parent="Interface/StatusPanel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 159.0
+offset_right = 580.0
+offset_bottom = 258.0
+theme_override_colors/font_color = Color(0.66, 0.74, 0.79, 1)
+theme_override_font_sizes/font_size = 15
+text = "ATENDIMENTOS   0\nSUCESSOS        0\nFALHAS          0\nMELHOR SEQUÊNCIA  0"
+
+[node name="TipPanel" type="Panel" parent="Interface/StatusPanel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 267.0
+offset_right = 580.0
+offset_bottom = 303.0
+theme_override_styles/panel = SubResource("TinyPanel")
+
+[node name="Tip" type="Label" parent="Interface/StatusPanel/TipPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 7.0
+offset_right = -12.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.9, 0.77, 0.49, 1)
+theme_override_font_sizes/font_size = 12
+text = "DICA  •  razão 3:1 = 75% do componente A e 25% do B"
+
+[node name="Footer" type="Label" parent="Interface"]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 637.0
+offset_right = 800.0
+offset_bottom = 662.0
+theme_override_colors/font_color = Color(0.39, 0.5, 0.58, 1)
+theme_override_font_sizes/font_size = 12
+text = "Júlio César Duarte da Rosa  •  Rafael da Rocha da Silva  •  Engenharia de Software"
+
+[node name="ResetButton" type="Button" parent="Interface"]
+layout_mode = 0
+offset_left = 892.0
+offset_top = 626.0
+offset_right = 1060.0
+offset_bottom = 666.0
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("SecondaryNormal")
+theme_override_styles/hover = SubResource("SecondaryHover")
+text = "Reiniciar progresso"
+
+[node name="ExitButton" type="Button" parent="Interface"]
+layout_mode = 0
+offset_left = 1073.0
+offset_top = 626.0
+offset_right = 1222.0
+offset_bottom = 666.0
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("DangerNormal")
+theme_override_styles/hover = SubResource("DangerHover")
+text = "Sair"
+
+[node name="TutorialOverlay" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Shade" type="ColorRect" parent="TutorialOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.005, 0.015, 0.025, 0.9)
+mouse_filter = 1
+
+[node name="Card" type="Panel" parent="TutorialOverlay"]
+layout_mode = 0
+offset_left = 210.0
+offset_top = 90.0
+offset_right = 1070.0
+offset_bottom = 630.0
+theme_override_styles/panel = SubResource("OverlayCard")
+
+[node name="Kicker" type="Label" parent="TutorialOverlay/Card"]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 29.0
+offset_right = 700.0
+offset_bottom = 53.0
+theme_override_colors/font_color = Color(0.4, 0.84, 0.82, 1)
+theme_override_font_sizes/font_size = 13
+text = "PROTOCOLO DE ABASTECIMENTO"
+
+[node name="Title" type="Label" parent="TutorialOverlay/Card"]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 61.0
+offset_right = 700.0
+offset_bottom = 104.0
+theme_override_font_sizes/font_size = 30
+text = "Como jogar"
+
+[node name="LeftText" type="RichTextLabel" parent="TutorialOverlay/Card"]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 126.0
+offset_right = 405.0
+offset_bottom = 362.0
+theme_override_colors/default_color = Color(0.68, 0.76, 0.81, 1)
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "[color=#f0ad6b][b]1  LEIA O MANIFESTO[/b][/color]\nObserve a proporção solicitada e o volume total da nave.\n\n[color=#f0ad6b][b]2  AJUSTE A MISTURA[/b][/color]\nConverta a razão em porcentagem. Ex.: 2:1 = 66,7% / 33,3%."
+fit_content = true
+
+[node name="RightText" type="RichTextLabel" parent="TutorialOverlay/Card"]
+layout_mode = 0
+offset_left = 452.0
+offset_top = 126.0
+offset_right = 825.0
+offset_bottom = 362.0
+theme_override_colors/default_color = Color(0.68, 0.76, 0.81, 1)
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "[color=#f0ad6b][b]3  CONTROLE A BOMBA[/b][/color]\nLigue e desligue próximo ao volume pedido. Precisão gera melhor classificação.\n\n[color=#f0ad6b][b]4  EVOLUA A ESTAÇÃO[/b][/color]\nUse créditos em upgrades e mantenha a reputação alta."
+fit_content = true
+
+[node name="Shortcuts" type="Panel" parent="TutorialOverlay/Card"]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 375.0
+offset_right = 825.0
+offset_bottom = 454.0
+theme_override_styles/panel = SubResource("TinyPanel")
+
+[node name="Text" type="Label" parent="TutorialOverlay/Card/Shortcuts"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 12.0
+offset_right = -20.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.82, 0.89, 0.92, 1)
+theme_override_font_sizes/font_size = 14
+text = "Q / E  mistura   •   SHIFT + Q/E  ±5%   •   ESPAÇO  bomba   •   ESC  pausa   •   SETAS  operador"
 horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CloseButton" type="Button" parent="TutorialOverlay/Card"]
+layout_mode = 0
+offset_left = 585.0
+offset_top = 474.0
+offset_right = 825.0
+offset_bottom = 518.0
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("PrimaryNormal")
+theme_override_styles/hover = SubResource("PrimaryHover")
+text = "ENTENDIDO   >"
+
+[node name="ResetOverlay" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Shade" type="ColorRect" parent="ResetOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.005, 0.015, 0.025, 0.92)
+mouse_filter = 1
+
+[node name="Card" type="Panel" parent="ResetOverlay"]
+layout_mode = 0
+offset_left = 380.0
+offset_top = 210.0
+offset_right = 900.0
+offset_bottom = 510.0
+theme_override_styles/panel = SubResource("OverlayCard")
+
+[node name="Kicker" type="Label" parent="ResetOverlay/Card"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 30.0
+offset_right = 470.0
+offset_bottom = 53.0
+theme_override_colors/font_color = Color(0.93, 0.55, 0.42, 1)
+theme_override_font_sizes/font_size = 13
+text = "REINICIAR PROGRESSO"
+
+[node name="Title" type="Label" parent="ResetOverlay/Card"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 68.0
+offset_right = 475.0
+offset_bottom = 104.0
+theme_override_font_sizes/font_size = 24
+text = "Iniciar uma nova estação?"
+
+[node name="Warning" type="Label" parent="ResetOverlay/Card"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 119.0
+offset_right = 485.0
+offset_bottom = 185.0
+theme_override_colors/font_color = Color(0.66, 0.73, 0.78, 1)
+theme_override_font_sizes/font_size = 15
+text = "Créditos, reputação, upgrades e estatísticas salvas voltarão aos valores iniciais."
+autowrap_mode = 2
+
+[node name="CancelButton" type="Button" parent="ResetOverlay/Card"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 219.0
+offset_right = 242.0
+offset_bottom = 266.0
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("SecondaryNormal")
+theme_override_styles/hover = SubResource("SecondaryHover")
+text = "Cancelar"
+
+[node name="ConfirmButton" type="Button" parent="ResetOverlay/Card"]
+layout_mode = 0
+offset_left = 270.0
+offset_top = 219.0
+offset_right = 488.0
+offset_bottom = 266.0
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("DangerNormal")
+theme_override_styles/hover = SubResource("DangerHover")
+text = "REINICIAR"

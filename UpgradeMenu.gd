@@ -5,7 +5,7 @@ var btn_valve: Button
 var btn_helper: Button
 var label_credits: Label
 
-func _ready():
+func _ready() -> void:
 	btn_speed = $Panel/VBox/SpeedUpgrade/BuyButton
 	btn_valve = $Panel/VBox/ValveUpgrade/BuyButton
 	btn_helper = $Panel/VBox/HelperUpgrade/BuyButton
@@ -19,7 +19,7 @@ func _ready():
 	
 	update_ui()
 
-func update_ui():
+func update_ui() -> void:
 	label_credits.text = "Créditos Disponíveis: %d" % GameManager.credits
 	
 	# Speed upgrade UI
@@ -49,39 +49,42 @@ func update_ui():
 		btn_helper.text = "Comprar - %d C" % cost
 		btn_helper.disabled = GameManager.credits < cost
 
-func _on_speed_pressed():
+func _on_speed_pressed() -> void:
 	var cost = (GameManager.upgrade_pump_speed + 1) * 500
 	if GameManager.credits >= cost and GameManager.upgrade_pump_speed < 3:
 		GameManager.credits -= cost
 		GameManager.upgrade_pump_speed += 1
+		GameManager.save_game()
 		if has_node("/root/SoundManager"):
 			SoundManager.play_success()
 		update_ui()
 
-func _on_valve_pressed():
+func _on_valve_pressed() -> void:
 	var cost = 800
 	if GameManager.credits >= cost and not GameManager.upgrade_auto_valve:
 		GameManager.credits -= cost
 		GameManager.upgrade_auto_valve = true
+		GameManager.save_game()
 		if has_node("/root/SoundManager"):
 			SoundManager.play_success()
 		update_ui()
 
-func _on_helper_pressed():
+func _on_helper_pressed() -> void:
 	var cost = 400
 	if GameManager.credits >= cost and not GameManager.upgrade_helper_hud:
 		GameManager.credits -= cost
 		GameManager.upgrade_helper_hud = true
+		GameManager.save_game()
 		if has_node("/root/SoundManager"):
 			SoundManager.play_success()
 		update_ui()
 
-func _on_back_pressed():
+func _on_back_pressed() -> void:
 	if has_node("/root/SoundManager"):
 		SoundManager.play_click()
 	get_tree().change_scene_to_file("res://MainMenu.tscn")
 
-func _on_play_pressed():
+func _on_play_pressed() -> void:
 	if has_node("/root/SoundManager"):
 		SoundManager.play_click()
 	get_tree().change_scene_to_file("res://Gameplay.tscn")
