@@ -1,56 +1,44 @@
-FUELING FRONTIERS — MELHORIAS ADICIONAIS
+FUELING FRONTIERS — ESTADO PROFISSIONAL DO PROJETO
 
-ATUALIZAÇÃO VISUAL
-- Naves redesenhadas com blindagem, cabine com reflexos, painéis e rebites.
-- Quatro variações por origem: Marte, Terra, Júpiter e Desconhecida.
-- Motores animados, luzes de navegação e flutuação suave na doca.
-- Anel de carga no casco, conexão de abastecimento e varredura visual.
-- Plataforma de pouso detalhada e painéis com acabamento consistente.
-- Resultado reposicionado para deixar a nave visível.
-- A arte é desenhada pelo próprio Godot, sem imagens externas.
-- Controles, resolução, economia e regras de dificuldade preservados.
+MENU PRINCIPAL
+- Interface redesenhada com identidade visual sci-fi coerente com o hangar.
+- Background procedural: Marte, estação, estrelas, poeira e nave em movimento.
+- Painel de status mostra patente, créditos, reputação e upgrades instalados.
+- Estatísticas de atendimentos exibidas no menu.
+- Tutorial interno explica proporções, volume e atalhos.
+- Reinício de progresso exige confirmação.
 
-Abra project.godot no Godot e execute com F6 na cena Gameplay ou F5 para o menu.
-Extraia o ZIP inteiro antes de abrir.
+GAMEPLAY
+- Contratos Elite e sistema de sequência preservados.
+- Nave e personagem vetoriais preservados.
+- Classificação S/A/B/C adicionada aos abastecimentos bem-sucedidos.
+- Falhas exibem diagnóstico de erro de mistura e volume.
+- Q/E ajustam a mistura; Shift+Q/E ajustam em 5%.
+- Espaço controla a bomba.
+- ESC e o botão superior abrem o menu de pausa.
+- Durante a pausa o cronômetro não avança.
 
-ACRÉSCIMOS
-- Contratos Elite: após 3 sucessos, cada terceiro atendimento pode trazer
-  proporções 5:2, 2:5, 5:3 ou 3:5. Conclusão rende mais 150 créditos.
-- Sequência: a partir do segundo acerto seguido, bônus de 25 créditos por
-  etapa, limitado a 125 por atendimento. Um erro zera a sequência.
-- Painel de atendimento, sequência e total de sucessos.
-- Leitura do volume atual e alertas em 50% e 95% do tanque.
-- Relógio pulsante nos últimos 15 segundos e luzes animadas na pista.
-- Identificação visual de naves Elite.
+PROGRESSÃO
+- Créditos, reputação, upgrades e estatísticas são salvos em:
+  user://fueling_frontiers_save.cfg
+- Compras salvam imediatamente.
+- Resultados de atendimentos salvam imediatamente.
+- O menu permite reiniciar o progresso com segurança.
 
-PRESERVAÇÃO
-project.godot, Gameplay.gd, controles, cenas de menu, sons, personagem,
-preços e upgrades foram preservados. Tempos, vazão e tolerâncias originais
-também continuam iguais. O acréscimo usa GameplayEnhanced.gd, que herda
-Gameplay.gd; Gameplay.tscn apenas passa a carregar essa extensão.
-Os contadores adicionais duram até voltar ao menu; créditos e upgrades
-continuam com o comportamento original.
+ARQUITETURA
+- GameplayEnhanced.gd continua herdando Gameplay.gd.
+- MainMenu.tscn continua sendo a cena inicial, mas MainMenu.gd monta a nova UI.
+- O cenário e a interface do menu agora ficam consolidados diretamente em MainMenu.tscn.
+- GameManager.gd concentra estado global, estatísticas e persistência.
 
-Para voltar à versão anterior: em Gameplay.tscn, substitua somente
-res://GameplayEnhanced.gd por res://Gameplay.gd.
+VALIDAÇÃO NESTE PACOTE
+- Estrutura e referências de arquivos revisadas estaticamente.
+- Não havia binário do Godot disponível no ambiente de empacotamento para um teste de execução real.
+- Recomenda-se abrir project.godot e testar F5 antes da entrega/apresentação final.
 
-VALIDAÇÃO
-Integridade dos arquivos originais e alteração mínima da cena conferidas.
-Os scripts adicionais passaram pela análise sintática com gdparse.
-Cena Gameplay importada e iniciada no Godot 4.5.1 em modo sem janela,
-por 180 frames, sem erros de script. Houve aviso de objetos na saída.
-A aparência e a jogabilidade completa ainda precisam de conferência visual
-no seu Godot antes da apresentação.
-
-MENU DE UPGRADES
-Três cartões, preços, níveis, saldo faltante e confirmação de compra.
-Vazão exibida com valores reais: +20 UF/s por nível.
-Preços, níveis e regras originais preservados.
-Validado no Godot: abertura, três níveis, compras únicas e saldo insuficiente.
-
-PERSONAGEM
-Traje detalhado, capacete, rosto expressivo, mochila, luvas e botas.
-Respiração, piscadas e poses para caminhada, interação, sucesso e falha.
-Movimento, colisão, sons e tempos originais preservados.
-Cena iniciada no Godot sem erros de script, em modo sem janela.
-Conferência visual das animações ainda necessária.
+PRÓXIMA EVOLUÇÃO RECOMENDADA
+- Turnos com objetivo e tela final de resultados.
+- Eventos aleatórios balanceados.
+- Curva de dificuldade dinâmica.
+- Recordes e conquistas locais.
+- Build executável para demonstração.

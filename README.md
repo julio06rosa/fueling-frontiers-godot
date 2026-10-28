@@ -20,6 +20,12 @@ O projeto foi desenvolvido para praticar lógica de programação, organização
 - Contratos Elite com proporções mais avançadas e bônus adicionais.
 - Sistema de sequência de acertos com recompensas progressivas.
 - Feedback visual de volume, estabilidade da mistura e tempo restante.
+- Menu principal redesenhado com status da estação, tutorial e visão de progresso.
+- Salvamento local automático de créditos, reputação, upgrades e estatísticas.
+- Sistema de classificação de desempenho S/A/B/C por precisão.
+- Menu de pausa integrado ao gameplay.
+- Atalhos de teclado para mistura, bomba e pausa.
+- Histórico de atendimentos, sucessos, falhas e melhor sequência.
 - Efeitos sonoros e trilha ambiente gerados programaticamente.
 - Visual das naves, personagem e elementos da estação desenhados pelo próprio Godot.
 
@@ -67,6 +73,14 @@ O projeto também possui um sistema de **sequência de acertos**, recompensando 
 
 - **Setas direcionais:** movimentação do personagem.
 - **Mouse:** interação com botões, controles de mistura e menus.
+- **Q / E:** ajuste fino da mistura em 1%.
+- **Shift + Q / E:** ajuste rápido da mistura em 5%.
+- **Espaço:** ativa ou interrompe a bomba.
+- **Esc:** abre/fecha o menu de pausa.
+
+## 💾 Progresso
+
+O jogo salva automaticamente em `user://fueling_frontiers_save.cfg` os créditos, a reputação, os upgrades e as estatísticas gerais da estação. O menu principal possui uma opção protegida por confirmação para reiniciar o progresso.
 
 ## ▶️ Como executar
 
@@ -107,8 +121,7 @@ fueling-frontiers-godot/
 ├── SoundManager.gd
 ├── UpgradeMenu.tscn
 ├── UpgradeMenu.gd
-├── UpgradePresentation.gd
-└── docs/
+├── └── docs/
 ```
 
 ## 🔄 Estado atual
@@ -120,8 +133,8 @@ O projeto já possui uma base jogável e os principais sistemas estão implement
 - Revisar e balancear economia, tempo e dificuldade.
 - Ampliar a variedade de contratos e naves.
 - Melhorar feedbacks visuais e animações.
-- Criar tela de resultados/estatísticas.
-- Adicionar persistência de progresso.
+- Criar campanhas/turnos com objetivos e recompensas de conclusão.
+- Expandir estatísticas e recordes por tipo de contrato.
 - Preparar uma versão executável para demonstração.
 
 ## 📚 Objetivo do projeto
