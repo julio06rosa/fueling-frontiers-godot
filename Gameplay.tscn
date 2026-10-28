@@ -83,6 +83,57 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "Voltar ao Menu"
 
+[node name="RankLabel" type="Label" parent="CanvasLayer/TopHUD"]
+layout_mode = 0
+offset_left = 650.0
+offset_top = 13.0
+offset_right = 980.0
+offset_bottom = 39.0
+theme_override_colors/font_color = Color(0.5, 0.66, 0.74, 1)
+theme_override_font_sizes/font_size = 13
+text = "ENGENHEIRO DE TURNO  •  50%"
+horizontal_alignment = 1
+
+[node name="ShortcutLabel" type="Label" parent="CanvasLayer"]
+offset_left = 430.0
+offset_top = 53.0
+offset_right = 850.0
+offset_bottom = 76.0
+theme_override_colors/font_color = Color(0.42, 0.55, 0.63, 1)
+theme_override_font_sizes/font_size = 12
+text = "Q / E  mistura   •   ESPAÇO  bomba   •   ESC  pausa"
+horizontal_alignment = 1
+
+[node name="ExtensionHUD" type="Label" parent="CanvasLayer"]
+offset_left = 410.0
+offset_top = 108.0
+offset_right = 870.0
+offset_bottom = 194.0
+theme_override_colors/font_color = Color(0.5, 0.88, 0.9, 1)
+theme_override_font_sizes/font_size = 16
+text = "CONTRATO REGULAR\nAtendimento 1 | Sequência: 0\nConcluídos neste turno: 0"
+horizontal_alignment = 1
+
+[node name="DockTitle" type="Label" parent="CanvasLayer"]
+offset_left = 450.0
+offset_top = 79.0
+offset_right = 830.0
+offset_bottom = 103.0
+theme_override_colors/font_color = Color(0.46, 0.59, 0.67, 1)
+theme_override_font_sizes/font_size = 15
+text = "MARS STATION   /   DOCA 01"
+horizontal_alignment = 1
+
+[node name="FlightLabel" type="Label" parent="CanvasLayer"]
+offset_left = 400.0
+offset_top = 488.0
+offset_right = 880.0
+offset_bottom = 560.0
+theme_override_colors/font_color = Color(0.7, 0.88, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "Nave em aproximação | Confira o manifesto"
+horizontal_alignment = 1
+
 [node name="HUDPanel" type="Panel" parent="CanvasLayer"]
 offset_left = 30.0
 offset_top = 80.0
@@ -277,7 +328,6 @@ grow_vertical = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 32
-text = "ABASTECIMENTO PERFEITO!
-+400 Créditos"
+text = "ABASTECIMENTO PERFEITO!\n+400 Créditos"
 horizontal_alignment = 1
 vertical_alignment = 1
