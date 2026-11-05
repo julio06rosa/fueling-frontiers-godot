@@ -8,7 +8,7 @@
 - Esclarecida a progressão contínua e a ausência de botão para repetir apenas um atendimento.
 - Registrada a limitação: sair de uma nave ativa ainda pode descartar o atendimento sem penalidade automática.
 - Checklist atualizado com cenários de regressão para as alterações recentes.
-- **Testes independentes ainda pendentes**; mudanças de documentação não equivalem a validação prática na Godot.
+- **Retificação:** os testes em ambiente **já foram realizados**, conforme confirmado pelo responsável pelo projeto em 05/11/2026. O registro detalhado de resultados e evidências por cenário ainda precisa ser preenchido; não há confirmação de teste independente por pessoa externa.
 
 ## v0.9.3 — Pacote de avaliação acadêmica (N2)
 
@@ -18,7 +18,7 @@
 - Correção do fluxo de transbordamento crítico, evitando avaliação e penalidade duplicadas.
 - Proteção contra registro repetido de falhas por nave.
 - Nenhuma alteração de recursos gráficos, layout ou economia foi necessária nesta atualização.
-- **Validação pendente:** abrir no Godot 4.7 e executar os testes do checklist.
+- **Registro de validação:** testes em ambiente realizados, conforme confirmação posterior do responsável. A versão exata da Godot utilizada e os resultados por cenário ainda não constam no checklist.
 
 # Changelog profissional
 
