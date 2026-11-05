@@ -2,7 +2,7 @@ extends Node
 
 const SAVE_PATH: String = "user://fueling_frontiers_save.cfg"
 
-var credits: int = 1000
+var credits: int = 0
 var reputation: float = 0.5
 
 # Upgrades
