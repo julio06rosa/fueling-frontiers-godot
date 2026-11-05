@@ -110,15 +110,19 @@ func _process(delta):
 				current_volume += flow
 				tank_progress.value = current_volume
 				
-				# Check auto shutoff valve upgrade
+				# A válvula automática fecha exatamente no volume solicitado.
+				# IMPORTANTE: ao desligar a bomba normalmente, a validação já
+				# encerra o atendimento. Não executar uma segunda penalidade.
 				if GameManager.upgrade_auto_valve and current_volume >= target_volume:
 					current_volume = target_volume
-					_on_pump_pressed() # Stop pump
-					
-				if current_volume >= target_volume * 1.15:
-					# Massive overflow failure
-					_on_pump_pressed() # Auto stop on danger limit
-					ship_failed("TRANSBORDAMENTO! O tanque explodiu e danificou a nave.")
+					tank_progress.value = current_volume
+					_on_pump_pressed()
+				elif current_volume >= target_volume * 1.15:
+					# A falha crítica encerra o serviço diretamente, sem chamar
+					# _on_pump_pressed(), que validaria e penalizaria outra vez.
+					is_pump_on = false
+					pump_btn.text = "Ativar Bomba"
+					ship_failed("TRANSBORDAMENTO CRÍTICO! Limite seguro excedido.")
 					
 		ShipState.DEPARTING:
 			ship_pos = ship_pos.lerp(Vector2(1400, 320), delta * 2.0)
@@ -321,7 +325,8 @@ func _on_slider_a_changed(value):
 		$CanvasLayer/ValvePanel/RatioFeedbackLabel.add_theme_color_override("font_color", Color(0.85, 0.25, 0.25))
 
 func _on_pump_pressed():
-	if current_state == ShipState.APPROACHING or current_state == ShipState.DEPARTING:
+	# Só permite ligar/desligar com nave efetivamente atracada.
+	if current_state != ShipState.WAITING and current_state != ShipState.REFUELING:
 		return
 		
 	is_pump_on = !is_pump_on
@@ -405,7 +410,12 @@ func validate_refuel():
 		ship_depart()
 
 func ship_failed(reason: String):
+	# Evita registrar duas falhas para a mesma nave se mais de um limite
+	# for atingido no mesmo quadro (tempo + volume, por exemplo).
+	if current_state == ShipState.DEPARTING or current_state == ShipState.APPROACHING:
+		return
 	is_pump_on = false
+	pump_btn.text = "Ativar Bomba"
 	if has_node("Player"):
 		$Player.play_anim("sad")
 	if has_node("/root/SoundManager"):

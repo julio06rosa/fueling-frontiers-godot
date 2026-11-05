@@ -136,6 +136,8 @@ func performance_grade(ratio_error: float, volume_error_pct: float) -> String:
 	return "C"
 
 func ship_failed(reason: String) -> void:
+	if current_state == ShipState.DEPARTING or current_state == ShipState.APPROACHING:
+		return
 	streak = 0
 	super.ship_failed(reason)
 	GameManager.register_failure(reason)

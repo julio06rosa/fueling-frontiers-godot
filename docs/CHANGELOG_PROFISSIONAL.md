@@ -1,3 +1,15 @@
+# Registro de alterações
+
+## v0.9.3 — Pacote de avaliação acadêmica (N2)
+
+- README completo: instalação, execução, controles, regras, limitações e links reais.
+- GDD atualizado em `docs/GDD.md`.
+- Checklist independente em `docs/CHECKLIST_VALIDACAO.md`.
+- Correção do fluxo de transbordamento crítico, evitando avaliação e penalidade duplicadas.
+- Proteção contra registro repetido de falhas por nave.
+- Nenhuma alteração de recursos gráficos, layout ou economia foi necessária nesta atualização.
+- **Validação pendente:** abrir no Godot 4.7 e executar os testes do checklist.
+
 # Changelog profissional
 
 ## v0.9.2 — Integração visual consolidada
