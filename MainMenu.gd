@@ -53,7 +53,7 @@ func refresh_station_data() -> void:
 		GameManager.total_failed,
 		GameManager.best_streak
 	]
-	last_result_label.text = "Último registro: %s" % GameManager.last_result
+	last_result_label.text = GameManager.last_result
 
 func _on_start_pressed() -> void:
 	_play_click()
