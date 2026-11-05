@@ -198,11 +198,11 @@ func build_pause_overlay() -> void:
 	pause_overlay.add_child(shade)
 
 	var panel: Panel = Panel.new()
-	panel.size = Vector2(500, 420)
+	pause_overlay.add_child(panel)
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	panel.size = Vector2(500, 420)
 	panel.position -= panel.size / 2.0
 	panel.add_theme_stylebox_override("panel", ui_style(Color("101e2c"), Color("416176"), 14))
-	pause_overlay.add_child(panel)
 
 	var kicker: Label = pause_label(panel, "SISTEMA DE DOCA", Rect2(34, 28, 430, 25), 13, Color("65d7d2"))
 	kicker.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
