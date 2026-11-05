@@ -22,7 +22,7 @@ func _ready() -> void:
 	load_game()
 
 func reset_game() -> void:
-	credits = 1000
+	credits = 0
 	reputation = 0.5
 	upgrade_pump_speed = 0
 	upgrade_auto_valve = false
@@ -88,7 +88,7 @@ func load_game() -> void:
 	var err: Error = config.load(SAVE_PATH)
 	if err != OK:
 		return
-	credits = int(config.get_value("economy", "credits", 1000))
+	credits = int(config.get_value("economy", "credits", 0))
 	reputation = clampf(float(config.get_value("economy", "reputation", 0.5)), 0.0, 1.0)
 	upgrade_pump_speed = clampi(int(config.get_value("upgrades", "pump_speed", 0)), 0, 3)
 	upgrade_auto_valve = bool(config.get_value("upgrades", "auto_valve", false))
