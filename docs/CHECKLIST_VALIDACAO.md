@@ -2,11 +2,11 @@
 
 **Projeto:** Fueling Frontiers: Mars Station · **Versão documentada:** 0.9.3  
 **Objetivo:** orientar o teste de instalação e jogabilidade usando apenas o README, sem ajuda da equipe.  
-**Status deste arquivo:** **roteiro pendente de execução**, não é um relatório de testes concluídos.
+**Status deste arquivo:** **testes em ambiente já realizados pela equipe**, conforme confirmação do responsável em 05/11/2026. Este checklist ainda não possui o registro individual de resultados e evidências; campos vazios **não significam que os testes não ocorreram**.
 
 ## 1. Registro da execução
 
-Preencher **após realizar os testes**:
+Preencher com as informações dos **testes já realizados** (e complementar se algum cenário específico ainda não tiver sido testado):
 
 | Campo | Preenchimento |
 |---|---|
@@ -17,7 +17,7 @@ Preencher **após realizar os testes**:
 | Branch / commit testado | ____________________ |
 | Resultado geral | [ ] Aprovado  [ ] Aprovado com ressalvas  [ ] Reprovado |
 
-> Recomendação: o teste principal deve ser feito por uma pessoa que **não participou da implementação**, idealmente usando uma pasta nova ou outro computador.
+> Os testes em ambiente foram confirmados pela equipe. **Não há confirmação registrada de teste independente por uma pessoa externa**, usando apenas este README. Caso a professora exija essa verificação, registrar também o responsável, o ambiente e o resultado.
 
 ## 2. Verificação do repositório e arquivos
 
@@ -66,19 +66,21 @@ Preencher **após realizar os testes**:
 
 ## 6. Resultado e evidências
 
-| ID | Cenário | Resultado (OK/Falha/Pendente) | Evidência / observação |
+| ID | Cenário | Resultado (OK/Falha/Não informado) | Evidência / observação |
 |---|---|---|---|
-| T01 | Clone ou ZIP e importação | Pendente | |
-| T02 | Tela inicial e abertura por F5 | Pendente | |
-| T03 | Atendimento correto | Pendente | |
-| T04 | Atendimento incorreto | Pendente | |
-| T05 | Atalhos e pausa | Pendente | |
-| T06 | Upgrade, save e reinício | Pendente | |
-| T07 | Transbordamento crítico | Pendente | |
-| T08 | Saldo inicial 0 CR e reset total | Pendente | |
-| T09 | Sensor holográfico sem porcentagem exata | Pendente | |
-| T10 | Pausa centralizada e cronômetro congelado | Pendente | |
-| T11 | Saída durante atendimento (limitação documentada) | Pendente | |
+| T01 | Clone ou ZIP e importação | Não informado | |
+| T02 | Tela inicial e abertura por F5 | Não informado | |
+| T03 | Atendimento correto | Não informado | |
+| T04 | Atendimento incorreto | Não informado | |
+| T05 | Atalhos e pausa | Não informado | |
+| T06 | Upgrade, save e reinício | Não informado | |
+| T07 | Transbordamento crítico | Não informado | |
+| T08 | Saldo inicial 0 CR e reset total | Não informado | |
+| T09 | Sensor holográfico sem porcentagem exata | Não informado | |
+| T10 | Pausa centralizada e cronômetro congelado | Não informado | |
+| T11 | Saída durante atendimento (limitação documentada) | Não informado | |
+
+**Registro:** os testes em ambiente já aconteceram, mas ainda não foram informados os resultados isolados de cada linha acima. **Não marcar automaticamente como OK** sem associar o resultado verificado.
 
 **Sugestão de evidências:** capturas da tela inicial, do manifesto, da tela após um acerto e da oficina de upgrades; se houver erro, capturar a aba **Depurador** e registrar etapas de reprodução.
 
@@ -92,7 +94,8 @@ Preencher **após realizar os testes**:
 | Orientações para baixar e abrir | README — seção 1 (Instalação e execução) |
 | Instruções para jogar | README — seções 2 (Como jogar) e 3 (Regras, pontuação e consequências) |
 | GDD atualizado | [docs/GDD.md](GDD.md), com link também no README |
-| Teste sem orientação dos desenvolvedores | Seções 1 a 6 deste checklist — ainda pendente de preenchimento |
+| Testes em ambiente | Realizados pela equipe, conforme informado em 05/11/2026; resultados individuais ainda não registrados nas seções 1 a 6 |
+| Teste independente sem orientação dos desenvolvedores | Ainda não confirmado; registrar caso tenha ocorrido |
 
 ## 8. Modelo de texto para a entrega (usar após a conferência do projeto)
 
@@ -101,4 +104,4 @@ Preencher **após realizar os testes**:
 > GDD atualizado: `docs/GDD.md` — também acessível pelo link presente no README.  
 > Versão do projeto: 0.9.3.
 
-**Antes de enviar a atividade:** preencher o checklist com os resultados dos testes e conferir se os links do README e do GDD estão acessíveis.
+**Antes de enviar a atividade:** complementar o registro dos testes já executados com resultados, ambiente e evidências disponíveis; conferir os links do README e do GDD. Testes independentes por pessoa externa ainda não foram confirmados.
