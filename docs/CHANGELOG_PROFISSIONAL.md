@@ -1,5 +1,15 @@
 # Registro de alterações
 
+## Revisão documental — 05/11/2026 (projeto 0.9.3)
+
+- README e GDD alinhados ao saldo inicial e de reinício de **0 CR**, preservando o progresso já salvo.
+- Sensor holográfico documentado com **pistas qualitativas**, sem percentuais da mistura ideal.
+- Documentado o ajuste de centralização do painel de pausa.
+- Esclarecida a progressão contínua e a ausência de botão para repetir apenas um atendimento.
+- Registrada a limitação: sair de uma nave ativa ainda pode descartar o atendimento sem penalidade automática.
+- Checklist atualizado com cenários de regressão para as alterações recentes.
+- **Testes independentes ainda pendentes**; mudanças de documentação não equivalem a validação prática na Godot.
+
 ## v0.9.3 — Pacote de avaliação acadêmica (N2)
 
 - README completo: instalação, execução, controles, regras, limitações e links reais.
