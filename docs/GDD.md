@@ -1,7 +1,7 @@
 # GDD — Fueling Frontiers: Mars Station
 
 **Game Design Document (Documento de Design de Jogo)**  
-**Versão do GDD:** 1.0 (documentação do projeto 0.9.3)  
+**Documentação:** em revisão (projeto v0.9.3)  
 **Atualização:** 04/11/2026 · **Status:** documentação da versão jogável, em desenvolvimento
 
 | Campo | Descrição |
@@ -13,8 +13,8 @@
 | Linguagem | GDScript |
 | Modo | Um jogador |
 | Interface | 2D, teclado e mouse |
-| Versão analisada | 0.9.3 |
-| Autores identificados no menu | Júlio César Duarte da Rosa; Rafael da Rocha da Silva |
+| Versão do projeto | 0.9.3 |
+| Integrantes do grupo | Júlio César Duarte da Rosa; Rafael da Rocha da Silva; Paulo Guilherme Richeski Padilha |
 
 ## 1. Visão geral e proposta
 
@@ -31,7 +31,7 @@ O desafio é interpretar informações, configurar o misturador e controlar uma 
 
 ### Público e acessibilidade
 
-Destinado a usuários capazes de operar jogos de computador com teclado e mouse. O game exibe texto e valores numéricos em português. Não há, na versão analisada, evidência de remapeamento de atalhos ou de recursos completos de acessibilidade; o suporte deve ser avaliado em testes futuros.
+Destinado a usuários capazes de operar jogos de computador com teclado e mouse. O game exibe texto e valores numéricos em português. Não há, na versão atual, evidência de remapeamento de atalhos ou de recursos completos de acessibilidade; o suporte deve ser avaliado em testes futuros.
 
 ## 2. Conceito e fantasia do jogador
 
@@ -233,7 +233,7 @@ Não é necessário estar fisicamente próximo da bomba para usar os controles d
 
 ## 13. Conteúdo implementado x planejado
 
-| Componente | Situação na versão analisada |
+| Componente | Situação na versão atual |
 |---|---|
 | Chegada e partida de naves | Implementado no código |
 | Geração de pedidos e proporções | Implementado no código |
@@ -270,6 +270,3 @@ Não é necessário estar fisicamente próximo da bomba para usar os controles d
 
 O artefato está pronto para submissão quando: (a) o repositório estiver acessível; (b) uma pessoa externa conseguir clonar/baixar o projeto; (c) abrir `project.godot` na Godot 4.7 e executar F5; (d) completar pelo menos um atendimento usando somente o README; (e) o GDD estiver disponível pelo link indicado no README; (f) o grupo registrar os resultados dos testes no checklist.
 
----
-
-**Fontes internas de referência:** `project.godot`, `README.md` anterior, `MainMenu.gd/.tscn`, `Gameplay.gd/.tscn`, `GameplayEnhanced.gd`, `GameManager.gd`, `UpgradeMenu.gd/.tscn`, `docs/CHANGELOG_PROFISSIONAL.md` e `docs/NOTAS_DESENVOLVIMENTO.txt` da branch `main` consultada em 04/11/2026.
