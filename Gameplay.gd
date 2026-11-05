@@ -286,17 +286,6 @@ func update_ship_hud():
 	$CanvasLayer/HUDPanel/FuelFormulaLabel.text = "Fórmula: %d %s : %d %s" % [ratio_a, comp_a_name, ratio_b, comp_b_name]
 	$CanvasLayer/HUDPanel/VolumeLabel.text = "Volume: %.1f UF" % target_volume
 	
-	# Calculate target percentage
-	var total_parts = float(ratio_a + ratio_b)
-	var target_pct_a = (float(ratio_a) / total_parts) * 100.0
-	
-	if GameManager.upgrade_helper_hud:
-		$CanvasLayer/HUDPanel/TargetHelperLabel.text = "Meta: %.1f%% %s / %.1f%% %s" % [
-			target_pct_a, comp_a_name, 100.0 - target_pct_a, comp_b_name
-		]
-	else:
-		$CanvasLayer/HUDPanel/TargetHelperLabel.text = "Calcule a proporção correta!"
-		
 	_on_slider_a_changed(slider_a.value)
 
 func _on_slider_a_changed(value):
@@ -323,6 +312,14 @@ func _on_slider_a_changed(value):
 		fuel_color = Color(0.68, 0.15, 0.61) # Purple
 		$CanvasLayer/ValvePanel/RatioFeedbackLabel.text = "Mistura Instável!"
 		$CanvasLayer/ValvePanel/RatioFeedbackLabel.add_theme_color_override("font_color", Color(0.85, 0.25, 0.25))
+
+	if not GameManager.upgrade_helper_hud:
+		$CanvasLayer/HUDPanel/TargetHelperLabel.text = "Calcule a proporção correta!"
+	elif diff <= 2.0:
+		$CanvasLayer/HUDPanel/TargetHelperLabel.text = "Sensor: proporção correta!"
+	else:
+		var excess_component: String = comp_a_name if value > target_pct_a else comp_b_name
+		$CanvasLayer/HUDPanel/TargetHelperLabel.text = "Sensor: excesso de %s." % excess_component
 
 func _on_pump_pressed():
 	# Só permite ligar/desligar com nave efetivamente atracada.

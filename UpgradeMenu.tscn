@@ -279,7 +279,7 @@ text = "03 / Sensor holográfico"
 layout_mode = 2
 theme_override_colors/font_color = Color(0.62, 0.71, 0.77, 1)
 theme_override_font_sizes/font_size = 14
-text = "Exibe a porcentagem ideal da mistura no manifesto para acelerar decisões."
+text = "Analisa a mistura e dá pistas para ajustar a proporção."
 
 [node name="BuyButton" type="Button" parent="Panel/VBox/HelperUpgrade"]
 custom_minimum_size = Vector2(265, 52)
