@@ -2,7 +2,7 @@
 
 **Game Design Document (Documento de Design de Jogo)**  
 **Documentação:** GDD da versão jogável 0.9.3  
-**Atualização:** 05/11/2026 · **Status:** documentação revisada e alinhada ao código; validação independente de execução pendente
+**Atualização:** 05/11/2026 · **Status:** documentação revisada e alinhada ao código; **testes em ambiente realizados pela equipe, conforme informado em 05/11/2026**; resultados individuais e evidências ainda não registrados neste documento
 
 | Campo | Descrição |
 |---|---|
@@ -113,7 +113,7 @@ A bomba é acionada por botão ou barra de espaço. Enquanto ligada, o volume ab
 
 **Tolerância:** volume dentro de **±3%** do pedido ao desligar a bomba.
 
-**Limite crítico:** o código trata volume de **115% ou mais** do alvo como transbordamento grave. A rotina evita chamar simultaneamente a validação comum e a penalidade crítica; é necessário **confirmar em teste de regressão** que apenas uma penalidade é registrada.
+**Limite crítico:** o código trata volume de **115% ou mais** do alvo como transbordamento grave. A rotina evita chamar simultaneamente a validação comum e a penalidade crítica. O **resultado específico deste cenário** não está registrado no GDD, mesmo com os testes em ambiente já realizados.
 
 ### 6.4 Tempo
 
@@ -149,7 +149,7 @@ A lógica-base está em `Gameplay.gd`; a camada de apresentação e progressão 
 ### 7.3 Resultado malsucedido
 
 - Erro comum após parada e validação: **−150 créditos** e **−8 pontos percentuais** de reputação.
-- Tempo esgotado ou falha crítica: regra de **−200 créditos** e **−10 pontos percentuais** de reputação; o caminho de transbordamento exige teste de regressão específico.
+- Tempo esgotado ou falha crítica: regra de **−200 créditos** e **−10 pontos percentuais** de reputação; recomenda-se registrar evidência do cenário de transbordamento para confirmar a aplicação de uma única penalidade.
 - Créditos não ficam negativos; a reputação permanece entre 0% e 100%.
 
 ### 7.4 Qualidade de atendimento
@@ -253,7 +253,7 @@ O menu principal possui uma opção de **Reiniciar Progresso** com confirmação
 | Upgrades e salvamento local | Implementado no código |
 | Créditos iniciais e após reset em 0 CR | Implementado no código |
 | Sensor com pistas sem porcentagens ideais | Implementado no código |
-| Menu de pausa centralizado | Ajustado no código; validação visual pendente |
+| Menu de pausa centralizado | Ajustado no código; testes em ambiente informados, sem evidência visual individual anexada ao GDD |
 | Reiniciar apenas a nave atual após erro | Não previsto no design |
 | Penalidade por abandonar atendimento ativo | Não implementada; risco de escapar das consequências |
 | Retomar nave e cronômetro ao reabrir o jogo | Não implementado |
@@ -264,9 +264,10 @@ O menu principal possui uma opção de **Reiniciar Progresso** com confirmação
 | Campanha com metas e vitória global | Não implementada |
 | Executável distribuível | Não incluído no repositório |
 | Variedade expandida de eventos, contratos e recordes | Evolução futura |
-| Teste independente documentado | Pendente de execução e registro |
+| Testes em ambiente do jogo | **Realizados, conforme confirmação do responsável pelo projeto (05/11/2026)**; detalhes dos cenários e evidências não registrados no GDD |
+| Teste independente por pessoa externa | Não confirmado; documentação de resultados permanece aberta |
 
-**Importante:** “implementado no código” não equivale a “validado em execução”. O checklist separado orienta a verificação funcional.
+**Registro de validação:** o responsável pelo projeto confirmou que **os testes em ambiente já foram realizados**. Esta informação não deve ser confundida com a ausência de testes. Ainda não constam neste repositório, porém, um relatório detalhado desses resultados, as evidências por cenário nem a confirmação de que uma pessoa externa executou o jogo usando apenas o README. O checklist separado permite completar o registro.
 
 ## 14. Riscos, limitações e próximos incrementos
 
@@ -283,22 +284,22 @@ O menu principal possui uma opção de **Reiniciar Progresso** com confirmação
 - **Salvamento parcial:** não existe retomada do volume, cronômetro e nave em curso; apenas dados acumulados persistem.
 - **Balanceamento:** iniciar com 0 CR exige concluir atendimentos antes de comprar upgrades. O ritmo de progressão precisa ser avaliado.
 - **Sem campanha terminal:** não há tela global de vitória nem game over permanente.
-- **Teste e distribuição:** ainda faltam evidências independentes de importação, operação completa e compatibilidade; o repositório não contém executável.
+- **Evidências e distribuição:** a equipe informou que já realizou testes em ambiente, mas o histórico consultado não reúne os resultados e evidências por cenário; testes em sistemas operacionais diferentes e executável não estão documentados.
 
 ### 14.3 Próximos incrementos propostos — ainda não implementados
 
 1. Definir e implementar regra para abandonar uma nave: registrar falha ao sair da operação **ou** persistir o atendimento completo, evitando que o jogador burle uma penalidade.
-2. Validar a economia começando em **0 CR**, especialmente progressão às primeiras melhorias e cenários com erros seguidos.
-3. Testar o sensor holográfico com proporções comuns e contratos Elite, confirmando que não mostra porcentagens exatas.
-4. Verificar a posição do menu de pausa em diferentes tamanhos de janela.
-5. Confirmar em execução que tempo esgotado e transbordamento crítico geram apenas uma penalidade por nave.
-6. Registrar testes independentes com capturas e observações, ampliar o tutorial e considerar uma versão executável.
+2. **Registrar** as condições, versões da Godot, resultados e eventuais evidências dos testes em ambiente já realizados, incluindo economia começando em **0 CR**.
+3. Documentar o resultado do teste do sensor holográfico com proporções comuns e contratos Elite, sem revelar percentuais exatos.
+4. Anexar registro visual do menu de pausa em diferentes tamanhos de janela, caso esses cenários tenham sido executados.
+5. Registrar resultado específico de tempo esgotado e transbordamento crítico, verificando uma única penalidade por nave.
+6. Caso a avaliação exija, complementar com teste independente (pessoa de fora do grupo), capturas e observações; considerar uma versão executável futuramente.
 
 ## 15. Critérios de aceitação da entrega N2 — Parte 1
 
 A entrega atende aos requisitos documentais quando: (a) o repositório está público e acessível; (b) o README informa como baixar, instalar/importar e executar o projeto; (c) o GDD atualizado está disponível em `docs/GDD.md` e tem link no README; (d) o grupo registra os testes e confirma que alguém de fora consegue jogar sem orientação dos desenvolvedores.
 
-**Roteiro mínimo de validação na Godot 4.7:**
+**Cenários do roteiro de validação (o projeto declara Godot 4.7; registrar a versão exata utilizada nos testes):**
 
 1. Baixar o ZIP ou clonar o repositório em pasta limpa; importar `project.godot` e executar com F5.
 2. Usando apenas o README, concluir um abastecimento correto e observar a recompensa e a chegada de outra nave.
@@ -309,7 +310,7 @@ A entrega atende aos requisitos documentais quando: (a) o repositório está pú
 7. Selecionar Reiniciar Progresso, confirmar e verificar **0 CR**, **50% de reputação** e ausência de upgrades.
 8. Testar o transbordamento crítico e verificar que a penalidade não é aplicada duas vezes.
 
-O arquivo `docs/CHECKLIST_VALIDACAO.md` contém campos para os registros. **O roteiro estar escrito não significa que os testes foram executados**; as evidências precisam ser preenchidas pelo grupo antes da submissão final.
+**Os testes em ambiente foram realizados**, segundo confirmação do responsável pelo projeto em 05/11/2026. O arquivo `docs/CHECKLIST_VALIDACAO.md` ainda precisa receber os **resultados, a versão efetivamente utilizada e as evidências disponíveis**. Não foi confirmada execução independente por uma pessoa externa usando apenas o README.
 
 ## 16. Histórico desta revisão
 
@@ -322,5 +323,6 @@ O arquivo `docs/CHECKLIST_VALIDACAO.md` contém campos para os registros. **O ro
 - Formalizada a decisão de não permitir repetição isolada de atendimento.
 - Identificado o risco de abandonar uma nave ativa sem penalidade automática.
 - Atualizados os testes de aceitação e o backlog para a atividade acadêmica.
+- **Retificação de validação (05/11/2026):** testes em ambiente **já realizados**, conforme informado pelo responsável; documentação dos resultados individuais, evidências e eventual validação externa ainda a completar.
 
 **Documentos complementares:** `README.md`, `docs/CHECKLIST_VALIDACAO.md` e `docs/CHANGELOG_PROFISSIONAL.md`.
