@@ -3,6 +3,7 @@ extends Control
 @onready var start_button: Button = $Interface/MainPanel/StartButton
 @onready var station_status_label: Label = $Interface/StatusPanel/StationStatus
 @onready var stats_label: Label = $Interface/StatusPanel/Stats
+@onready var last_result_label: Label = $Interface/StatusPanel/LastResult
 @onready var tutorial_overlay: Control = $TutorialOverlay
 @onready var reset_overlay: Control = $ResetOverlay
 
@@ -46,13 +47,13 @@ func refresh_station_data() -> void:
 	else:
 		start_button.text = "INICIAR TURNO   >"
 
-	stats_label.text = "ATENDIMENTOS   %d\nSUCESSOS        %d\nFALHAS          %d\nMELHOR SEQUÊNCIA  %d\n\nÚltimo registro: %s" % [
+	stats_label.text = "ATENDIMENTOS   %d\nSUCESSOS        %d\nFALHAS          %d\nMELHOR SEQUÊNCIA  %d" % [
 		GameManager.total_served,
 		GameManager.total_success,
 		GameManager.total_failed,
-		GameManager.best_streak,
-		GameManager.last_result
+		GameManager.best_streak
 	]
+	last_result_label.text = GameManager.last_result
 
 func _on_start_pressed() -> void:
 	_play_click()
