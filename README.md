@@ -16,7 +16,9 @@ O objetivo é realizar os abastecimentos corretamente, ganhar créditos, melhora
 
 ## Como instalar e executar
 
-Para jogar, é necessário ter a Godot Engine 4.7 instalada. O projeto não precisa de banco de dados ou instalação de bibliotecas adicionais.
+Para executar o projeto, instale a **Godot Engine 4.7 (edição padrão)**, disponível no [site oficial da Godot](https://godotengine.org/download/archive/). Não é necessário instalar banco de dados, servidor ou bibliotecas adicionais.
+
+A Godot funciona em Windows, Linux e macOS. O jogo ainda precisa ser testado em cada sistema para confirmar a compatibilidade.
 
 **1. Baixar o projeto**
 
@@ -24,26 +26,26 @@ Acesse o repositório no GitHub:
 
 https://github.com/julio06rosa/fueling-frontiers-godot
 
-Clique em **Code > Download ZIP** e extraia os arquivos em uma pasta do computador.
+Clique em **Code > Download ZIP**, extraia os arquivos e abra a pasta que contém o arquivo `project.godot`.
 
 Também é possível clonar o repositório usando Git:
 
-\`\`\`bash
+```bash
 git clone https://github.com/julio06rosa/fueling-frontiers-godot.git
-\`\`\`
+```
 
 **2. Abrir na Godot**
 
 1. Abra a Godot Engine 4.7.
 2. Clique em **Importar** no gerenciador de projetos.
-3. Selecione o arquivo \`project.godot\` dentro da pasta do jogo.
+3. Selecione o arquivo `project.godot` dentro da pasta do jogo.
 4. Abra o projeto no editor.
 
 **3. Iniciar o jogo**
 
 Com o projeto aberto, pressione **F5** ou clique em **Executar Projeto**.
 
-A tela inicial será carregada e você poderá começar uma partida selecionando **Iniciar Turno**.
+A tela inicial será carregada e você poderá começar uma partida selecionando **Iniciar Turno**. A cena inicial do projeto é `MainMenu.tscn`.
 
 Caso o jogo apresente algum erro ao iniciar, confira se a versão da Godot está correta e consulte a aba de depuração do editor.
 
@@ -67,6 +69,8 @@ Para realizar um atendimento:
 Por exemplo, se uma nave solicitar uma mistura de 3 partes de A para 1 parte de B, será necessário ajustar a mistura para **75% de A e 25% de B**.
 
 É importante controlar tanto a mistura quanto o volume abastecido. Um erro pode causar perda de créditos e reputação.
+
+O resultado é definido a cada atendimento: quando uma nave vai embora, outra pode chegar. Por enquanto, o jogo não tem uma campanha com uma tela de vitória final.
 
 ## Controles
 
