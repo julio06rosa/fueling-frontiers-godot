@@ -1,7 +1,7 @@
 # Checklist de validação — Atividade 001 (N2, parte 1)
 
 **Projeto:** Fueling Frontiers: Mars Station · **Versão documentada:** 0.9.3  
-**Objetivo:** comprovar que alguém fora da equipe consegue instalar e jogar usando apenas o README.  
+**Objetivo:** orientar o teste de instalação e jogabilidade usando apenas o README, sem ajuda da equipe.  
 **Status deste arquivo:** **roteiro pendente de execução**, não é um relatório de testes concluídos.
 
 ## 1. Registro da execução
@@ -74,28 +74,23 @@ Preencher **após realizar os testes**:
 
 **Sugestão de evidências:** capturas da tela inicial, do manifesto, da tela após um acerto e da oficina de upgrades; se houver erro, capturar a aba **Depurador** e registrar etapas de reprodução.
 
-## 7. Matriz de atendimento aos critérios da professora
+## 7. Conferência dos requisitos da atividade
 
-| Exigência da atividade | Onde localizar |
+| O que a atividade pede | Onde encontrar |
 |---|---|
-| 1. Link de repositório atualizado e público | README, seção 3; GitHub |
-| 2. Guia escrito de instalação, execução e uso | README, seções 2 a 12 |
-| 3. GDD atualizado e caminho | `docs/GDD.md`, referenciado no README, seção 14 |
-| Nome e descrição do jogo | README, seção 1 |
-| SO, programas e versões | README, seção 2 |
-| Clonar / baixar | README, seção 3 |
-| Dependências e ambiente | README, seção 4 |
-| Comandos / opções da engine | README, seção 5 |
-| Início de partida e controles | README, seções 6 a 8 |
-| Objetivos, regras, sucesso/falha e progressão | README, seções 7, 9 e 10 |
-| Limitações / não implementado | README, seção 12; GDD, seções 13 e 14 |
-| Teste por terceiro sem explicação oral | Seções 1 a 6 deste checklist: **executar e preencher** |
+| Repositório do projeto | [GitHub](https://github.com/julio06rosa/fueling-frontiers-godot) |
+| Nome e descrição do jogo | Início do README |
+| Programa, versão e requisitos | README — Informações do projeto e Como instalar e executar |
+| Orientações para baixar e abrir | README — Como instalar e executar |
+| Instruções para jogar | README — Como jogar, Controles e Regras e pontuação |
+| GDD atualizado | [docs/GDD.md](GDD.md), com link também no README |
+| Teste sem orientação dos desenvolvedores | Seções 1 a 6 deste checklist — ainda pendente de preenchimento |
 
-## 8. Texto de entrega (usar somente depois da revisão e merge)
+## 8. Modelo de texto para a entrega (usar após a conferência do projeto)
 
 > Repositório: https://github.com/julio06rosa/fueling-frontiers-godot  
 > Guia de instalação, execução e uso: README.md, na página inicial do repositório.  
 > GDD atualizado: `docs/GDD.md` — também acessível pelo link presente no README.  
-> Versão entregue: 0.9.3.
+> Versão do projeto: 0.9.3.
 
-**Atenção:** este arquivo é material de apoio para revisão. A documentação só estará disponível publicamente nos links indicados **depois de ser enviada ao GitHub e incorporada à branch de entrega**.
+**Antes de enviar a atividade:** preencher o checklist com os resultados dos testes e conferir se os links do README e do GDD estão acessíveis.
