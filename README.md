@@ -1,142 +1,179 @@
 # Fueling Frontiers: Mars Station
 
-**Fueling Frontiers: Mars Station** é um jogo 2D desenvolvido na Godot Engine, utilizando GDScript, como parte de um projeto acadêmico do curso de Engenharia de Software.
+**Fueling Frontiers: Mars Station** é um jogo 2D de simulação e gerenciamento desenvolvido em **Godot**, com **GDScript**, como projeto acadêmico do curso de Engenharia de Software.
 
-O jogador é responsável pelo abastecimento de naves em uma estação espacial localizada em Marte. Cada nave possui um pedido específico, com uma proporção de combustível, uma quantidade necessária e um tempo limite para concluir o atendimento.
+O jogador assume a operação de uma estação de abastecimento em Marte. A cada atendimento, uma nave chega com um manifesto de carga: dois componentes de combustível, uma proporção exigida, um volume solicitado e um tempo limite. É preciso interpretar os dados, preparar a mistura e interromper o abastecimento no momento certo.
 
-O objetivo é realizar os abastecimentos corretamente, ganhar créditos, melhorar os equipamentos da estação e conseguir atender pedidos cada vez mais difíceis.
+O desempenho determina os **créditos**, a **reputação** e a possibilidade de adquirir melhorias para a estação. Os atendimentos são contínuos: não há uma opção para reiniciar individualmente uma nave após um erro.
 
-**Informações do projeto:**
-- Engine: Godot 4.7
-- Linguagem: GDScript
-- Gênero: simulação e gerenciamento
-- Plataforma: computador
-- Versão atual: 0.9.3
-- Status: em desenvolvimento
+## Informações do projeto
 
-## Como instalar e executar
+| Item | Descrição |
+|---|---|
+| **Gênero** | Simulação, gerenciamento e precisão |
+| **Engine** | Godot 4.7 (versão configurada no projeto) |
+| **Linguagem** | GDScript |
+| **Plataforma-alvo** | Computador |
+| **Jogadores** | Um jogador |
+| **Versão do projeto** | 0.9.3 |
+| **Estado** | Em desenvolvimento |
 
-Para executar o projeto, instale a **Godot Engine 4.7 (edição padrão)**, disponível no [site oficial da Godot](https://godotengine.org/download/archive/). Não é necessário instalar banco de dados, servidor ou bibliotecas adicionais.
+O código-fonte é disponibilizado para execução no editor Godot. Ainda não há executável independente no repositório.
 
-A Godot funciona em Windows, Linux e macOS. O jogo ainda precisa ser testado em cada sistema para confirmar a compatibilidade.
+## 1. Instalação e execução
 
-**1. Baixar o projeto**
+### Requisitos
 
-Acesse o repositório no GitHub:
+- **Godot Engine 4.7**, edição padrão. Consulte o [arquivo de versões da Godot](https://godotengine.org/download/archive/).
+- Computador com teclado e mouse.
+- Projeto baixado ou clonado deste repositório.
 
-https://github.com/julio06rosa/fueling-frontiers-godot
+Não é necessário configurar servidor, banco de dados ou dependências externas. A execução em Windows, Linux e macOS ainda depende de validação específica em cada sistema.
 
-Clique em **Code > Download ZIP**, extraia os arquivos e abra a pasta que contém o arquivo `project.godot`.
+### Baixar o projeto
 
-Também é possível clonar o repositório usando Git:
+**Opção A — ZIP**
+
+1. Na [página do repositório](https://github.com/julio06rosa/fueling-frontiers-godot), selecione **Code > Download ZIP**.
+2. Extraia o conteúdo em uma pasta.
+3. Localize o arquivo `project.godot`.
+
+**Opção B — Git**
 
 ```bash
 git clone https://github.com/julio06rosa/fueling-frontiers-godot.git
 ```
 
-**2. Abrir na Godot**
+### Abrir e jogar
 
-1. Abra a Godot Engine 4.7.
-2. Clique em **Importar** no gerenciador de projetos.
-3. Selecione o arquivo `project.godot` dentro da pasta do jogo.
-4. Abra o projeto no editor.
+1. Abra a Godot.
+2. No gerenciador de projetos, selecione **Importar**.
+3. Escolha o arquivo `project.godot` da pasta baixada.
+4. Abra o projeto e pressione **F5** (ou **Executar Projeto**).
+5. No menu principal, selecione **INICIAR TURNO** ou **CONTINUAR OPERAÇÕES**, conforme o histórico salvo.
 
-**3. Iniciar o jogo**
+A cena inicial configurada é `MainMenu.tscn`. Se ocorrer algum erro, confira a versão do editor e consulte o painel **Depurador** da Godot.
 
-Com o projeto aberto, pressione **F5** ou clique em **Executar Projeto**.
+## 2. Como jogar
 
-A tela inicial será carregada e você poderá começar uma partida selecionando **Iniciar Turno**. A cena inicial do projeto é `MainMenu.tscn`.
+O objetivo de cada atendimento é entregar a quantidade solicitada de combustível com a proporção correta entre os componentes, respeitando o prazo.
 
-Caso o jogo apresente algum erro ao iniciar, confira se a versão da Godot está correta e consulte a aba de depuração do editor.
+1. **Receba a nave:** aguarde a aproximação e leia seu manifesto.
+2. **Confira a fórmula:** identifique os componentes, a proporção e o volume em unidades de combustível (UF).
+3. **Ajuste a mistura:** mova o controle deslizante ou use **Q/E** para regular o percentual do componente A. O componente B ocupa o percentual restante.
+4. **Inicie a bomba:** clique no botão correspondente ou pressione **Espaço**.
+5. **Monitore o abastecimento:** acompanhe o volume acumulado e o cronômetro.
+6. **Pare a bomba:** desligue-a próximo do volume solicitado, a menos que tenha adquirido a válvula automática.
+7. **Confira o resultado:** o jogo informa sucesso ou falha e atualiza os recursos da estação. Depois disso, outra nave chega.
 
-## Como jogar
+**Exemplo de proporção:** um pedido de **3 partes do componente A para 1 parte do componente B** corresponde a **75% de A e 25% de B**.
 
-O funcionamento do jogo é baseado no atendimento de naves que chegam à estação de abastecimento.
+A porcentagem de A pode ser calculada por:
 
-Cada nave informa a quantidade de combustível necessária, a proporção entre os componentes A e B e o tempo disponível.
+```text
+A (%) = A / (A + B) × 100
+B (%) = 100 − A (%)
+```
 
-Para realizar um atendimento:
+A interface também fornece feedback sobre a estabilidade da mistura. O sensor holográfico, quando comprado, acrescenta pistas sobre qual componente está em excesso, sem revelar a resposta numérica.
 
-1. Inicie uma partida pelo menu principal.
-2. Aguarde a chegada da nave.
-3. Observe a proporção de combustível solicitada.
-4. Ajuste a mistura utilizando o controle na tela ou as teclas Q e E.
-5. Ligue a bomba de combustível.
-6. Acompanhe a quantidade abastecida e o tempo restante.
-7. Desligue a bomba quando atingir o volume solicitado.
-8. Confira o resultado do atendimento.
+### Controles
 
-Por exemplo, se uma nave solicitar uma mistura de 3 partes de A para 1 parte de B, será necessário ajustar a mistura para **75% de A e 25% de B**.
-
-É importante controlar tanto a mistura quanto o volume abastecido. Um erro pode causar perda de créditos e reputação.
-
-O resultado é definido a cada atendimento: quando uma nave vai embora, outra pode chegar. Por enquanto, o jogo não tem uma campanha com uma tela de vitória final.
-
-## Controles
-
-| Tecla | Função |
+| Controle | Ação |
 |---|---|
-| Mouse | Navegar pelos menus e utilizar os controles na tela |
-| Q | Diminuir a porcentagem do combustível A |
-| E | Aumentar a porcentagem do combustível A |
-| Shift + Q | Diminuir a porcentagem em 5 pontos |
-| Shift + E | Aumentar a porcentagem em 5 pontos |
-| Espaço | Ligar ou desligar a bomba |
-| Esc | Pausar ou retomar o jogo |
-| Setas direcionais | Movimentar o personagem |
+| **Mouse** | Navegação, botões e ajuste da mistura |
+| **Q** | Reduzir o componente A em 1 ponto percentual |
+| **E** | Aumentar o componente A em 1 ponto percentual |
+| **Shift + Q** | Reduzir o componente A em 5 pontos percentuais |
+| **Shift + E** | Aumentar o componente A em 5 pontos percentuais |
+| **Espaço** | Ligar ou desligar a bomba durante um atendimento |
+| **Esc** | Pausar ou retomar a operação |
+| **Setas direcionais** | Movimentar o personagem |
 
-## Regras e pontuação
+## 3. Regras, pontuação e consequências
 
-Para concluir um atendimento com sucesso, o jogador precisa respeitar a proporção e a quantidade de combustível solicitadas.
+Um atendimento é aprovado quando **ambas** as condições são atendidas:
 
-O jogo permite uma margem de erro de **2 pontos percentuais na mistura** e **3% no volume abastecido**.
+- **Mistura:** erro de até **2 pontos percentuais** na proporção solicitada.
+- **Volume:** diferença de até **3%** em relação ao volume pedido.
 
-Os atendimentos são avaliados de acordo com a precisão, podendo receber as classificações S, A, B ou C.
+Os atendimentos concluídos dentro das tolerâncias recebem uma classificação de precisão **S, A, B ou C**. A qualidade da mistura e do volume determina a nota.
 
-Ao concluir um atendimento corretamente, o jogador recebe créditos e aumenta sua reputação. Erros, atrasos e abastecimentos acima do limite geram penalidades.
-
-Também existem contratos mais difíceis, que oferecem recompensas maiores.
-
-## Melhorias da estação
-
-Os créditos recebidos podem ser utilizados na oficina para comprar melhorias.
-
-| Melhoria | Função |
+| Situação | Consequência prevista no código |
 |---|---|
-| Bomba de alta vazão | Aumenta a velocidade do abastecimento |
-| Válvula automática | Interrompe o abastecimento ao atingir o volume solicitado |
-| Sensor holográfico | Mostra a proporção ideal da mistura |
+| Atendimento aprovado | **2 CR por UF** solicitada e **+5 pontos percentuais** de reputação |
+| Conclusão com mais da metade do tempo restante | **+100 CR** adicionais |
+| Acertos consecutivos no mesmo turno | Bônus progressivo de **25 CR** por acerto anterior, até **125 CR** |
+| Contrato Elite concluído | **+150 CR** adicionais |
+| Mistura ou volume fora da tolerância ao desligar a bomba | Penalidade de até **150 CR** e **−8 pontos percentuais** de reputação |
+| Tempo esgotado ou transbordamento crítico | Penalidade de até **200 CR** e **−10 pontos percentuais** de reputação |
 
-As melhorias ajudam o jogador a realizar os atendimentos com mais facilidade e precisão.
+A expressão **“até”** aparece nas perdas de créditos porque o saldo não pode ficar negativo. A reputação permanece entre **0% e 100%**.
 
-## Salvamento do progresso
+O **transbordamento crítico** acontece quando o volume alcança **115% do solicitado**. Contratos Elite podem surgir após pelo menos três atendimentos bem-sucedidos no turno e exigem proporções adicionais.
 
-O jogo salva automaticamente informações como créditos, reputação, melhorias adquiridas e estatísticas dos atendimentos.
+## 4. Oficina e melhorias
 
-No menu principal, também existe a opção **Reiniciar Progresso**, que permite começar novamente com os valores iniciais.
+Todos os novos progressos começam com **0 créditos**, **50% de reputação** e **nenhuma melhoria**. Os créditos são obtidos por atendimentos bem-sucedidos e podem ser investidos na oficina.
 
-## Desenvolvimento do projeto
+| Melhoria | Custo | Benefício |
+|---|---|---|
+| **Bomba de alta vazão** | 500 / 1.000 / 1.500 CR, conforme o nível | Aumenta a vazão em três níveis |
+| **Válvula automática** | 800 CR | Interrompe a bomba no volume solicitado |
+| **Sensor holográfico** | 400 CR | Indica qual componente está em excesso ou quando a mistura está dentro da tolerância, **sem informar percentuais exatos** |
 
-O jogo ainda está em desenvolvimento. Nesta versão, já é possível realizar atendimentos, utilizar melhorias, acompanhar a reputação da estação e salvar o progresso.
+Os botões de compra ficam indisponíveis quando o jogador não tem saldo suficiente ou já alcançou o nível máximo. As melhorias compradas são preservadas no progresso salvo.
 
-Algumas funcionalidades ainda podem receber ajustes, principalmente em relação ao balanceamento, à variedade dos contratos e à experiência de jogo.
+## 5. Progressão e salvamento
 
-Atualmente, o projeto é disponibilizado pelo código-fonte para execução na Godot, sem um executável independente.
+O jogo utiliza **salvamento local automático** para guardar créditos, reputação, melhorias e estatísticas, incluindo atendimentos concluídos, acertos, falhas e melhor sequência.
 
-## Documentação
+- **Continuar operações:** preserva o progresso acumulado de atendimentos anteriores.
+- **Fechar e abrir o jogo:** recupera os dados persistidos no mesmo ambiente de execução.
+- **Reiniciar progresso:** opção separada no menu principal, com confirmação, que redefine créditos para **0**, reputação para **50%**, remove as melhorias e zera as estatísticas.
+- **Atendimento individual:** não há botão de “tentar novamente” para repetir uma nave e anular uma falha registrada.
 
-Além deste README, o repositório contém documentos que apresentam mais detalhes sobre o projeto:
+**Limitação atual:** o estado de um atendimento em andamento (nave, cronômetro e volume parcial) não é persistido no arquivo de salvamento. Sair durante esse atendimento e voltar ao jogo pode iniciar outro pedido sem registrar automaticamente uma penalidade pelo abandono. Esse comportamento está identificado para evolução futura.
 
-- [GDD — Game Design Document](docs/GDD.md): planejamento do jogo, mecânicas, regras e funcionalidades.
-- [Checklist de validação](docs/CHECKLIST_VALIDACAO.md): etapas para conferir a instalação e o funcionamento do jogo.
-- [Histórico de alterações](docs/CHANGELOG_PROFISSIONAL.md): principais mudanças realizadas durante o desenvolvimento.
+O salvamento é feito em `user://fueling_frontiers_save.cfg`, no diretório de dados do usuário gerenciado pela Godot.
 
-## Integrantes
+## 6. Telas e navegação
 
-Projeto desenvolvido por acadêmicos do curso de **Engenharia de Software**:
+| Tela | Função |
+|---|---|
+| **Menu principal** | Iniciar/continuar operações, acessar a oficina, consultar “Como Jogar”, verificar estatísticas, reiniciar progresso ou sair |
+| **Gameplay** | Ler manifesto, preparar mistura, abastecer naves e consultar créditos, tempo e reputação |
+| **Pausa** | Continuar turno, acessar oficina ou retornar ao menu principal |
+| **Oficina** | Consultar custos e adquirir melhorias permanentes do progresso |
+
+O painel de pausa foi ajustado para ficar centralizado na interface. **Pausar não faz o cronômetro do atendimento avançar.**
+
+## 7. Desenvolvimento e limitações
+
+A versão **0.9.3** já contém chegada e saída de naves, pedidos variáveis, controle da bomba, feedback da mistura, avaliações de precisão, contratos Elite, progressão econômica, oficina, áudio e salvamento local.
+
+O projeto permanece em desenvolvimento. Entre os próximos pontos de atenção estão:
+
+- Persistir ou tratar adequadamente os atendimentos interrompidos, evitando que abandonar uma operação elimine suas consequências.
+- Refinar o balanceamento de dificuldade, ganhos e penalidades.
+- Evoluir o tutorial e a variedade de contratos.
+- Realizar e registrar testes independentes de instalação, jogabilidade e compatibilidade com sistemas operacionais.
+- Preparar uma versão executável para demonstração, quando apropriado.
+
+**Observação sobre validação:** as funcionalidades descritas foram conferidas na estrutura e no código do repositório; isso não substitui a execução de todos os cenários de teste na Godot.
+
+## 8. Documentação complementar
+
+- [**GDD — Game Design Document**](docs/GDD.md): visão do jogo, mecânicas, regras e planejamento.
+- [**Checklist de validação**](docs/CHECKLIST_VALIDACAO.md): roteiro de testes de instalação e jogabilidade.
+- [**Histórico de alterações**](docs/CHANGELOG_PROFISSIONAL.md): registro das evoluções do projeto.
+
+## 9. Equipe
+
+Projeto acadêmico desenvolvido por estudantes de **Engenharia de Software**:
 
 - Júlio César Duarte da Rosa
 - Rafael da Rocha da Silva
 - Paulo Guilherme Richeski Padilha
 
-**Atividade:** N2 — Parte 1 — Entrega do projeto e da documentação.
+**Atividade acadêmica:** N2 — Parte 1 — Entrega do projeto e da documentação.
