@@ -49,7 +49,10 @@ Preencher **após realizar os testes**:
 - [ ] A tela **Como Jogar** abre e fecha corretamente no menu.
 - [ ] **Oficina de Upgrades** abre; uma compra válida atualiza os créditos.
 - [ ] Ao fechar e reabrir o jogo, os dados salvos continuam disponíveis.
-- [ ] **Reiniciar Progresso** exige confirmação e realmente restaura os dados iniciais.
+- [ ] **Reiniciar Progresso** exige confirmação e restaura **0 CR, 50% de reputação, zero upgrades e estatísticas zeradas**.
+- [ ] Um progresso novo inicia com **0 CR** e não recebe saldo de um save antigo.
+- [ ] O sensor holográfico comprado fornece pistas de excesso de componente ou confirma a mistura válida **sem revelar porcentagens ideais**.
+- [ ] O menu de pausa permanece centralizado nos tamanhos de janela utilizados na apresentação.
 
 ## 5. Testes de limite e regressão
 
@@ -59,6 +62,7 @@ Preencher **após realizar os testes**:
 - [ ] **Teste crítico:** encher acima de 115% e confirmar se há **uma única penalidade** por atendimento. O comportamento foi corrigido no código desta versão; confirmar em teste real que não ocorre desconto duplicado.
 - [ ] Verificar que não é possível comprar upgrade sem créditos suficientes.
 - [ ] Validar que o jogo não depende de uma máquina que já possuía cache ou arquivos locais do desenvolvedor.
+- [ ] Verificar e registrar que sair durante uma nave ativa não restaura o atendimento; essa é uma limitação documentada, **não uma penalidade já implementada**.
 
 ## 6. Resultado e evidências
 
@@ -71,6 +75,10 @@ Preencher **após realizar os testes**:
 | T05 | Atalhos e pausa | Pendente | |
 | T06 | Upgrade, save e reinício | Pendente | |
 | T07 | Transbordamento crítico | Pendente | |
+| T08 | Saldo inicial 0 CR e reset total | Pendente | |
+| T09 | Sensor holográfico sem porcentagem exata | Pendente | |
+| T10 | Pausa centralizada e cronômetro congelado | Pendente | |
+| T11 | Saída durante atendimento (limitação documentada) | Pendente | |
 
 **Sugestão de evidências:** capturas da tela inicial, do manifesto, da tela após um acerto e da oficina de upgrades; se houver erro, capturar a aba **Depurador** e registrar etapas de reprodução.
 
@@ -80,9 +88,9 @@ Preencher **após realizar os testes**:
 |---|---|
 | Repositório do projeto | [GitHub](https://github.com/julio06rosa/fueling-frontiers-godot) |
 | Nome e descrição do jogo | Início do README |
-| Programa, versão e requisitos | README — Informações do projeto e Como instalar e executar |
-| Orientações para baixar e abrir | README — Como instalar e executar |
-| Instruções para jogar | README — Como jogar, Controles e Regras e pontuação |
+| Programa, versão e requisitos | README — Informações do projeto e seção 1 (Instalação e execução) |
+| Orientações para baixar e abrir | README — seção 1 (Instalação e execução) |
+| Instruções para jogar | README — seções 2 (Como jogar) e 3 (Regras, pontuação e consequências) |
 | GDD atualizado | [docs/GDD.md](GDD.md), com link também no README |
 | Teste sem orientação dos desenvolvedores | Seções 1 a 6 deste checklist — ainda pendente de preenchimento |
 
