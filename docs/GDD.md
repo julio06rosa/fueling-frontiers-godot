@@ -1,8 +1,8 @@
 # GDD — Fueling Frontiers: Mars Station
 
 **Game Design Document (Documento de Design de Jogo)**  
-**Documentação:** em revisão (projeto v0.9.3)  
-**Atualização:** 04/11/2026 · **Status:** documentação da versão jogável, em desenvolvimento
+**Documentação:** GDD da versão jogável 0.9.3  
+**Atualização:** 05/11/2026 · **Status:** documentação revisada e alinhada ao código; validação independente de execução pendente
 
 | Campo | Descrição |
 |---|---|
@@ -53,6 +53,7 @@ Destinado a usuários capazes de operar jogos de computador com teclado e mouse.
 MENU PRINCIPAL
    ├── COMO JOGAR (ajuda resumida)
    ├── OFICINA DE UPGRADES
+   ├── REINICIAR PROGRESSO (após confirmação; zera tudo)
    └── INICIAR TURNO / CONTINUAR OPERAÇÕES
           ↓
     NAVE EM APROXIMAÇÃO
@@ -72,10 +73,12 @@ MENU PRINCIPAL
 
 O botão **Pausar / Menu** ou a tecla **Esc** abre a tela de pausa, pela qual o jogador pode continuar, acessar a oficina ou voltar ao menu.
 
+**Decisão de design:** os atendimentos são contínuos e não há botão para repetir apenas uma nave que apresentou erro. Um atendimento finalizado gera consequências no saldo, na reputação e nas estatísticas. **Reiniciar Progresso** é uma opção separada que redefine a evolução inteira do jogador. Na versão atual, sair durante um atendimento não concluído ainda permite abandoná-lo sem penalidade, pois o pedido ativo não é salvo; essa limitação está descrita nas seções 12 e 14.
+
 ## 5. Objetivos e condições de resultado
 
 **Objetivo imediato:** atender cada nave com uma mistura e um volume dentro das tolerâncias, antes do fim do prazo.  
-**Objetivo contínuo:** construir uma estação bem-sucedida, acumular créditos, manter a reputação, adquirir upgrades e completar sequências de atendimentos.
+**Objetivo contínuo:** construir uma estação bem-sucedida, acumular créditos, manter a reputação, adquirir upgrades e completar sequências de atendimentos. Os recursos e as estatísticas são preservados ao fechar e reabrir o jogo, mas a nave em andamento não é retomada.
 
 **Vitória em um atendimento:** desligar a bomba com mistura e volume válidos.  
 **Derrota em um atendimento:** mistura inadequada, volume fora da tolerância, prazo esgotado ou transbordamento crítico.  
@@ -110,7 +113,7 @@ A bomba é acionada por botão ou barra de espaço. Enquanto ligada, o volume ab
 
 **Tolerância:** volume dentro de **±3%** do pedido ao desligar a bomba.
 
-**Limite crítico:** o código trata volume de **115% ou mais** do alvo como transbordamento grave. A penalidade desse caso deve ser verificada em teste para descartar duplicidade no fluxo de validação.
+**Limite crítico:** o código trata volume de **115% ou mais** do alvo como transbordamento grave. A rotina evita chamar simultaneamente a validação comum e a penalidade crítica; é necessário **confirmar em teste de regressão** que apenas uma penalidade é registrada.
 
 ### 6.4 Tempo
 
@@ -131,7 +134,7 @@ A lógica-base está em `Gameplay.gd`; a camada de apresentação e progressão 
 
 ### 7.1 Valores iniciais
 
-- **Créditos iniciais:** 1.000.
+- **Créditos iniciais:** **0** em uma nova campanha ou após **Reiniciar Progresso**. Um salvamento existente mantém o saldo anteriormente adquirido.
 - **Reputação inicial:** 50% (valor interno `0.5`).
 - **Upgrades iniciais:** nenhum.
 
@@ -170,9 +173,11 @@ A oficina é acessível pelo menu principal e pelo menu de pausa. Três melhoria
 |---|---:|---|---|
 | **Bomba de alta vazão** | 0 → 3 | 500, 1.000 e 1.500 CR | Vazão `40 + 20 × nível` UF/s |
 | **Válvula automática** | Disponível / comprada | 800 CR | Para no volume pedido |
-| **Sensor holográfico (HUD auxiliar)** | Disponível / comprado | 400 CR | Mostra a porcentagem ideal no manifesto |
+| **Sensor holográfico (HUD auxiliar)** | Disponível / comprado | 400 CR | Informa qual componente está em excesso ou confirma uma mistura aceitável, **sem revelar porcentagens exatas** |
 
-O jogador não pode comprar melhorias sem créditos suficientes. As aquisições são registradas no save local.
+O jogador não pode comprar melhorias sem créditos suficientes. As aquisições são registradas no save local. A vazão inicial é **40 UF/s** e pode chegar a **100 UF/s** com os três níveis da bomba.
+
+**Comportamento do sensor:** sem o upgrade, a interface incentiva o cálculo da proporção; com o upgrade adquirido, indica **excesso do componente A ou B** se a proporção estiver incorreta, ou confirma **proporção correta** quando a diferença for de até 2 pontos percentuais. A dica não substitui o raciocínio do jogador.
 
 ### Contratos Elite
 
@@ -194,7 +199,9 @@ Apresenta as melhorias, custos e estados de disponibilidade. Impede compras inv�
 
 ### Pausa
 
-Permite continuar o atendimento, acessar a oficina ou voltar ao menu; usa **Esc** ou o botão de interface.
+Permite continuar o atendimento, acessar a oficina ou voltar ao menu; usa **Esc** ou o botão de interface. O painel foi ajustado no código para centralização no overlay e tamanho de **500 × 420**. A alteração precisa de conferência visual no ambiente de entrega.
+
+**Atenção:** navegar à oficina ou ao menu durante um atendimento não salva a nave, o cronômetro nem o volume parcial. Ao voltar ao gameplay, um novo pedido começa; uma penalidade por abandono **não está implementada**.
 
 ## 10. Controles
 
@@ -229,7 +236,11 @@ Não é necessário estar fisicamente próximo da bomba para usar os controles d
 
 **Cena principal:** `res://MainMenu.tscn`.  
 **Autoloads:** `GameManager` e `SoundManager`.  
-**Persistência:** arquivo de configuração local `user://fueling_frontiers_save.cfg`.
+**Persistência:** arquivo de configuração local `user://fueling_frontiers_save.cfg`, por meio de `ConfigFile`.
+
+São gravados: **créditos, reputação, melhorias, número total de atendimentos, sucessos, falhas, melhor sequência, créditos recebidos acumulados e último resultado**. A gravação ocorre após atendimentos concluídos, falhas, compras e nas transições documentadas do gameplay para menu/oficina. A sequência de acertos **do turno atual** e o estado da nave ativa não são retomados após sair da cena de gameplay.
+
+O menu principal possui uma opção de **Reiniciar Progresso** com confirmação. Ela chama `GameManager.reset_game()`: créditos voltam a **0**, reputação a **50%**, melhorias e estatísticas aos valores iniciais, e o novo estado é salvo.
 
 ## 13. Conteúdo implementado x planejado
 
@@ -240,6 +251,12 @@ Não é necessário estar fisicamente próximo da bomba para usar os controles d
 | Controle de bomba, volume e tempo | Implementado no código |
 | Créditos, reputação e penalidades | Implementado no código |
 | Upgrades e salvamento local | Implementado no código |
+| Créditos iniciais e após reset em 0 CR | Implementado no código |
+| Sensor com pistas sem porcentagens ideais | Implementado no código |
+| Menu de pausa centralizado | Ajustado no código; validação visual pendente |
+| Reiniciar apenas a nave atual após erro | Não previsto no design |
+| Penalidade por abandonar atendimento ativo | Não implementada; risco de escapar das consequências |
+| Retomar nave e cronômetro ao reabrir o jogo | Não implementado |
 | Contratos Elite, streak e classificação | Implementado no código |
 | Ajuda rápida “Como Jogar” no menu | Implementada na cena |
 | Pausa | Implementada no código |
@@ -253,20 +270,57 @@ Não é necessário estar fisicamente próximo da bomba para usar os controles d
 
 ## 14. Riscos, limitações e próximos incrementos
 
-**Limitações identificadas:** ausência de build distribuída, tutorial restrito a um painel de instruções, progressão sem objetivo terminal e testes multiplataforma não documentados.
+### 14.1 Decisões consolidadas de design
 
-**Risco técnico a verificar:** ao alcançar o volume crítico de 115%, a lógica-base aciona o fechamento da bomba e também o tratamento de falha crítica. É necessário testar se isso não registra duas penalidades para um único atendimento.
+1. **Sem repetição isolada de atendimento:** cada resultado já registrado gera ganhos ou penalidades; não haverá botão de reiniciar apenas a nave atual.
+2. **Progressão acumulada:** saldo, reputação, compras e estatísticas permanecem disponíveis após fechar e reabrir o jogo.
+3. **Reinício total intencional:** o botão Reiniciar Progresso, com confirmação, restaura o estado inicial sem créditos.
+4. **Sensor como auxílio:** o item comprado fornece orientações, mas não a resposta percentual.
 
-**Backlog sugerido:**
+### 14.2 Limitações e riscos identificados
 
-1. Realizar o teste de execução em máquina limpa e registrar evidências.
-2. Corrigir qualquer divergência encontrada entre regras e comportamento real.
-3. Refinar a interface de erro/sucesso, legibilidade e feedback audiovisual.
-4. Criar tutorial guiado durante o primeiro atendimento.
-5. Construir missões/turnos, objetivos de campanha e tela de conclusão.
-6. Balancear contratos e publicar executável para demonstração.
+- **Saída durante atendimento:** voltar ao menu ou entrar na oficina descarta a nave ativa sem penalidade automática. Isso pode permitir evitar uma perda e enfraquecer a dinâmica de risco.
+- **Salvamento parcial:** não existe retomada do volume, cronômetro e nave em curso; apenas dados acumulados persistem.
+- **Balanceamento:** iniciar com 0 CR exige concluir atendimentos antes de comprar upgrades. O ritmo de progressão precisa ser avaliado.
+- **Sem campanha terminal:** não há tela global de vitória nem game over permanente.
+- **Teste e distribuição:** ainda faltam evidências independentes de importação, operação completa e compatibilidade; o repositório não contém executável.
+
+### 14.3 Próximos incrementos propostos — ainda não implementados
+
+1. Definir e implementar regra para abandonar uma nave: registrar falha ao sair da operação **ou** persistir o atendimento completo, evitando que o jogador burle uma penalidade.
+2. Validar a economia começando em **0 CR**, especialmente progressão às primeiras melhorias e cenários com erros seguidos.
+3. Testar o sensor holográfico com proporções comuns e contratos Elite, confirmando que não mostra porcentagens exatas.
+4. Verificar a posição do menu de pausa em diferentes tamanhos de janela.
+5. Confirmar em execução que tempo esgotado e transbordamento crítico geram apenas uma penalidade por nave.
+6. Registrar testes independentes com capturas e observações, ampliar o tutorial e considerar uma versão executável.
 
 ## 15. Critérios de aceitação da entrega N2 — Parte 1
 
-O artefato está pronto para submissão quando: (a) o repositório estiver acessível; (b) uma pessoa externa conseguir clonar/baixar o projeto; (c) abrir `project.godot` na Godot 4.7 e executar F5; (d) completar pelo menos um atendimento usando somente o README; (e) o GDD estiver disponível pelo link indicado no README; (f) o grupo registrar os resultados dos testes no checklist.
+A entrega atende aos requisitos documentais quando: (a) o repositório está público e acessível; (b) o README informa como baixar, instalar/importar e executar o projeto; (c) o GDD atualizado está disponível em `docs/GDD.md` e tem link no README; (d) o grupo registra os testes e confirma que alguém de fora consegue jogar sem orientação dos desenvolvedores.
 
+**Roteiro mínimo de validação na Godot 4.7:**
+
+1. Baixar o ZIP ou clonar o repositório em pasta limpa; importar `project.godot` e executar com F5.
+2. Usando apenas o README, concluir um abastecimento correto e observar a recompensa e a chegada de outra nave.
+3. Provocar uma mistura incorreta, verificar o desconto e confirmar que não há opção de repetir aquela nave.
+4. Pausar com Esc, conferir a centralização e verificar que o cronômetro não avança enquanto pausado.
+5. Acumular créditos, adquirir uma melhoria, fechar/reabrir o jogo e confirmar que os dados são preservados.
+6. Adquirir o sensor e verificar que oferece pistas sem mostrar os percentuais da solução.
+7. Selecionar Reiniciar Progresso, confirmar e verificar **0 CR**, **50% de reputação** e ausência de upgrades.
+8. Testar o transbordamento crítico e verificar que a penalidade não é aplicada duas vezes.
+
+O arquivo `docs/CHECKLIST_VALIDACAO.md` contém campos para os registros. **O roteiro estar escrito não significa que os testes foram executados**; as evidências precisam ser preenchidas pelo grupo antes da submissão final.
+
+## 16. Histórico desta revisão
+
+**05/11/2026 — revisão do GDD, sem alterar o número de versão do jogo (0.9.3):**
+
+- Corrigido saldo inicial, de reinício e de carregamento sem campo existente para **0 CR**.
+- Documentado o novo sensor holográfico com dicas em vez de valores percentuais.
+- Registrado o ajuste de centralização do menu de pausa.
+- Diferenciados atendimentos consecutivos, progresso persistente e reinício completo.
+- Formalizada a decisão de não permitir repetição isolada de atendimento.
+- Identificado o risco de abandonar uma nave ativa sem penalidade automática.
+- Atualizados os testes de aceitação e o backlog para a atividade acadêmica.
+
+**Documentos complementares:** `README.md`, `docs/CHECKLIST_VALIDACAO.md` e `docs/CHANGELOG_PROFISSIONAL.md`.
