@@ -225,7 +225,11 @@ fueling-frontiers-godot/
 
 ## 15. Equipe e contexto acadêmico
 
-**Desenvolvedores identificados nos créditos atuais do menu:** Júlio César Duarte da Rosa e Rafael da Rocha da Silva.  
+**Integrantes do projeto:**
+- Júlio César Duarte da Rosa
+- Rafael da Rocha da Silva
+- Paulo Guilherme Richeski Padilha
+
 **Curso:** Engenharia de Software.  
 **Atividade:** N2 — Parte 1 / Atividade 001 — Entrega do projeto e da documentação.
 
