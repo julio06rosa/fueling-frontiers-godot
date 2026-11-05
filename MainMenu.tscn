@@ -413,10 +413,20 @@ layout_mode = 0
 offset_left = 25.0
 offset_top = 159.0
 offset_right = 580.0
-offset_bottom = 258.0
+offset_bottom = 240.0
 theme_override_colors/font_color = Color(0.66, 0.74, 0.79, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 14
 text = "ATENDIMENTOS   0\nSUCESSOS        0\nFALHAS          0\nMELHOR SEQUÊNCIA  0"
+
+[node name="LastResult" type="Label" parent="Interface/StatusPanel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 240.0
+offset_right = 580.0
+offset_bottom = 263.0
+theme_override_colors/font_color = Color(0.66, 0.74, 0.79, 1)
+theme_override_font_sizes/font_size = 13
+text = "Último registro: Novo turno iniciado"
 
 [node name="TipPanel" type="Panel" parent="Interface/StatusPanel"]
 layout_mode = 0
@@ -445,11 +455,11 @@ text = "DICA  •  razão 3:1 = 75% do componente A e 25% do B"
 layout_mode = 0
 offset_left = 58.0
 offset_top = 637.0
-offset_right = 800.0
+offset_right = 880.0
 offset_bottom = 662.0
 theme_override_colors/font_color = Color(0.39, 0.5, 0.58, 1)
-theme_override_font_sizes/font_size = 12
-text = "Júlio César Duarte da Rosa  •  Rafael da Rocha da Silva  •  Engenharia de Software"
+theme_override_font_sizes/font_size = 11
+text = "Júlio César Duarte da Rosa  •  Rafael da Rocha da Silva  •  Paulo Guilherme Richeski Padilha  •  Engenharia de Software"
 
 [node name="ResetButton" type="Button" parent="Interface"]
 layout_mode = 0
