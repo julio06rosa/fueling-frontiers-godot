@@ -36,5 +36,5 @@ A pasta de dados desta edição no Windows é %APPDATA%\FuelingFrontiers_Playtes
 TRIPULAÇÃO E MANUTENÇÃO
 No menu, clique no retrato para escolher Lia, Davi ou Íris. Os controles são iguais.
 Uma das seis naves do turno pede óleo ou um anel. Vá até a luz âmbar à direita da nave e pressione F.
-No dosador, adicione ou retire 250 mL até a marca indicada. Para o anel, compare o raio do alojamento com o diâmetro das peças. Feche a tampa ou encaixe o anel e abasteça normalmente.
+Óleo: confira o visor e a marca de serviço do cárter. Acople o dosador, selecione a dose em mL e transfira. Se passar da marca, recolha o excesso. Anel: procure o vazamento, retire o anel rompido e leia as duas extremidades do encaixe na régua. A diferença indica o diâmetro da peça. Escolha o anel e teste a vedação. Ao concluir qualquer reparo, feche a escotilha para liberar a bomba.
 Para testar direto no Windows: Testar_oleo.cmd ou Testar_anel.cmd. Os atalhos usam uma simulação separada do turno salvo.
