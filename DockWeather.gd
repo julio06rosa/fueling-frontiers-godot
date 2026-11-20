@@ -4,6 +4,7 @@ var sky := ColorRect.new()
 var material_sky := ShaderMaterial.new()
 var breeze := AudioStreamPlayer.new()
 var age := 0.0
+var shutter := 0.0
 var level := 0.0
 
 func _ready() -> void:
@@ -43,6 +44,14 @@ func advance(delta: float, storm_age: float, storm: bool, muted: bool) -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	if shutter > 0:
+		var width := 245.0 * shutter
+		for i in range(9):
+			for x in [395.0, 885.0 - width]:
+				draw_rect(Rect2(x, 209 + i * 19, width, 18), Color("344851"))
+				draw_line(Vector2(x, 210 + i * 19), Vector2(x + width, 210 + i * 19), Color("78919a"))
+				if i == 4:
+					draw_rect(Rect2(x, 290, width, 4), Color("dca15d"))
 	# A fabric windsock responds to the same gust that drives the grains.
 	var anchor := Vector2(420,396)
 	draw_line(anchor,anchor+Vector2(0,40),Color("879395"),2,true)

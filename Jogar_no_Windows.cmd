@@ -12,12 +12,14 @@ echo Abra a Godot 4.6.1 e importe o arquivo project.godot desta pasta.
 pause
 exit /b 1
 :play
+if /I "%~1"=="operacoes" goto tempestade
 if /I "%~1"=="tempestade" (
-  start "" "%GODOT_TRIAL%" --path "%~dp0." res://Gameplay.tscn -- --prever-tempestade
-) else if /I "%~1"=="operacoes" (
-  start "" "%GODOT_TRIAL%" --path "%~dp0." res://Operations.tscn -- --simular-operacoes
+  goto tempestade
 ) else if /I "%~1"=="bomba" (
   start "" "%GODOT_TRIAL%" --path "%~dp0." res://Gameplay.tscn -- --prever-bomba
 ) else (
   start "" "%GODOT_TRIAL%" --path "%~dp0."
 )
+exit /b
+:tempestade
+start "" "%GODOT_TRIAL%" --path "%~dp0." res://Gameplay.tscn -- --prever-tempestade

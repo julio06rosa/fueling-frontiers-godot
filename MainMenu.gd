@@ -8,11 +8,8 @@ extends Control
 @onready var reset_overlay: Control = $ResetOverlay
 
 func _ready() -> void:
-	var mode_button: Button = $Interface/MainPanel/ModeButton
-	mode_button.text = "Voltar ao turno clássico" if GameManager.operations_mode else "Jogar turno de operações"
-	mode_button.pressed.connect(_on_mode_pressed)
-	if GameManager.operations_mode:
-		$Interface/MainPanel/Heading.text = "Turno de operações"
+	GameManager.leave_weather_demo()
+	$Interface/MainPanel/ModeButton.pressed.connect(_on_storm_pressed)
 	start_button.pressed.connect(_on_start_pressed)
 	$Interface/MainPanel/UpgradeButton.pressed.connect(_on_upgrade_pressed)
 	$Interface/MainPanel/TutorialButton.pressed.connect(_on_tutorial_pressed)
@@ -64,15 +61,12 @@ func refresh_station_data() -> void:
 
 func _on_start_pressed() -> void:
 	_play_click()
-	get_tree().change_scene_to_file(GameManager.dock_scene())
+	get_tree().change_scene_to_file("res://Gameplay.tscn")
 
-func _on_mode_pressed() -> void:
+func _on_storm_pressed() -> void:
 	_play_click()
-	GameManager.select_profile(not GameManager.operations_mode)
-	if GameManager.operations_mode:
-		get_tree().change_scene_to_file(GameManager.dock_scene())
-	else:
-		get_tree().reload_current_scene()
+	GameManager.start_weather_demo()
+	get_tree().change_scene_to_file("res://Gameplay.tscn")
 
 func _on_upgrade_pressed() -> void:
 	_play_click()

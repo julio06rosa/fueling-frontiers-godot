@@ -51,7 +51,6 @@ func next_shift() -> void:
 	save_game()
 
 func clear_shift() -> void:
-	operations = {}
 	shift_served = 0
 	shift_success = 0
 	shift_precise = 0
@@ -76,40 +75,32 @@ func record_service(delta_credits: int) -> void:
 			shift_net += 100
 			lifetime_credits += 100
 
-const OPS_SAVE := "user://mars_operacoes_teste.cfg"
-var operations_mode := false
-var operations_demo := false
-var operations: Dictionary = {}
-
-func dock_scene() -> String:
-	return "res://Operations.tscn" if operations_mode else "res://Gameplay.tscn"
-
-func select_profile(use_operations: bool) -> void:
-	if operations_mode == use_operations:
-		return
-	operations_mode = use_operations
-	reset_game(false)
-	tutorial_done = use_operations
-	if not operations_demo and not weather_demo and not pump_demo:
-		load_game()
-
 var weather_demo := false
 var pump_demo := false
 
 func _ready() -> void:
 	pump_demo = "--prever-bomba" in OS.get_cmdline_user_args()
-	weather_demo = "--prever-tempestade" in OS.get_cmdline_user_args()
-	operations_demo = "--simular-operacoes" in OS.get_cmdline_user_args()
-	if operations_demo:
-		operations_mode = true
-		tutorial_done = true
-	elif weather_demo:
+	weather_demo = "--prever-tempestade" in OS.get_cmdline_user_args() or "--simular-operacoes" in OS.get_cmdline_user_args()
+	if weather_demo:
 		tutorial_done = true
 		shift_served = 1
 	elif not pump_demo:
 		load_game()
 
-func reset_game(persist := true) -> void:
+func start_weather_demo() -> void:
+	weather_demo = true
+	reset_game()
+	tutorial_done = true
+	shift_served = 1
+
+func leave_weather_demo() -> void:
+	if weather_demo:
+		reset_game()
+		weather_demo = false
+		if not pump_demo:
+			load_game()
+
+func reset_game() -> void:
 	credits = 0
 	reputation = 0.5
 	upgrade_pump_speed = 0
@@ -121,12 +112,11 @@ func reset_game(persist := true) -> void:
 	best_streak = 0
 	lifetime_credits = 0
 	last_result = "Novo turno iniciado"
-	tutorial_done = operations_mode
+	tutorial_done = false
 	shift_number = 1
 	decorations = 0
 	clear_shift()
-	if persist:
-		save_game()
+	save_game()
 
 func get_flow_rate() -> float:
 	return 40.0 + (upgrade_pump_speed * 20.0)
@@ -147,7 +137,7 @@ func get_rank_name() -> String:
 func get_installed_upgrades() -> int:
 	return upgrade_pump_speed + int(upgrade_auto_valve) + int(upgrade_helper_hud)
 
-func register_success(streak: int, earned: int, grade: String, cargo := false) -> void:
+func register_success(streak: int, earned: int, grade: String) -> void:
 	total_served += 1
 	total_success += 1
 	shift_success += 1
@@ -157,7 +147,7 @@ func register_success(streak: int, earned: int, grade: String, cargo := false) -
 	match shift_number % 3:
 		1: mission_count = shift_precise
 		2:
-			if cargo if operations_mode else (shift_served + shift_number - 1) % 3 == 0:
+			if (shift_served + shift_number - 1) % 3 == 0:
 				mission_count += 1
 		0: mission_count = maxi(mission_count, streak)
 	record_service(earned)
@@ -175,7 +165,7 @@ func register_failure(reason: String, delta_credits: int) -> void:
 	save_game()
 
 func save_game() -> void:
-	if weather_demo or pump_demo or operations_demo:
+	if weather_demo or pump_demo:
 		return
 	var config: ConfigFile = ConfigFile.new()
 	config.set_value("economy", "credits", credits)
@@ -193,13 +183,11 @@ func save_game() -> void:
 	config.set_value("trial", "mission", mission_count)
 	config.set_value("trial", "active", active_service)
 	config.set_value("trial", "shift", [shift_number, shift_served, shift_success, shift_precise, shift_net, shift_streak, shift_rep_start, decorations])
-	if operations_mode:
-		config.set_value("trial", "operations", operations)
-	config.save(OPS_SAVE if operations_mode else SAVE_PATH)
+	config.save(SAVE_PATH)
 
 func load_game() -> void:
 	var config: ConfigFile = ConfigFile.new()
-	var err: Error = config.load(OPS_SAVE if operations_mode else SAVE_PATH)
+	var err: Error = config.load(SAVE_PATH)
 	if err != OK:
 		return
 	credits = int(config.get_value("economy", "credits", 0))
@@ -214,8 +202,6 @@ func load_game() -> void:
 	lifetime_credits = maxi(0, int(config.get_value("stats", "lifetime_credits", 0)))
 	last_result = str(config.get_value("stats", "last_result", "Nenhum atendimento registrado"))
 
-	if operations_mode:
-		operations = config.get_value("trial", "operations", {})
 	mission_count = int(config.get_value("trial", "mission", 0))
 	tutorial_done = bool(config.get_value("trial", "tutorial", false))
 	active_service = config.get_value("trial", "active", {})

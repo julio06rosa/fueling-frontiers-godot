@@ -4,9 +4,9 @@ const COUPLING := Vector2(348, 456)
 const FILTER := Vector2(865, 456)
 const CLASSES := ["Cargueiro", "Resgate", "Pesquisa"]
 const Assembly = preload("res://FilterAssembly.gd")
-@onready var filter_art := Assembly.new()
-@onready var weather := preload("res://DockWeather.gd").new()
-@onready var bench := preload("res://FilterBench.gd").new()
+var filter_art := Assembly.new()
+var weather := preload("res://DockWeather.gd").new()
+var bench := preload("res://FilterBench.gd").new()
 var dust_zones := 0
 var collar := 0
 var weather_age := 0.0
@@ -14,13 +14,23 @@ var bench_clock := 0.0
 var purge := 0.0
 var purge_x := 0.0
 
+const GUST_DURATION := 6.0
+var gate := ""
+var gate_age := 0.0
+var radar: Panel
+var radar_title: Label
+var radar_note: Label
+var close_gate: Button
+var allow_landing: Button
+var repeat_alert: Button
+
 var role := ""
 var incident := ""
 enum Hose { STOWED, HELD, LATCHED, RETURNING }
 var hose_state := Hose.STOWED
 var connected_hose: bool:
 	get: return hose_state == Hose.LATCHED
-@onready var hose := preload("res://DockHose.gd").new()
+var hose := preload("res://DockHose.gd").new()
 var pump_bounds: Rect2
 var return_from := Vector2.ZERO
 var return_angle := 0.0
@@ -54,6 +64,7 @@ func _ready() -> void:
 	flow_button.pressed.connect(toggle_flow)
 	for control in [pump_btn, slider_a, flow_button]:
 		control.focus_mode = Control.FOCUS_NONE
+	build_radar()
 	$CanvasLayer.move_child(bench, -1)
 	$CanvasLayer.move_child(pause_overlay, -1)
 	shortcut_label.text = "Setas   andar     F   interagir     V   vazão     Esc   pausa"
@@ -62,6 +73,7 @@ func _ready() -> void:
 		show_report()
 	else:
 		refresh_instruments()
+		update_radar()
 
 func spawn_new_ship() -> void:
 	if GameManager.shift_served >= GameManager.SHIFT_SIZE:
@@ -109,12 +121,15 @@ func spawn_new_ship() -> void:
 		ratio_tolerance = 2.0
 		incident = ""
 		special_contract = false
-	prepare_operation()
 	requires_fine_finish = role == "Pesquisa"
 	time_left = max_time
 	dust_zones = 7 if incident == "Filtro com poeira" else 0
 	collar = -2 if incident == "Pressão oscilante" else 0
 	weather_age = 0.0
+	gate = "forecast" if incident == "Filtro com poeira" else ""
+	gate_age = 0.0
+	if gate == "forecast":
+		dust_zones = 0
 	purge = 0.0
 	if not GameManager.active_service.is_empty():
 		restore_service(GameManager.active_service)
@@ -127,10 +142,10 @@ func spawn_new_ship() -> void:
 	pump_btn.text = "Parar bomba" if is_pump_on else "Ativar bomba"
 	update_ship_hud()
 	refresh_extension_hud()
+	if gate == "forecast":
+		SoundManager.queue_sfx("alarm", 420.0, 0.35)
+	update_radar()
 	remember_service()
-
-func prepare_operation() -> void:
-	pass
 
 func refresh_extension_hud() -> void:
 	if not is_instance_valid(extension_hud):
@@ -145,6 +160,14 @@ func refresh_extension_hud() -> void:
 func _process(delta: float) -> void:
 	if gameplay_paused or report_open:
 		return
+	if gate in ["forecast", "closed"]:
+		advance_front(delta)
+		return
+	if gate in ["exposed", "protected"] and gate_age < 4.0:
+		gate_age += delta
+		if gate_age >= 4.0:
+			update_radar()
+	weather.shutter = move_toward(weather.shutter, 0.0, delta * 2.0)
 	weather_age += delta
 	bench_clock += delta
 	purge = maxf(0.0,purge-delta*1.6)
@@ -238,6 +261,8 @@ func refresh_instruments() -> void:
 			action_hint.text += "\nPrioridade • entrega urgente"
 
 func toggle_flow() -> void:
+	if gate in ["forecast", "closed"]:
+		return
 	if gameplay_paused or bench.visible or report_open or training or current_state == ShipState.DEPARTING:
 		return
 	fine_flow = not fine_flow
@@ -351,6 +376,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	if report_open or bench.visible:
 		return
 	if not gameplay_paused and event is InputEventKey and event.pressed and not event.echo:
+		if GameManager.weather_demo and event.keycode == KEY_R:
+			replay_forecast()
+			get_viewport().set_input_as_handled()
+			return
+		if gate in ["forecast", "closed"] and event.keycode != KEY_ESCAPE:
+			if event.keycode in [KEY_1, KEY_2]:
+				choose_gate(event.keycode == KEY_1)
+			get_viewport().set_input_as_handled()
+			return
 		if event.keycode == KEY_F or event.keycode == KEY_V:
 			if event.keycode == KEY_F:
 				interact()
@@ -428,6 +462,7 @@ func remember_service() -> void:
 		"ratio_a": ratio_a, "ratio_b": ratio_b, "target": target_volume, "max_time": max_time,
 		"time": time_left, "volume": current_volume, "mix": slider_a_val, "state": current_state,
 		"ship_pos": ship_pos, "player": $Player.position, "hose": connected_hose, "carrying_nozzle": hose_state == Hose.HELD,
+		"gate": gate, "gate_age": gate_age,
 		"grit": dust_zones, "collar": collar, "weather_age": weather_age,
 		"repair": repaired, "fine": fine_flow, "elite": special_contract, "elapsed": service_clock
 	}
@@ -476,8 +511,14 @@ func restore_service(data: Dictionary) -> void:
 	$Player.carrying_nozzle = hose_state == Hose.HELD
 	if current_state == ShipState.WAITING or is_pump_on:
 		hose.deployed = 1.0
+	if gate == "forecast":
+		# Earlier versions saved this service after the dust had already entered.
+		gate = data.get("gate", "exposed")
+		gate_age = float(data.get("gate_age", 4.0))
+		if gate == "protected":
+			incident = ""
 	repaired = data.repair
-	dust_zones = int(data.get("grit",0 if repaired else dust_zones)) & 7
+	dust_zones = int(data.get("grit",7 if gate == "exposed" and not repaired else dust_zones)) & 7
 	collar = clampi(int(data.get("collar",0 if repaired else collar)),-3,3)
 	weather_age = maxf(0.0,float(data.get("weather_age", data.elapsed)))
 	fine_flow = data.fine
@@ -492,9 +533,6 @@ func _notification(what: int) -> void:
 func _exit_tree() -> void:
 	if is_instance_valid(pump_btn):
 		remember_service()
-
-func operations_summary() -> String:
-	return ""
 
 func show_report() -> void:
 	if report_open:
@@ -529,8 +567,6 @@ func show_report() -> void:
 	pause_label(panel, goal_line, Rect2(34, 225, 615, 32), 19, mint)
 	var mission := "Missão concluída   +100 CR e insígnia da doca" if mission_met else "Missão opcional   %d/%d %s" % [GameManager.mission_count, GameManager.mission_goal(), GameManager.mission_label()]
 	pause_label(panel, mission, Rect2(34, 264, 615, 30), 18, Color("ffc47f"))
-	if not operations_summary().is_empty():
-		pause_label(panel, operations_summary(), Rect2(34, 301, 615, 48), 15, pale)
 	var next := pause_button(panel, "Iniciar turno %d" % (GameManager.shift_number + 1), Rect2(34, 357, 272, 54), true)
 	next.pressed.connect(_next_shift)
 	var menu := pause_button(panel, "Voltar ao menu", Rect2(327, 357, 315, 54))
@@ -543,11 +579,12 @@ func _next_shift() -> void:
 
 func _draw() -> void:
 	super._draw()
-	if is_instance_valid(action_hint) and not action_hint.text.is_empty():
+	if is_instance_valid(action_hint) and action_hint.visible and not action_hint.text.is_empty():
 		draw_rect(Rect2(29,350,355,48),Color(0.04,0.08,0.12,0.82))
 	draw_string(ThemeDB.fallback_font,FILTER+Vector2(-60,17),"FILTRO",HORIZONTAL_ALIGNMENT_CENTER,120,12,Color("f6cb91"))
 	# Backplate keeps contract targets readable as the ochre storm crosses the window.
-	draw_rect(Rect2(389,102,501,93),Color(0.04,0.08,0.12,0.76))
+	if is_instance_valid(extension_hud) and extension_hud.visible:
+		draw_rect(Rect2(389,102,501,93),Color(0.04,0.08,0.12,0.76))
 	# Cada nível da bomba instala um cilindro físico ao lado do engate.
 	for index in range(GameManager.upgrade_pump_speed):
 		var rect := Rect2(390 + index * 18, 425, 14, 32)
@@ -599,3 +636,97 @@ func ship_depart() -> void:
 		hose_state = Hose.RETURNING
 		$Player.carrying_nozzle = false
 	super.ship_depart()
+
+func build_radar() -> void:
+	radar = Panel.new()
+	radar.position = Vector2(30, 557)
+	radar.size = Vector2(1220, 140)
+	radar.add_theme_stylebox_override("panel", ui_style(Color("182431"), Color("dfaa66"), 9))
+	$CanvasLayer.add_child(radar)
+	radar_title = pause_label(radar, "", Rect2(22, 8, 1160, 39), 25, Color("ffcd86"))
+	radar_note = pause_label(radar, "", Rect2(22, 47, 1160, 32), 18, Color("e0ebec"))
+	close_gate = pause_button(radar, "[1]  Fechar a doca", Rect2(22, 85, 286, 42), true)
+	allow_landing = pause_button(radar, "[2]  Liberar o pouso", Rect2(324, 85, 286, 42))
+	close_gate.pressed.connect(choose_gate.bind(true))
+	allow_landing.pressed.connect(choose_gate.bind(false))
+	repeat_alert = pause_button($CanvasLayer, "Repetir alerta   [R]", Rect2(30, 50, 240, 29))
+	repeat_alert.pressed.connect(replay_forecast)
+	for button in [close_gate, allow_landing, repeat_alert]:
+		button.focus_mode = Control.FOCUS_NONE
+
+func update_radar() -> void:
+	if not is_instance_valid(radar) or report_open:
+		return
+	var pending := gate in ["forecast", "closed"]
+	var showing := pending or (gate in ["exposed", "protected"] and gate_age < 4.0)
+	radar.visible = showing
+	close_gate.visible = gate == "forecast"
+	allow_landing.visible = gate == "forecast"
+	repeat_alert.visible = GameManager.weather_demo and gate != "forecast"
+	for item in [hud_panel, valve_panel, flow_button, action_hint, flight_label, extension_hud, shortcut_label]:
+		item.visible = not pending
+	$CanvasLayer/AriaPanel.visible = not showing
+	match gate:
+		"forecast":
+			radar_title.text = "Alerta de tempestade"
+			radar_note.text = "Poeira se aproxima. Feche a doca para proteger o filtro ou deixe a nave pousar agora."
+		"closed":
+			radar_title.text = "Comportas fechadas"
+			radar_note.text = "A nave aguarda em órbita. A rajada passa em %d s." % ceili(maxf(0.0, GUST_DURATION - gate_age))
+		"exposed":
+			radar_title.text = "Pouso liberado na poeira"
+			radar_note.text = "A poeira entrou no filtro. Quando a nave atracar, use F ao lado dele para limpar as grades."
+		"protected":
+			radar_title.text = "A tempestade passou"
+			radar_note.text = "O filtro ficou limpo. As comportas estão abrindo para a nave pousar."
+	if pending:
+		$CanvasLayer/TimerLabel.text = "Pouso em espera"
+
+func choose_gate(protect: bool) -> void:
+	if gameplay_paused or report_open or gate != "forecast":
+		return
+	gate_age = 0.0
+	if protect:
+		gate = "closed"
+	else:
+		gate = "exposed"
+		dust_zones = 7
+		weather_age = 4.0
+		sync_filter()
+	SoundManager.play_click()
+	update_radar()
+	remember_service()
+
+func advance_front(delta: float) -> void:
+	gate_age += delta
+	# Hold the front on the horizon until the operator answers.
+	var front := minf(gate_age + 1.0, 4.0)
+	if gate == "closed":
+		front = lerpf(5.0, 28.0, clampf(gate_age / GUST_DURATION, 0, 1))
+		weather.shutter = smoothstep(0.0, 0.6, gate_age)
+	weather.advance(delta, front, true, false)
+	if gate == "closed" and gate_age >= GUST_DURATION:
+		gate = "protected"
+		gate_age = 0.0
+		incident = ""
+		remember_service()
+	elif gate == "closed":
+		save_clock += delta
+		if save_clock >= 1.0:
+			remember_service()
+			save_clock = 0.0
+	update_radar()
+	queue_redraw()
+
+func replay_forecast() -> void:
+	if not GameManager.weather_demo or gameplay_paused or report_open or bench.visible:
+		return
+	GameManager.start_weather_demo()
+	hose.deployed = 0.0
+	weather.shutter = 0.0
+	weather.level = 0.0
+	spawn_new_ship()
+	ship_visual.position = ship_pos
+	refresh_hose(0.0)
+	sync_filter()
+
