@@ -1,22 +1,3 @@
-Turno de operações (experimental)
-Abra Testar_operacoes.cmd para jogar seis contratos em uma sessão temporária.
-No menu, Jogar turno de operações inicia ou retoma um progresso separado.
-O painel de rádio aceita clique ou R. Setas movem o operador, F pega e encaixa
-o bico, Q/E ajustam a mistura, V troca a vazão e Espaço controla a bomba.
-
-• Titã: após 110 UF, o resgate tem cinco segundos para reservar a doca. A
-  partida parcial exige a mistura do manifesto e paga 1,1 CR por UF. Também
-  é possível concluir a carga a tempo. A MED-08 pede 80 UF para o hospital.
-• Comboio: a Broca e a Vigia dividem 260 UF. Escolha a carga da Broca antes
-  de ligar a bomba. Com 150 UF a Broca paga um bônus. Com pelo menos 145 UF
-  a Vigia faz a patrulha longa e a estação ganha reputação.
-• Radar: antes do pouso da Vigia, R fecha as comportas por oito segundos.
-  Você também pode reabrir. Aceitar poeira dá um bônus por entrega e suja
-  o filtro. Dá para limpar a poeira com F no equipamento à direita.
-• Íris-7: escolha cratera ou polo antes de bombear. Conclua a ida em vazão
-  fina para a mesma nave voltar com amostras. O polo paga mais e a janela
-  de atendimento no retorno é menor.
-
 Fueling Frontiers: Mars Station — Doca Experimental
 Versão de teste para Windows · Godot 4.6.1
 Projeto original de Júlio César Duarte da Rosa, Rafael da Rocha da Silva e Paulo Guilherme Richeski Padilha.
@@ -28,7 +9,7 @@ EXPERIMENTAR A BOMBA
 Abra Testar_bomba.cmd para praticar o encaixe com a ARIA em uma partida temporária. O carretel solta a mangueira conforme você anda e a recolhe ao fim do atendimento.
 
 VER A TEMPESTADE AGORA
-Para experimentar o evento diretamente, abra Testar_tempestade.cmd. A nave chega com o operador ao lado do filtro. Depois de limpar as três grades, clique em Testar vazamento para experimentar a vedação. Essa demonstração usa uma partida temporária. O jogo normal continua disponível em Jogar_no_Windows.cmd.
+Abra Testar_tempestade.cmd ou clique em Testar alerta de tempestade no menu. A demonstração começa no radar, antes do pouso. O alerta espera sua decisão. Use 1 para fechar a doca até a poeira passar, ou 2 para liberar o pouso e ver a poeira sujar o filtro. Os botões também aceitam clique. Use R ou Repetir alerta para comparar as opções. Feche a inspeção do filtro com Esc antes de repetir. A demonstração usa uma partida temporária.
 
 SUA PRIMEIRA PARTIDA
 Escolha Treinar com a ARIA. Ande até o engate turquesa à esquerda da doca e aperte F. Ajuste a mistura para 75% de A. Ligue a bomba e pare perto de 100 UF. O treino tem tempo livre e permite continuar se você parar cedo.
@@ -45,7 +26,7 @@ Os controles de mistura, bomba e vazão também aceitam mouse.
 
 PARA EXPERIMENTAR
 • Compare as caixas do cargueiro, a cruz da nave de resgate e a antena da nave de pesquisa. Cada tipo tem uma exigência própria. Para pesquisa, finalize em vazão fina mesmo com a válvula automática.
-• No segundo atendimento, a frente de poeira atravessa a doca e entope as três grades. Aproxime-se do filtro à direita, aperte F e passe o mouse com o botão esquerdo pressionado pelas grades, ou use 1, 2 e 3. No quinto atendimento, alinhe as marcas com as setas e pressione F para travar o anel. Esc fecha a inspeção. O prazo e a bomba aguardam enquanto a tampa está aberta. A entrega urgente tem prazo reduzido.
+• No segundo atendimento, o radar avisa antes da chegada da poeira. Se liberar o pouso, a poeira entope as três grades. Aproxime-se do filtro à direita, aperte F e passe o mouse com o botão esquerdo pressionado pelas grades, ou use 1, 2 e 3. No quinto atendimento, alinhe as marcas com as setas e pressione F para travar o anel. Esc fecha a inspeção. O prazo e a bomba aguardam enquanto a tampa está aberta. A entrega urgente tem prazo reduzido.
 • Compre uma melhoria na oficina e procure o equipamento novo na doca. As missões mudam entre os turnos e concedem insígnias.
 • Pause durante um abastecimento e volte pelo menu. A versão recupera a nave, o volume, a mistura e o tempo restante.
 

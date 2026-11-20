@@ -20,7 +20,6 @@ var max_time: float = 45.0
 var time_left: float = 45.0
 
 # Refueling state
-var supply_limit := INF
 var training: bool = false
 var fine_flow := false
 var requires_fine_finish := false
@@ -115,7 +114,7 @@ func _process(delta):
 			if current_state == ShipState.REFUELING:
 				# Refueling logic
 				var flow = GameManager.get_flow_rate() * flow_factor * delta
-				current_volume = minf(current_volume + flow, supply_limit)
+				current_volume += flow
 				if training:
 					current_volume = minf(current_volume, target_volume)
 				tank_progress.value = current_volume
@@ -123,9 +122,7 @@ func _process(delta):
 				# A válvula automática fecha exatamente no volume solicitado.
 				# IMPORTANTE: ao desligar a bomba normalmente, a validação já
 				# encerra o atendimento. Não executar uma segunda penalidade.
-				if current_volume >= supply_limit:
-					_on_pump_pressed()
-				elif not training and GameManager.upgrade_auto_valve and current_volume >= target_volume:
+				if not training and GameManager.upgrade_auto_valve and current_volume >= target_volume:
 					current_volume = target_volume
 					tank_progress.value = current_volume
 					_on_pump_pressed()
