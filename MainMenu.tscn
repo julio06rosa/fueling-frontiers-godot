@@ -372,6 +372,16 @@ theme_override_styles/normal = SubResource("SecondaryNormal")
 theme_override_styles/hover = SubResource("SecondaryHover")
 text = "COMO JOGAR"
 
+[node name="ModeButton" type="Button" parent="Interface/MainPanel"]
+offset_left = 25.0
+offset_top = 284.0
+offset_right = 503.0
+offset_bottom = 317.0
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("SecondaryNormal")
+theme_override_styles/hover = SubResource("SecondaryHover")
+text = "Jogar turno de operações"
+
 [node name="StatusPanel" type="Panel" parent="Interface"]
 layout_mode = 0
 offset_left = 611.0

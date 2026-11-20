@@ -1,3 +1,22 @@
+Turno de operações (experimental)
+Abra Testar_operacoes.cmd para jogar seis contratos em uma sessão temporária.
+No menu, Jogar turno de operações inicia ou retoma um progresso separado.
+O painel de rádio aceita clique ou R. Setas movem o operador, F pega e encaixa
+o bico, Q/E ajustam a mistura, V troca a vazão e Espaço controla a bomba.
+
+• Titã: após 110 UF, o resgate tem cinco segundos para reservar a doca. A
+  partida parcial exige a mistura do manifesto e paga 1,1 CR por UF. Também
+  é possível concluir a carga a tempo. A MED-08 pede 80 UF para o hospital.
+• Comboio: a Broca e a Vigia dividem 260 UF. Escolha a carga da Broca antes
+  de ligar a bomba. Com 150 UF a Broca paga um bônus. Com pelo menos 145 UF
+  a Vigia faz a patrulha longa e a estação ganha reputação.
+• Radar: antes do pouso da Vigia, R fecha as comportas por oito segundos.
+  Você também pode reabrir. Aceitar poeira dá um bônus por entrega e suja
+  o filtro. Dá para limpar a poeira com F no equipamento à direita.
+• Íris-7: escolha cratera ou polo antes de bombear. Conclua a ida em vazão
+  fina para a mesma nave voltar com amostras. O polo paga mais e a janela
+  de atendimento no retorno é menor.
+
 Fueling Frontiers: Mars Station — Doca Experimental
 Versão de teste para Windows · Godot 4.6.1
 Projeto original de Júlio César Duarte da Rosa, Rafael da Rocha da Silva e Paulo Guilherme Richeski Padilha.

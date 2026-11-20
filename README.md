@@ -4,11 +4,14 @@ Branch de testes jogáveis da estação de Marte. Aqui você leva a mangueira at
 
 | Para experimentar | Abra no Windows |
 | --- | --- |
+| Jogar seis contratos com decisões pelo rádio (tecla **R**) | `Testar_operacoes.cmd` |
 | Retirar o bico, caminhar até a nave e travar o encaixe | `Testar_bomba.cmd` |
 | Limpar o filtro durante a tempestade e testar a vedação | `Testar_tempestade.cmd` |
 | Jogar o tutorial da ARIA e continuar os turnos com progresso salvo | `Jogar_no_Windows.cmd` |
 
-Use a **Godot 4.6.1**. Após baixar esta branch como ZIP, extraia todos os arquivos antes de abrir um atalho. Você também pode importar o `project.godot` no editor e apertar **F5**. As duas demonstrações usam partidas temporárias. O jogo completo mantém um salvamento próprio da Doca Experimental.
+Use a **Godot 4.6.1**. Após baixar esta branch como ZIP, extraia todos os arquivos antes de abrir um atalho. Você também pode importar o `project.godot` no editor e apertar **F5**. As três demonstrações usam partidas temporárias. O jogo completo mantém um salvamento próprio da Doca Experimental.
+
+O botão **Jogar turno de operações** no menu retoma um perfil próprio. O rádio conecta a carga ao socorro médico, a reserva do comboio à segunda nave e a viagem científica ao retorno das amostras. O radar dá a opção de fechar as comportas antes do pouso.
 
 **Controles:** mova o operador com as setas. Use **F** para pegar a mangueira, encaixá-la no bocal sob a nave ou inspecionar o filtro. **Q/E** ajustam a mistura, **V** alterna a vazão, **Espaço** controla a bomba e **Esc** pausa o jogo.
 

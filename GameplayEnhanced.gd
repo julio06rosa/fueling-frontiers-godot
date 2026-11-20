@@ -118,15 +118,24 @@ func validate_refuel() -> void:
 
 		var grade: String = performance_grade(ratio_error, volume_error_pct)
 		status_label.text += "\nClassificação %s  •  mistura ±%.1f%%  •  volume ±%.1f%%  •  %.1fs" % [grade, ratio_error, volume_error_pct, elapsed_seconds]
+		GameManager.credits += operation_result(true)
+		update_hud_counters()
 		var earned_total: int = maxi(0, GameManager.credits - credits_before)
-		GameManager.register_success(streak, earned_total, grade)
+		GameManager.register_success(streak, earned_total, grade, service_is_cargo())
 	else:
 		streak = 0
 		status_label.text += "\nDiagnóstico  •  mistura ±%.1f%%  •  volume ±%.1f%%  •  %.1fs" % [ratio_error, volume_error_pct, elapsed_seconds]
+		operation_result(false)
 		GameManager.register_failure("Reabastecimento recusado", GameManager.credits - credits_before)
 
 	refresh_extension_hud()
 	refresh_rank()
+
+func operation_result(_approved: bool) -> int:
+	return 0
+
+func service_is_cargo() -> bool:
+	return (arrivals + GameManager.shift_number - 2) % 3 == 0
 
 func performance_grade(ratio_error: float, volume_error_pct: float) -> String:
 	if ratio_error <= 0.35 and volume_error_pct <= 0.60:
@@ -143,6 +152,7 @@ func ship_failed(reason: String) -> void:
 	streak = 0
 	var credits_before: int = GameManager.credits
 	super.ship_failed(reason)
+	operation_result(false)
 	GameManager.register_failure(reason, GameManager.credits - credits_before)
 	refresh_extension_hud()
 	refresh_rank()
