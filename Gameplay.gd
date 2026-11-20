@@ -20,6 +20,12 @@ var max_time: float = 45.0
 var time_left: float = 45.0
 
 # Refueling state
+var training: bool = false
+var fine_flow := false
+var requires_fine_finish := false
+var flow_factor: float = 1.0
+var ratio_tolerance: float = 2.0
+
 var current_volume: float = 0.0
 var slider_a_val: float = 50.0 # 0% to 100%
 var is_pump_on: bool = false
@@ -95,7 +101,8 @@ func _process(delta):
 				
 		ShipState.WAITING, ShipState.REFUELING:
 			# Update patience timer
-			time_left -= delta
+			if not training:
+				time_left -= delta
 			if time_left <= 0.0:
 				time_left = 0.0
 				ship_failed("Tempo esgotado! A nave partiu sem pagar.")
@@ -106,14 +113,16 @@ func _process(delta):
 				
 			if current_state == ShipState.REFUELING:
 				# Refueling logic
-				var flow = GameManager.get_flow_rate() * delta
+				var flow = GameManager.get_flow_rate() * flow_factor * delta
 				current_volume += flow
+				if training:
+					current_volume = minf(current_volume, target_volume)
 				tank_progress.value = current_volume
 				
 				# A válvula automática fecha exatamente no volume solicitado.
 				# IMPORTANTE: ao desligar a bomba normalmente, a validação já
 				# encerra o atendimento. Não executar uma segunda penalidade.
-				if GameManager.upgrade_auto_valve and current_volume >= target_volume:
+				if not training and GameManager.upgrade_auto_valve and current_volume >= target_volume:
 					current_volume = target_volume
 					tank_progress.value = current_volume
 					_on_pump_pressed()
@@ -151,23 +160,6 @@ func _draw():
 		var x = 150 + i * 240
 		draw_rect(Rect2(x, 100, 20, 380), Color(0.08, 0.12, 0.2, 0.5), true)
 		
-	# Draw piping connecting Valve Panel (which is around bottom center/right) to Docking Bay (center)
-	# Draw background pipe
-	draw_rect(Rect2(300, 460, 340, 15), Color(0.1, 0.15, 0.25), true)
-	draw_rect(Rect2(630, 340, 15, 135), Color(0.1, 0.15, 0.25), true)
-	
-	# Draw liquid flow inside pipe if pump is active
-	if is_pump_on:
-		var pulse = wrapf(Time.get_ticks_msec() * 0.005, 0, 1)
-		draw_rect(Rect2(300, 463, 340, 9), Color(fuel_color.r, fuel_color.g, fuel_color.b, 0.3), true)
-		draw_rect(Rect2(633, 340, 9, 135), Color(fuel_color.r, fuel_color.g, fuel_color.b, 0.3), true)
-		# Flow particles/dashed lines inside
-		for j in range(10):
-			var offset = (j * 34) + (pulse * 34)
-			draw_circle(Vector2(300 + offset, 467), 3, fuel_color)
-			var y_offset = (j * 13) + (pulse * 13)
-			draw_circle(Vector2(637, 460 - y_offset), 3, fuel_color)
-			
 	# Draw the spaceship at ship_pos
 	if current_state != ShipState.DEPARTING or ship_pos.x < 1300:
 		draw_spaceship(ship_pos)
@@ -302,7 +294,7 @@ func _on_slider_a_changed(value):
 	# Check distance to target
 	var diff = abs(value - target_pct_a)
 	
-	if diff <= 2.0:
+	if diff <= ratio_tolerance:
 		# Correct ratio: Teal/Green fuel
 		fuel_color = Color(0.12, 0.66, 0.63) # Teal
 		$CanvasLayer/ValvePanel/RatioFeedbackLabel.text = "Mistura Estável"
@@ -315,7 +307,7 @@ func _on_slider_a_changed(value):
 
 	if not GameManager.upgrade_helper_hud:
 		$CanvasLayer/HUDPanel/TargetHelperLabel.text = "Calcule a proporção correta!"
-	elif diff <= 2.0:
+	elif diff <= ratio_tolerance:
 		$CanvasLayer/HUDPanel/TargetHelperLabel.text = "Sensor: proporção correta!"
 	else:
 		var excess_component: String = comp_a_name if value > target_pct_a else comp_b_name
@@ -357,10 +349,10 @@ func validate_refuel():
 	var pct_diff = abs(slider_a_val - target_pct_a)
 	var vol_diff = abs(current_volume - target_volume)
 	
-	var is_ratio_ok = pct_diff <= 2.0
+	var is_ratio_ok = pct_diff <= ratio_tolerance
 	var is_volume_ok = vol_diff <= target_volume * 0.03 # 3% tolerance
 	
-	if is_ratio_ok and is_volume_ok:
+	if is_ratio_ok and is_volume_ok and (not requires_fine_finish or fine_flow):
 		# Success! Perfect refuel
 		var earned = int(target_volume * 2.0)
 		# speed bonus
@@ -390,6 +382,8 @@ func validate_refuel():
 			error_msg = "Mistura errada e Volume incorreto!"
 		elif not is_ratio_ok:
 			error_msg = "MISTURA INCORRETA!\nComponentes químicos instáveis. Combustível rejeitado."
+		elif is_volume_ok and requires_fine_finish and not fine_flow:
+			error_msg = "AMOSTRA RECUSADA!\nFinalize em vazão fina."
 		elif current_volume < target_volume:
 			error_msg = "VOLUME INSUFICIENTE!\nO tanque não foi completamente preenchido."
 		else:

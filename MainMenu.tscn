@@ -255,7 +255,7 @@ offset_right = 1220.0
 offset_bottom = 55.0
 theme_override_colors/font_color = Color(0.53, 0.65, 0.72, 1)
 theme_override_font_sizes/font_size = 13
-text = "BUILD 0.9.3  •  SISTEMA ONLINE"
+text = "VERSÃO DE TESTE  •  DOCA EXPERIMENTAL"
 horizontal_alignment = 2
 
 [node name="TitleA" type="Label" parent="Interface"]
@@ -334,7 +334,7 @@ offset_right = 492.0
 offset_bottom = 146.0
 theme_override_colors/font_color = Color(0.57, 0.68, 0.75, 1)
 theme_override_font_sizes/font_size = 16
-text = "Atenda naves, ajuste misturas, controle o volume e invista os créditos na estação."
+text = "Prepare a mistura e atenda seis naves por turno. A ARIA acompanha seu primeiro abastecimento."
 autowrap_mode = 2
 
 [node name="StartButton" type="Button" parent="Interface/MainPanel"]
@@ -559,7 +559,7 @@ offset_bottom = 362.0
 theme_override_colors/default_color = Color(0.68, 0.76, 0.81, 1)
 theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
-text = "[color=#f0ad6b][b]1  LEIA O MANIFESTO[/b][/color]\nObserve a proporção solicitada e o volume total da nave.\n\n[color=#f0ad6b][b]2  AJUSTE A MISTURA[/b][/color]\nConverta a razão em porcentagem. Ex.: 2:1 = 66,7% / 33,3%."
+text = "[color=#f0ad6b][b]1  CONECTE A MANGUEIRA[/b][/color]\nCom F, pegue o bico no suporte da bomba. Leve-o até o bocal sob a nave e aperte F de novo.\n\n[color=#f0ad6b][b]2  AJUSTE A MISTURA[/b][/color]\nConverta a razão em porcentagem. Ex.: 2:1 = 66,7% / 33,3%."
 fit_content = true
 
 [node name="RightText" type="RichTextLabel" parent="TutorialOverlay/Card"]
@@ -595,7 +595,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.82, 0.89, 0.92, 1)
 theme_override_font_sizes/font_size = 14
-text = "Q / E  mistura   •   SHIFT + Q/E  ±5%   •   ESPAÇO  bomba   •   ESC  pausa   •   SETAS  operador"
+text = "Setas  caminhar   •   F  bico ou reparo   •   Q/E  mistura   •   V  vazão   •   Espaço  bomba   •   Esc  pausa"
 horizontal_alignment = 1
 vertical_alignment = 1
 

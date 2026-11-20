@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 const SPEED = 250.0
+const DECK := Rect2(45, 422, 1175, 56)
 
 var walk_cycle: float = 0.0
 var step_timer: float = 0.0
@@ -110,6 +111,7 @@ func _physics_process(delta):
 	velocity = direction * SPEED
 	
 	move_and_slide()
+	position = position.clamp(DECK.position, DECK.end)
 	
 	if velocity.x > 0:
 		facing_right = true
@@ -139,4 +141,3 @@ func _physics_process(delta):
 		walk_cycle += delta * 15.0
 		
 	queue_redraw()
-

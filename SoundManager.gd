@@ -176,3 +176,12 @@ func play_landing():
 
 func set_pump_active(active: bool):
 	is_pump_active = active
+
+func _exit_tree() -> void:
+	music_playback = null
+	pump_playback = null
+	sfx_playback = null
+	for player in [music_player, pump_player, sfx_player]:
+		if is_instance_valid(player):
+			player.stop()
+			player.stream = null

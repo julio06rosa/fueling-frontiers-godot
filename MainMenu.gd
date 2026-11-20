@@ -42,10 +42,12 @@ func refresh_station_data() -> void:
 		GameManager.get_installed_upgrades()
 	]
 
-	if GameManager.total_served > 0:
-		start_button.text = "CONTINUAR OPERAÇÕES   >"
+	if GameManager.shift_served >= GameManager.SHIFT_SIZE:
+		start_button.text = "RELATÓRIO DO TURNO   >"
+	elif not GameManager.tutorial_done:
+		start_button.text = "TREINAR COM A ARIA   >"
 	else:
-		start_button.text = "INICIAR TURNO   >"
+		start_button.text = "CONTINUAR TURNO %d   >" % GameManager.shift_number
 
 	stats_label.text = "ATENDIMENTOS   %d\nSUCESSOS        %d\nFALHAS          %d\nMELHOR SEQUÊNCIA  %d" % [
 		GameManager.total_served,
