@@ -5,6 +5,14 @@ var visual_clock: float = 0.0
 var body_offset := Vector2.ZERO
 var body_tilt: float = 0.0
 var mirror: float = 1.0
+var carrying_nozzle := false
+const GRIP_ANGLE := -1.02
+
+func hand_position() -> Vector2:
+	var side := 1.0 if facing_right else -1.0
+	var arm_base := Vector2(12.0 * side,-41.0).rotated(body_tilt)
+	return position + body_offset + arm_base + Vector2(0,17).rotated(body_tilt+GRIP_ANGLE*side)
+
 var suit := Color("e89b58")
 var ink := Color("15283a")
 
@@ -66,6 +74,8 @@ func _draw():
 		arm_swing = 0.22
 		bob = 2.0
 		body_tilt = 0.07 * mirror
+	if carrying_nozzle:
+		front_arm = GRIP_ANGLE
 	body_offset = Vector2(0, bob)
 	# Sombra no piso mantém a leitura de contato durante os saltos.
 	draw_set_transform(Vector2(0, 3), 0, Vector2(1, 0.2))
@@ -114,7 +124,7 @@ func _draw():
 	draw_circle(Vector2(-12, -58), 1.5, Color("71e3d6"))
 	limb(Vector2(12, -41), front_arm, 18, true, true)
 	# Pequeno painel holográfico durante a interação.
-	if current_anim == "interact":
+	if current_anim == "interact" and not carrying_nozzle:
 		panel(Rect2(26, -57, 20, 15), Color(0.08, 0.45, 0.55, 0.65), 2)
 		for i in range(3):
 			draw_line(Vector2(29, -53 + i * 4), Vector2(40 - i * 2, -53 + i * 4), Color("85eddf"), 1.0)

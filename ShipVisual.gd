@@ -2,6 +2,7 @@ extends Node2D
 
 # Arte vetorial local: não depende de texturas externas ou downloads.
 var clock: float = 0.0
+var ship_class := ""
 var origin: String = "Terra"
 var moving: bool = false
 var pumping: bool = false
@@ -85,6 +86,20 @@ func _draw():
 			draw_style_box(panel_style(Color("675f4d")), Rect2(x, 38, 23, 24))
 	if origin == "Desconhecida":
 		draw_arc(Vector2(-27, -1), 22.0, clock, clock + PI * 1.5, 24, accent, 2.0, true)
+	match ship_class:
+		"Cargueiro":
+			for i in range(3):
+				var x := -63 + i * 22
+				draw_rect(Rect2(x, -20, 19, 24), Color("c38753"))
+				draw_rect(Rect2(x + 4, -20, 3, 24), Color("6f534c"))
+		"Resgate":
+			draw_rect(Rect2(-47, -14, 24, 24), Color("e9efed"))
+			draw_rect(Rect2(-38, -11, 6, 18), Color("d65760"))
+			draw_rect(Rect2(-44, -5, 18, 6), Color("d65760"))
+		"Pesquisa":
+			draw_line(Vector2(-42, -23), Vector2(-50, -44), Color("d0dce4"), 3)
+			draw_arc(Vector2(-49, -50), 14, 0.1, PI, 18, Color("a9cbd6"), 4)
+			lamp(Vector2(-50, -50), Color("8bf2ff"), 2)
 	# Porta de abastecimento e indicador de carga integrado à nave.
 	draw_circle(Vector2(0, 22), 9.0, Color("142335"))
 	draw_arc(Vector2(0, 22), 7.0, -PI * 0.5, -PI * 0.5 + TAU * clampf(fill, 0.01, 1.0), 32, accent, 2.5, true)

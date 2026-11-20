@@ -15,7 +15,7 @@ var ship_visual
 var gameplay_paused: bool = false
 var pause_overlay: Control
 var pump_was_active_before_pause: bool = false
-var service_started_msec: int = 0
+var service_clock := 0.0
 
 func _ready() -> void:
 	super._ready()
@@ -29,7 +29,7 @@ func spawn_new_ship() -> void:
 	super.spawn_new_ship()
 	arrivals += 1
 	milestone = 0
-	service_started_msec = Time.get_ticks_msec()
+	service_clock = 0.0
 	# Contratos especiais entram como picos de dificuldade e recompensa.
 	special_contract = successes >= 3 and arrivals % 3 == 0
 	if special_contract:
@@ -58,6 +58,8 @@ func _process(delta: float) -> void:
 	if gameplay_paused:
 		return
 
+	if current_state == ShipState.WAITING or current_state == ShipState.REFUELING:
+		service_clock += delta
 	super._process(delta)
 	animation_time += delta
 	if is_instance_valid(ship_visual):
@@ -97,9 +99,9 @@ func validate_refuel() -> void:
 	var target_pct: float = float(ratio_a) / float(ratio_a + ratio_b) * 100.0
 	var ratio_error: float = abs(slider_a_val - target_pct)
 	var volume_error_pct: float = abs(current_volume - target_volume) / target_volume * 100.0
-	var successful: bool = ratio_error <= 2.0 and volume_error_pct <= 3.0
+	var successful: bool = ratio_error <= ratio_tolerance and volume_error_pct <= 3.0 and (not requires_fine_finish or fine_flow)
 	var credits_before: int = GameManager.credits
-	var elapsed_seconds: float = float(Time.get_ticks_msec() - service_started_msec) / 1000.0
+	var elapsed_seconds: float = service_clock
 
 	super.validate_refuel()
 
@@ -117,11 +119,11 @@ func validate_refuel() -> void:
 		var grade: String = performance_grade(ratio_error, volume_error_pct)
 		status_label.text += "\nClassificação %s  •  mistura ±%.1f%%  •  volume ±%.1f%%  •  %.1fs" % [grade, ratio_error, volume_error_pct, elapsed_seconds]
 		var earned_total: int = maxi(0, GameManager.credits - credits_before)
-		GameManager.register_success(streak, earned_total)
+		GameManager.register_success(streak, earned_total, grade)
 	else:
 		streak = 0
 		status_label.text += "\nDiagnóstico  •  mistura ±%.1f%%  •  volume ±%.1f%%  •  %.1fs" % [ratio_error, volume_error_pct, elapsed_seconds]
-		GameManager.register_failure("Reabastecimento recusado")
+		GameManager.register_failure("Reabastecimento recusado", GameManager.credits - credits_before)
 
 	refresh_extension_hud()
 	refresh_rank()
@@ -139,8 +141,9 @@ func ship_failed(reason: String) -> void:
 	if current_state == ShipState.DEPARTING or current_state == ShipState.APPROACHING:
 		return
 	streak = 0
+	var credits_before: int = GameManager.credits
 	super.ship_failed(reason)
-	GameManager.register_failure(reason)
+	GameManager.register_failure(reason, GameManager.credits - credits_before)
 	refresh_extension_hud()
 	refresh_rank()
 
@@ -283,9 +286,6 @@ func _draw() -> void:
 	for i in range(8):
 		draw_line(Vector2(420 + i * 54, 449), Vector2(430 + i * 54, 439), Color(0.73, 0.55, 0.27, 0.65), 3.0, true)
 	if is_pump_on:
-		var connector: PackedVector2Array = PackedVector2Array([Vector2(637, 465), Vector2(656, 424), Vector2(657, 376), ship_pos + Vector2(0, 22)])
-		draw_polyline(connector, Color("162333"), 12.0, true)
-		draw_polyline(connector, Color(fuel_color, 0.65), 5.0, true)
 		var scan_y: float = 242.0 + fmod(animation_time * 46.0, 145.0)
 		draw_line(Vector2(505, scan_y), Vector2(769, scan_y), Color(0.3, 0.9, 0.85, 0.1), 2.0, true)
 

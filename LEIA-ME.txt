@@ -1,0 +1,34 @@
+Fueling Frontiers: Mars Station — Doca Experimental
+Versão de teste para Windows · Godot 4.6.1
+Projeto original de Júlio César Duarte da Rosa, Rafael da Rocha da Silva e Paulo Guilherme Richeski Padilha.
+
+COMO ABRIR
+Extraia o ZIP inteiro para uma pasta nova. Dê dois cliques em Jogar_no_Windows.cmd. O atalho procura a Godot 4.6.1 na pasta Downloads e também procura godot.exe ou godot4.exe no PATH. Se você guardou a Godot em outro lugar, abra o editor, importe o project.godot desta pasta e aperte F5.
+
+EXPERIMENTAR A BOMBA
+Abra Testar_bomba.cmd para praticar o encaixe com a ARIA em uma partida temporária. O carretel solta a mangueira conforme você anda e a recolhe ao fim do atendimento.
+
+VER A TEMPESTADE AGORA
+Para experimentar o evento diretamente, abra Testar_tempestade.cmd. A nave chega com o operador ao lado do filtro. Depois de limpar as três grades, clique em Testar vazamento para experimentar a vedação. Essa demonstração usa uma partida temporária. O jogo normal continua disponível em Jogar_no_Windows.cmd.
+
+SUA PRIMEIRA PARTIDA
+Escolha Treinar com a ARIA. Ande até o engate turquesa à esquerda da doca e aperte F. Ajuste a mistura para 75% de A. Ligue a bomba e pare perto de 100 UF. O treino tem tempo livre e permite continuar se você parar cedo.
+O primeiro turno começa assim que a nave de treino sai. Aprove três dos seis contratos para ganhar o bônus de 150 CR. A missão opcional do primeiro turno pede duas notas A ou S e vale 100 CR mais uma insígnia na doca. O relatório mostra os bônus já incluídos no resultado dos contratos.
+
+COMANDOS
+Setas ........... mover o operador
+F ............... pegar/devolver o bico, travar/destravar na nave ou abrir o filtro
+Q / E ........... ajustar a mistura (com Shift, de cinco em cinco)
+Espaço .......... ligar ou parar a bomba
+V ............... alternar entre vazão rápida e fina
+Esc ............. pausar, abrir a oficina ou voltar ao menu
+Os controles de mistura, bomba e vazão também aceitam mouse.
+
+PARA EXPERIMENTAR
+• Compare as caixas do cargueiro, a cruz da nave de resgate e a antena da nave de pesquisa. Cada tipo tem uma exigência própria. Para pesquisa, finalize em vazão fina mesmo com a válvula automática.
+• No segundo atendimento, a frente de poeira atravessa a doca e entope as três grades. Aproxime-se do filtro à direita, aperte F e passe o mouse com o botão esquerdo pressionado pelas grades, ou use 1, 2 e 3. No quinto atendimento, alinhe as marcas com as setas e pressione F para travar o anel. Esc fecha a inspeção. O prazo e a bomba aguardam enquanto a tampa está aberta. A entrega urgente tem prazo reduzido.
+• Compre uma melhoria na oficina e procure o equipamento novo na doca. As missões mudam entre os turnos e concedem insígnias.
+• Pause durante um abastecimento e volte pelo menu. A versão recupera a nave, o volume, a mistura e o tempo restante.
+
+PROGRESSO DA CÓPIA
+A pasta de dados desta edição no Windows é %APPDATA%\FuelingFrontiers_Playtest_Doca. Reiniciar progresso no menu afeta a partida desta edição de teste.
