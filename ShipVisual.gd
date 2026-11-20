@@ -10,6 +10,58 @@ var elite: bool = false
 var fill: float = 0.0
 var accent: Color = Color("63dce8")
 
+const SETTLE_TIME := 0.58
+const FOOT_Y := 94.0
+var touchdown_age := SETTLE_TIME
+var gear_extension := 0.0
+var compression := 0.0
+var altitude := 0.0
+var dust_strength := 0.0
+var dust_clock := 0.0
+
+func reset_landing() -> void:
+	touchdown_age = SETTLE_TIME
+	compression = 0.0
+	dust_strength = 0.0
+	gear_extension = 0.0
+	dust_clock = 0.0
+
+func update_landing(delta: float, base: Vector2, pad: Vector2, approaching: bool, departing: bool) -> void:
+	var gap := absf(base.x - pad.x)
+	var flight := smoothstep(5.0, 145.0, gap) if approaching or departing else 0.0
+	altitude = flight * 32.0
+	gear_extension = 1.0 - smoothstep(36.0, 195.0, gap)
+	touchdown_age = minf(touchdown_age + delta, SETTLE_TIME)
+	var phase := touchdown_age / SETTLE_TIME
+	compression = 8.0 * sin(PI * phase) * pow(1.0 - phase, 2.0)
+	dust_strength = (1.0 - flight) if approaching else pow(1.0 - phase, 1.5)
+	dust_clock += delta
+	position = base + Vector2(0, compression - altitude)
+	rotation = sin(clock * 1.5) * 0.012 * flight
+
+func draw_landing_gear() -> void:
+	var floor_y := FOOT_Y - compression + altitude
+	# The downwash flows out across the deck on both sides of the two skids.
+	if dust_strength > 0.01:
+		for side in [-1.0, 1.0]:
+			for grain in range(11):
+				var travel := fposmod(dust_clock * 1.7 + grain * 0.618, 1.0)
+				var spread: float = side * (33.0 + 100.0 * travel)
+				var lift := (4.0 + (grain % 4) * 2) * sin(PI * travel)
+				var tip := Vector2(spread, floor_y - lift + grain % 3)
+				var tint := Color(0.79, 0.63, 0.46, dust_strength * sin(PI * travel) * 0.60)
+				draw_line(tip, tip + Vector2(side * (3 + grain % 6), -1), tint, 1.8, true)
+	if gear_extension <= 0.0:
+		return
+	for x in [-43.0, 42.0]:
+		var top := Vector2(x, 17)
+		var foot := Vector2(x - 9.0, lerpf(20.0, FOOT_Y, gear_extension) - compression)
+		var sleeve := top.lerp(foot, 0.58)
+		draw_line(top, foot, Color("14232c"), 7.0, true)
+		draw_line(top, sleeve, Color("637780"), 5.0, true)
+		draw_line(sleeve, foot, Color("b2bbb7"), 3.0, true)
+		draw_line(foot + Vector2(-8, 0), foot + Vector2(8, 0), Color("34434b"), 5.0, true)
+
 func _process(delta):
 	clock += delta
 	queue_redraw()
@@ -45,9 +97,10 @@ func _draw():
 	if elite:
 		accent = Color("ffce70")
 	# Sombra elíptica mantém a nave ancorada visualmente na doca.
-	draw_set_transform(Vector2(0, 98), 0.0, Vector2(1.0, 0.16))
+	draw_set_transform(Vector2(0, FOOT_Y + altitude - compression + 2.0), 0.0, Vector2(1.0, 0.16))
 	draw_circle(Vector2.ZERO, 116.0, Color(0.0, 0.0, 0.0, 0.22))
 	draw_set_transform(Vector2.ZERO)
+	draw_landing_gear()
 	# Asas têm silhuetas distintas para cada origem.
 	for side in [-1.0, 1.0]:
 		plate([Vector2(-62, side * 20), Vector2(-90, side * wing), Vector2(-22, side * (wing - 8)), Vector2(36, side * 20)], hull.darkened(0.32))

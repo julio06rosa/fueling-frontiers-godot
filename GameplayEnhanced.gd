@@ -27,6 +27,8 @@ func _ready() -> void:
 
 func spawn_new_ship() -> void:
 	super.spawn_new_ship()
+	if is_instance_valid(ship_visual):
+		ship_visual.reset_landing()
 	arrivals += 1
 	milestone = 0
 	service_clock = 0.0
@@ -60,16 +62,19 @@ func _process(delta: float) -> void:
 
 	if current_state == ShipState.WAITING or current_state == ShipState.REFUELING:
 		service_clock += delta
+	var approaching: bool = current_state == ShipState.APPROACHING
 	super._process(delta)
 	animation_time += delta
 	if is_instance_valid(ship_visual):
-		ship_visual.position = ship_pos + Vector2(0, sin(animation_time * 1.8) * 2.5)
+		if approaching and current_state == ShipState.WAITING:
+			ship_visual.touchdown_age = 0.0
+			SoundManager.play_landing()
+		ship_visual.update_landing(delta, ship_pos, ship_target_pos, current_state == ShipState.APPROACHING, current_state == ShipState.DEPARTING)
 		ship_visual.origin = ship_origin
 		ship_visual.moving = current_state == ShipState.APPROACHING or current_state == ShipState.DEPARTING
 		ship_visual.pumping = is_pump_on
 		ship_visual.elite = special_contract
 		ship_visual.fill = current_volume / target_volume
-		ship_visual.rotation = sin(animation_time * 1.5) * 0.012
 		thrusters.emitting = false
 
 	var active: bool = current_state == ShipState.WAITING or current_state == ShipState.REFUELING

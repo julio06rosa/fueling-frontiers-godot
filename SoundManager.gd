@@ -172,7 +172,7 @@ func play_failure():
 	queue_sfx("alarm", 150.0, 1.0)
 
 func play_landing():
-	queue_sfx("noise", 100.0, 1.5)
+	queue_sfx("noise", 100.0, 0.16)
 
 func set_pump_active(active: bool):
 	is_pump_active = active
