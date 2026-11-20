@@ -266,7 +266,6 @@ func spawn_new_ship():
 	status_label.text = ""
 	
 	if has_node("/root/SoundManager"):
-		SoundManager.play_landing()
 		SoundManager.set_pump_active(false)
 		
 	# Update labels
