@@ -21,13 +21,13 @@ func _ready() -> void:
 	# The landscape sits behind the structure; grains pass in front of the dock.
 	sky.z_as_relative = false
 	sky.z_index = -5
-	sky.position = Vector2(0,98)
-	sky.size = Vector2(1280,382)
 	sky.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	material_sky.shader = preload("res://MartianFront.gdshader")
 	sky.material = material_sky
 	add_child(sky)
 	add_child(storm_door)
+	sky.position = storm_door.position
+	sky.size = storm_door.size
 	storm_door.set_closure(shutter)
 	breeze.stream = AudioStreamWAV.load_from_file("res://Ventania.wav")
 	if breeze.stream:

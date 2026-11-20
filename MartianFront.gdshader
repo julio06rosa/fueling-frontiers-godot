@@ -23,14 +23,7 @@ float clouds(vec2 p) {
 void fragment() {
 	vec2 p = UV;
 	float glow = exp(-length((p-vec2(0.64,0.29))*vec2(3.6,1.15))*4.8);
-	vec3 sky = mix(vec3(0.051,0.096,0.156), vec3(0.42,0.28,0.27), pow(p.y,1.5));
-	sky += glow*vec3(0.26,0.155,0.075);
-	float sun = 1.0 - smoothstep(0.028,0.033,length((p-vec2(0.64,0.29))*vec2(3.65,1.0)));
-	sky += sun*vec3(0.72,0.47,0.23);
-	float far_ridge = 0.74 + 0.09*noise2(vec2(p.x*12.0,6.0)) - 0.14*noise2(vec2(p.x*4.0,1.7));
-	float near_ridge = 0.88 - 0.11*noise2(vec2(p.x*9.0,2.0)) - 0.04*noise2(vec2(p.x*37.0,2.0));
-	sky = mix(sky, vec3(0.28,0.205,0.216), smoothstep(far_ridge,far_ridge+0.005,p.y));
-	sky = mix(sky, vec3(0.18,0.141,0.166), smoothstep(near_ridge,near_ridge+0.006,p.y));
+	vec4 dust = vec4(0.0);
 	// A dust front advances across the hangar as its vertical rolls fold into the haze.
 	if (strength > 0.002) {
 		float t=age*0.18;
@@ -45,11 +38,11 @@ void fragment() {
 		float lit=clamp(billow*0.66+curl*0.28+streak*0.22+glow*0.20,0.0,1.0);
 		vec3 cloud=mix(vec3(0.20,0.115,0.125),vec3(0.89,0.62,0.40),smoothstep(0.28,0.81,lit));
 		cloud += vec3(0.07,0.035,0.012)*(1.0-smoothstep(0.0,0.16,abs(p.y-crest)))*curl;
-		sky=mix(sky,cloud,clamp(front*bank*(0.68+0.32*strength)*smoothstep(0.0,0.30,strength),0.0,1.0));
-		float near_silhouette=smoothstep(near_ridge,near_ridge+0.01,p.y);
-		sky=mix(sky,vec3(0.24,0.17,0.18),near_silhouette*strength*(0.32-0.14*streak));
-		float ground=smoothstep(0.69,1.0,p.y)*strength*streak;
-		sky=mix(sky,vec3(0.86,0.62,0.41),ground*0.62);
+		float opacity = clamp(front * bank * (0.68 + 0.32 * strength) * smoothstep(0.0, 0.30, strength), 0.0, 1.0);
+		float ground = smoothstep(0.69, 1.0, p.y) * strength * streak * 0.62;
+		float alpha = ground + opacity * (1.0 - ground);
+		vec3 pigment = vec3(0.86, 0.62, 0.41) * ground + cloud * opacity * (1.0 - ground);
+		dust = vec4(pigment / max(alpha, 0.0001), alpha);
 	}
-	COLOR=vec4(sky,1.0);
+	COLOR = dust;
 }
