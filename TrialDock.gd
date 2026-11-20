@@ -52,18 +52,22 @@ var spec := 8
 var level := 0
 var ring := 0
 var serviced := false
+var service_phase := 0
+var service_dose := 1
 
 func service_pending() -> bool:
 	return job != "" and not serviced
 
 func open_service() -> void:
-	service.present(job, spec, level, ring)
+	service.present(job, spec, level, ring, service_phase, service_dose)
 	$Player.process_mode = Node.PROCESS_MODE_DISABLED
 	SoundManager.play_click()
 
 func record_adjustment() -> void:
 	level = service.amount
 	ring = service.ring
+	service_phase = service.phase
+	service_dose = service.dose
 	remember_service()
 
 func close_service() -> void:
@@ -76,7 +80,8 @@ func complete_service() -> void:
 	close_service()
 	$Player.play_anim("interact")
 	SoundManager.play_success()
-	aria_talk("Escotilha travada. O circuito está liberado para abastecer.")
+	var result := "Nível de óleo conferido." if job == "oil" else "Retorno vedado, vazamento resolvido."
+	aria_talk(result + " A bomba está liberada para abastecer.")
 	remember_service()
 
 func _ready() -> void:
@@ -173,6 +178,8 @@ func spawn_new_ship() -> void:
 	purge = 0.0
 	job = ""
 	serviced = false
+	service_phase = 0
+	service_dose = 1
 	level = 0
 	ring = 0
 	var preview: String = GameManager.service_preview
@@ -182,10 +189,10 @@ func spawn_new_ship() -> void:
 	if preview != "" and arrivals == 3:
 		job = preview
 	if job == "oil":
-		spec = randi_range(6, 11)
-		level = randi_range(1, 4)
+		spec = 6 if preview == "oil" else randi_range(6, 11)
+		level = 3 if preview == "oil" else randi_range(1, 4)
 	elif job == "seal":
-		spec = [8, 10, 12].pick_random()
+		spec = 10 if preview == "seal" else [8, 10, 12].pick_random()
 		ring = (service.RINGS.find(spec * 2) + 1) % service.RINGS.size()
 	if not GameManager.active_service.is_empty():
 		restore_service(GameManager.active_service)
@@ -270,7 +277,8 @@ func contract_note() -> String:
 	var notes := {"Cargueiro": "Carga pesada. Use vazão rápida no início e fina na chegada.", "Resgate": "Equipe médica a bordo. Você tem 30 segundos ou menos.", "Pesquisa": "Amostra científica. Tolerância de 1 ponto percentual. Finalize em vazão fina (V)."}
 	var message: String = notes.get(role, "")
 	if service_pending():
-		return "A luz âmbar indica manutenção. Vá até a escotilha sob o lado direito da nave e pressione F."
+		var fault := "O sensor de óleo bloqueou a partida do motor auxiliar." if job == "oil" else "O retorno do óleo está vazando. Suspeita de anel rompido."
+		return fault + " Abra a escotilha âmbar à direita da nave com F."
 	if incident == "Entrega urgente":
 		message += " A janela de partida fecha em 28 segundos."
 	elif incident != "" and not repaired:
@@ -311,7 +319,7 @@ func refresh_instruments() -> void:
 	elif at_dock and service_pending():
 		pump_btn.disabled = true
 		pump_btn.text = "Motor em manutenção"
-		action_hint.text = "ESCOTILHA   ·   " + ("Óleo do motor" if job == "oil" else "Anel de vedação") + "\nF junto à luz âmbar, à direita da nave"
+		action_hint.text = "ESCOTILHA   ·   " + ("Verificar nível de óleo" if job == "oil" else "Vazamento de óleo") + "\nF junto à luz âmbar, à direita da nave"
 	elif hose_state == Hose.HELD:
 		action_hint.text = "BOCAL DA NAVE   ·   Leve a mangueira\nF ao lado da entrada para travar o bico"
 	elif not connected_hose:
@@ -539,6 +547,7 @@ func remember_service() -> void:
 		"time": time_left, "volume": current_volume, "mix": slider_a_val, "state": current_state,
 		"ship_pos": ship_pos, "player": $Player.position, "hose": connected_hose, "carrying_nozzle": hose_state == Hose.HELD,
 		"job": job, "spec": spec, "level": level, "ring": ring, "serviced": serviced,
+		"service_phase": service_phase, "service_dose": service_dose,
 		"gate": gate, "gate_age": gate_age,
 		"grit": dust_zones, "collar": collar, "weather_age": weather_age,
 		"repair": repaired, "fine": fine_flow, "elite": special_contract, "elapsed": service_clock
@@ -575,6 +584,8 @@ func restore_service(data: Dictionary) -> void:
 	level = data.get("level", 0)
 	ring = data.get("ring", 0)
 	serviced = data.get("serviced", false)
+	service_phase = clampi(int(data.get("service_phase", 0)), 0, service.Phase.READY)
+	service_dose = clampi(int(data.get("service_dose", 1)), 1, 12)
 	ship_name = data.name
 	ship_origin = data.origin
 	comp_a_name = data.a
