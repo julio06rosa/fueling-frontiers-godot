@@ -15,6 +15,8 @@ var purge := 0.0
 var purge_x := 0.0
 
 const GUST_DURATION := 6.0
+const DOOR_CLOSE_TIME := 1.8
+const DOOR_OPEN_TIME := 1.6
 var gate := ""
 var gate_age := 0.0
 var radar: Panel
@@ -167,7 +169,7 @@ func _process(delta: float) -> void:
 		gate_age += delta
 		if gate_age >= 4.0:
 			update_radar()
-	weather.shutter = move_toward(weather.shutter, 0.0, delta * 2.0)
+	weather.shutter = 1.0 - smoothstep(0.0, DOOR_OPEN_TIME, gate_age) if gate == "protected" else 0.0
 	weather_age += delta
 	bench_clock += delta
 	purge = maxf(0.0,purge-delta*1.6)
@@ -671,14 +673,14 @@ func update_radar() -> void:
 			radar_title.text = "Alerta de tempestade"
 			radar_note.text = "Poeira se aproxima. Feche a doca para proteger o filtro ou deixe a nave pousar agora."
 		"closed":
-			radar_title.text = "Comportas fechadas"
+			radar_title.text = "Fechando a doca" if gate_age < DOOR_CLOSE_TIME else "Comporta fechada"
 			radar_note.text = "A nave aguarda em órbita. A rajada passa em %d s." % ceili(maxf(0.0, GUST_DURATION - gate_age))
 		"exposed":
 			radar_title.text = "Pouso liberado na poeira"
 			radar_note.text = "A poeira entrou no filtro. Quando a nave atracar, use F ao lado dele para limpar as grades."
 		"protected":
 			radar_title.text = "A tempestade passou"
-			radar_note.text = "O filtro ficou limpo. As comportas estão abrindo para a nave pousar."
+			radar_note.text = "O filtro ficou limpo. Pouso autorizado."
 	if pending:
 		$CanvasLayer/TimerLabel.text = "Pouso em espera"
 
@@ -703,7 +705,7 @@ func advance_front(delta: float) -> void:
 	var front := minf(gate_age + 1.0, 4.0)
 	if gate == "closed":
 		front = lerpf(5.0, 28.0, clampf(gate_age / GUST_DURATION, 0, 1))
-		weather.shutter = smoothstep(0.0, 0.6, gate_age)
+		weather.shutter = smoothstep(0.0, DOOR_CLOSE_TIME, gate_age)
 	weather.advance(delta, front, true, false)
 	if gate == "closed" and gate_age >= GUST_DURATION:
 		gate = "protected"
