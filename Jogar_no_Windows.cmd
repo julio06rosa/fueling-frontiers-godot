@@ -12,6 +12,14 @@ echo Abra a Godot 4.6.1 e importe o arquivo project.godot desta pasta.
 pause
 exit /b 1
 :play
+if /I "%~1"=="oleo" (
+  start "" "%GODOT_TRIAL%" --path "%~dp0." res://Gameplay.tscn -- --servico-oil
+  exit /b
+)
+if /I "%~1"=="anel" (
+  start "" "%GODOT_TRIAL%" --path "%~dp0." res://Gameplay.tscn -- --servico-seal
+  exit /b
+)
 if /I "%~1"=="operacoes" goto tempestade
 if /I "%~1"=="tempestade" (
   goto tempestade

@@ -77,10 +77,22 @@ func record_service(delta_credits: int) -> void:
 
 var weather_demo := false
 var pump_demo := false
+var mechanic := 0
+var service_preview := ""
 
 func _ready() -> void:
 	pump_demo = "--prever-bomba" in OS.get_cmdline_user_args()
 	weather_demo = "--prever-tempestade" in OS.get_cmdline_user_args() or "--simular-operacoes" in OS.get_cmdline_user_args()
+	for job in ["oil", "seal"]:
+		if ("--servico-" + job) in OS.get_cmdline_user_args():
+			service_preview = job
+			pump_demo = true
+			tutorial_done = true
+			shift_served = 2
+	if pump_demo or weather_demo:
+		var prefs := ConfigFile.new()
+		if prefs.load(SAVE_PATH) == OK:
+			mechanic = clampi(int(prefs.get_value("crew", "mechanic", 0)), 0, 2)
 	if weather_demo:
 		tutorial_done = true
 		shift_served = 1
@@ -168,6 +180,7 @@ func save_game() -> void:
 	if weather_demo or pump_demo:
 		return
 	var config: ConfigFile = ConfigFile.new()
+	config.set_value("crew", "mechanic", mechanic)
 	config.set_value("economy", "credits", credits)
 	config.set_value("economy", "reputation", reputation)
 	config.set_value("upgrades", "pump_speed", upgrade_pump_speed)
@@ -190,6 +203,7 @@ func load_game() -> void:
 	var err: Error = config.load(SAVE_PATH)
 	if err != OK:
 		return
+	mechanic = clampi(int(config.get_value("crew", "mechanic", 0)), 0, 2)
 	credits = int(config.get_value("economy", "credits", 0))
 	reputation = clampf(float(config.get_value("economy", "reputation", 0.5)), 0.0, 1.0)
 	upgrade_pump_speed = clampi(int(config.get_value("upgrades", "pump_speed", 0)), 0, 3)

@@ -479,7 +479,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.9, 0.77, 0.49, 1)
 theme_override_font_sizes/font_size = 12
-text = "DICA  •  razão 3:1 = 75% do componente A e 25% do B"
+text = "DOCA  •  Uma luz âmbar na escotilha indica serviço no motor."
 
 [node name="Footer" type="Label" parent="Interface"]
 layout_mode = 0
@@ -569,7 +569,7 @@ offset_bottom = 362.0
 theme_override_colors/default_color = Color(0.68, 0.76, 0.81, 1)
 theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
-text = "[color=#f0ad6b][b]1  CONECTE A MANGUEIRA[/b][/color]\nCom F, pegue o bico no suporte da bomba. Leve-o até o bocal sob a nave e aperte F de novo.\n\n[color=#f0ad6b][b]2  AJUSTE A MISTURA[/b][/color]\nConverta a razão em porcentagem. Ex.: 2:1 = 66,7% / 33,3%."
+text = "[color=#f0ad6b][b]1  CONECTE A MANGUEIRA[/b][/color]\nCom F, pegue o bico no suporte da bomba. Leve-o até o bocal sob a nave e aperte F de novo.\n\n[color=#f0ad6b][b]2  AJUSTE A MISTURA[/b][/color]\nLeia o manifesto da nave e ajuste a válvula de mistura."
 fit_content = true
 
 [node name="RightText" type="RichTextLabel" parent="TutorialOverlay/Card"]

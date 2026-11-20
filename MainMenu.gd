@@ -7,8 +7,49 @@ extends Control
 @onready var tutorial_overlay: Control = $TutorialOverlay
 @onready var reset_overlay: Control = $ResetOverlay
 
+const Operator = preload("res://PlayerVisual.gd")
+
+func build_crew_picker() -> void:
+	var title := Label.new()
+	title.text = "ESCOLHA SEU PERSONAGEM"
+	title.position = Vector2(807, 72)
+	title.add_theme_color_override("font_color", Color("#90dfd5"))
+	$Interface.add_child(title)
+	var group := ButtonGroup.new()
+	for i in range(Operator.NAMES.size()):
+		var button := Button.new()
+		button.position = Vector2(807 + i * 140, 104)
+		button.size = Vector2(132, 146)
+		button.toggle_mode = true
+		button.button_group = group
+		button.accessibility_name = Operator.NAMES[i]
+		button.add_theme_stylebox_override("normal", $Interface/MainPanel/UpgradeButton.get_theme_stylebox("normal"))
+		button.add_theme_stylebox_override("pressed", start_button.get_theme_stylebox("normal"))
+		$Interface.add_child(button)
+		var portrait := Operator.new()
+		portrait.portrait = i
+		portrait.position = Vector2(65, 106)
+		portrait.scale = Vector2.ONE * 1.25
+		button.add_child(portrait)
+		portrait.set_physics_process(false)
+		var caption := Label.new()
+		caption.text = Operator.NAMES[i]
+		caption.position = Vector2(0,112)
+		caption.size = Vector2(132,26)
+		caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		button.add_child(caption)
+		button.button_pressed = i == GameManager.mechanic
+		button.pressed.connect(select_mechanic.bind(i))
+
+func select_mechanic(index: int) -> void:
+	GameManager.mechanic = index
+	GameManager.save_game()
+	_play_click()
+
 func _ready() -> void:
 	GameManager.leave_weather_demo()
+	build_crew_picker()
 	$Interface/MainPanel/ModeButton.pressed.connect(_on_storm_pressed)
 	start_button.pressed.connect(_on_start_pressed)
 	$Interface/MainPanel/UpgradeButton.pressed.connect(_on_upgrade_pressed)

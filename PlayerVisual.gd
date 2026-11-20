@@ -13,7 +13,12 @@ func hand_position() -> Vector2:
 	var arm_base := Vector2(12.0 * side,-41.0).rotated(body_tilt)
 	return position + body_offset + arm_base + Vector2(0,17).rotated(body_tilt+GRIP_ANGLE*side)
 
-var suit := Color("e89b58")
+const NAMES := ["Lia", "Davi", "Íris"]
+const SUITS := [Color("#ce7946"), Color("#488f99"), Color("#aaa4bf")]
+const SKIN := [Color("#e8ae86"), Color("#99654a"), Color("#b98260")]
+const HAIR := [Color("#623d33"), Color("#332b2e"), Color("#534249")]
+var portrait := -1
+var suit := Color("#ce7946")
 var ink := Color("15283a")
 
 func _process(delta):
@@ -37,7 +42,11 @@ func limb(anchor: Vector2, angle: float, length: float, arm: bool, front: bool):
 	var cloth: Color = suit if arm else Color("425d76")
 	if not front:
 		cloth = cloth.darkened(0.23)
-	panel(Rect2(-4.5, -2, 9, length), cloth, 4)
+	var taper := PackedVector2Array([Vector2(-4,-2),Vector2(4,-2),Vector2(5,length*0.42),Vector2(3,length),Vector2(-3,length),Vector2(-5,length*0.45)])
+	draw_colored_polygon(taper, cloth)
+	draw_line(Vector2(3,-1), Vector2(3,length-2), cloth.darkened(0.33),2,true)
+	for seam in [0.30,0.40,0.75]:
+		draw_line(Vector2(-3,length*seam),Vector2(2,length*seam+1),cloth.darkened(0.22),1,true)
 	# Cotoveleira ou joelheira e faixa refletiva.
 	panel(Rect2(-5, length * 0.45, 10, 5), Color("274252"), 2)
 	draw_line(Vector2(-3, 1), Vector2(-3, length * 0.4), cloth.lightened(0.3), 1.5, true)
@@ -50,6 +59,8 @@ func limb(anchor: Vector2, angle: float, length: float, arm: bool, front: bool):
 	body_transform()
 
 func _draw():
+	var identity := portrait if portrait >= 0 else GameManager.mechanic
+	suit = SUITS[identity]
 	mirror = 1.0 if facing_right else -1.0
 	var stride: float = sin(walk_cycle)
 	var leg_swing: float = 0.0
@@ -89,6 +100,8 @@ func _draw():
 	limb(Vector2(-12, -42), arm_swing, 18, true, false)
 	# Macacão laranja, colete e costuras.
 	panel(Rect2(-12, -46, 25, 30), suit, 6)
+	draw_polyline(PackedVector2Array([Vector2(-10,-41),Vector2(-6,-31),Vector2(-7,-22)]), suit.darkened(0.4),2,true)
+	draw_line(Vector2(10,-39),Vector2(9,-23),suit.lightened(0.4),1.5,true)
 	panel(Rect2(-8, -43, 17, 17), Color("cfdfdf"), 3)
 	panel(Rect2(-5, -39, 12, 10), Color("203d51"), 2)
 	draw_rect(Rect2(-3, -37, 6, 2), Color("6be8d0"))
@@ -105,8 +118,23 @@ func _draw():
 	draw_circle(Vector2(3, -59), 11.7, Color("203d54"))
 	draw_circle(Vector2(4, -58), 9.5, Color("346377"))
 	# A expressão acompanha o resultado do abastecimento.
-	draw_circle(Vector2(4, -57), 6.8, Color("eab38c"))
-	draw_arc(Vector2(3, -60), 6, PI, TAU, 14, Color("594035"), 4.0, true)
+	var skin: Color = SKIN[identity]
+	var hair: Color = HAIR[identity]
+	draw_colored_polygon(PackedVector2Array([Vector2(-3,-62),Vector2(6,-64),Vector2(9,-60),Vector2(9,-58),Vector2(12,-56),Vector2(9,-55),Vector2(8,-52),Vector2(5,-50),Vector2(0,-51),Vector2(-3,-55)]),skin)
+	draw_line(Vector2(-1,-53),Vector2(5,-51),skin.darkened(0.3),2,true)
+	draw_circle(Vector2(0,-56),2,skin.lightened(0.12))
+	draw_arc(Vector2(3,-60),5.7,PI,TAU,14,hair,3,true)
+	match identity:
+		0:
+			draw_circle(Vector2(-3,-58),3.4,hair)
+		1:
+			for p in [Vector2(-2,-62),Vector2(1,-65),Vector2(5,-65),Vector2(8,-63)]:
+				draw_circle(p,2.2,hair)
+		2:
+			draw_line(Vector2(4,-64),Vector2(-2,-55),hair,4,true)
+			draw_line(Vector2(4,-64),Vector2(0,-59),Color("#ac958a"),1,true)
+	draw_line(Vector2(5,-60),Vector2(8,-60),hair,1,true)
+	draw_arc(Vector2(2,-59),12,-1.48,-0.6,12,Color("#ecffff"),1.2,true)
 	if current_anim == "celebrate":
 		draw_arc(Vector2(7, -58), 1.8, PI, TAU, 8, ink, 1.3, true)
 		draw_arc(Vector2(6, -55), 2.4, 0.0, PI, 10, ink, 1.1, true)
