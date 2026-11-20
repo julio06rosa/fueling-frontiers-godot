@@ -4,9 +4,9 @@ const COUPLING := Vector2(348, 456)
 const FILTER := Vector2(865, 456)
 const CLASSES := ["Cargueiro", "Resgate", "Pesquisa"]
 const Assembly = preload("res://FilterAssembly.gd")
-var filter_art := Assembly.new()
-var weather := preload("res://DockWeather.gd").new()
-var bench := preload("res://FilterBench.gd").new()
+@onready var filter_art := Assembly.new()
+@onready var weather := preload("res://DockWeather.gd").new()
+@onready var bench := preload("res://FilterBench.gd").new()
 var dust_zones := 0
 var collar := 0
 var weather_age := 0.0
@@ -20,7 +20,7 @@ enum Hose { STOWED, HELD, LATCHED, RETURNING }
 var hose_state := Hose.STOWED
 var connected_hose: bool:
 	get: return hose_state == Hose.LATCHED
-var hose := preload("res://DockHose.gd").new()
+@onready var hose := preload("res://DockHose.gd").new()
 var pump_bounds: Rect2
 var return_from := Vector2.ZERO
 var return_angle := 0.0
@@ -109,6 +109,7 @@ func spawn_new_ship() -> void:
 		ratio_tolerance = 2.0
 		incident = ""
 		special_contract = false
+	prepare_operation()
 	requires_fine_finish = role == "Pesquisa"
 	time_left = max_time
 	dust_zones = 7 if incident == "Filtro com poeira" else 0
@@ -127,6 +128,9 @@ func spawn_new_ship() -> void:
 	update_ship_hud()
 	refresh_extension_hud()
 	remember_service()
+
+func prepare_operation() -> void:
+	pass
 
 func refresh_extension_hud() -> void:
 	if not is_instance_valid(extension_hud):
@@ -489,6 +493,9 @@ func _exit_tree() -> void:
 	if is_instance_valid(pump_btn):
 		remember_service()
 
+func operations_summary() -> String:
+	return ""
+
 func show_report() -> void:
 	if report_open:
 		return
@@ -522,6 +529,8 @@ func show_report() -> void:
 	pause_label(panel, goal_line, Rect2(34, 225, 615, 32), 19, mint)
 	var mission := "Missão concluída   +100 CR e insígnia da doca" if mission_met else "Missão opcional   %d/%d %s" % [GameManager.mission_count, GameManager.mission_goal(), GameManager.mission_label()]
 	pause_label(panel, mission, Rect2(34, 264, 615, 30), 18, Color("ffc47f"))
+	if not operations_summary().is_empty():
+		pause_label(panel, operations_summary(), Rect2(34, 301, 615, 48), 15, pale)
 	var next := pause_button(panel, "Iniciar turno %d" % (GameManager.shift_number + 1), Rect2(34, 357, 272, 54), true)
 	next.pressed.connect(_next_shift)
 	var menu := pause_button(panel, "Voltar ao menu", Rect2(327, 357, 315, 54))

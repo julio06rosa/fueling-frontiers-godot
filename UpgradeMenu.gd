@@ -87,4 +87,4 @@ func _on_back_pressed() -> void:
 func _on_play_pressed() -> void:
 	if has_node("/root/SoundManager"):
 		SoundManager.play_click()
-	get_tree().change_scene_to_file("res://Gameplay.tscn")
+	get_tree().change_scene_to_file(GameManager.dock_scene())
