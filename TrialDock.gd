@@ -45,6 +45,39 @@ var result_notes := ""
 var action_hint: Label
 var flow_button: Button
 var filter_bounds: Rect2
+const HATCH := Vector2(727, 447)
+var service := preload("res://ServicePanel.gd").new()
+var job := ""
+var spec := 8
+var level := 0
+var ring := 0
+var serviced := false
+
+func service_pending() -> bool:
+	return job != "" and not serviced
+
+func open_service() -> void:
+	service.present(job, spec, level, ring)
+	$Player.process_mode = Node.PROCESS_MODE_DISABLED
+	SoundManager.play_click()
+
+func record_adjustment() -> void:
+	level = service.amount
+	ring = service.ring
+	remember_service()
+
+func close_service() -> void:
+	service.hide()
+	$Player.process_mode = Node.PROCESS_MODE_INHERIT
+	refresh_instruments()
+
+func complete_service() -> void:
+	serviced = true
+	close_service()
+	$Player.play_anim("interact")
+	SoundManager.play_success()
+	aria_talk("Escotilha travada. O circuito está liberado para abastecer.")
+	remember_service()
 
 func _ready() -> void:
 	filter_bounds = machine_bounds($FilterBody)
@@ -58,6 +91,10 @@ func _ready() -> void:
 	add_child(filter_art)
 	filter_art.position = FILTER + Vector2(0,-24)
 	filter_art.z_index = 2
+	$CanvasLayer.add_child(service)
+	service.closed.connect(close_service)
+	service.finished.connect(complete_service)
+	service.changed.connect(record_adjustment)
 	$CanvasLayer.add_child(bench)
 	bench.command.connect(maintain)
 	action_hint = pause_label($CanvasLayer, "", Rect2(35, 350, 350, 62), 15, Color("9ce6d8"))
@@ -67,6 +104,7 @@ func _ready() -> void:
 	for control in [pump_btn, slider_a, flow_button]:
 		control.focus_mode = Control.FOCUS_NONE
 	build_radar()
+	$CanvasLayer.move_child(service, -1)
 	$CanvasLayer.move_child(bench, -1)
 	$CanvasLayer.move_child(pause_overlay, -1)
 	shortcut_label.text = "Setas   andar     F   interagir     V   vazão     Esc   pausa"
@@ -133,8 +171,26 @@ func spawn_new_ship() -> void:
 	if gate == "forecast":
 		dust_zones = 0
 	purge = 0.0
+	job = ""
+	serviced = false
+	level = 0
+	ring = 0
+	var preview: String = GameManager.service_preview
+	var slot := 3 if GameManager.shift_number % 2 == 1 else 6
+	if not training and not GameManager.weather_demo and arrivals == slot:
+		job = "oil" if GameManager.shift_number % 2 == 1 else "seal"
+	if preview != "" and arrivals == 3:
+		job = preview
+	if job == "oil":
+		spec = randi_range(6, 11)
+		level = randi_range(1, 4)
+	elif job == "seal":
+		spec = [8, 10, 12].pick_random()
+		ring = (service.RINGS.find(spec * 2) + 1) % service.RINGS.size()
 	if not GameManager.active_service.is_empty():
 		restore_service(GameManager.active_service)
+	elif preview != "":
+		$Player.position = HATCH
 	elif GameManager.weather_demo:
 		$Player.position = Vector2(filter_bounds.position.x - 19.0, FILTER.y)
 	if current_state in [ShipState.WAITING,ShipState.REFUELING] and not training:
@@ -175,7 +231,7 @@ func _process(delta: float) -> void:
 	purge = maxf(0.0,purge-delta*1.6)
 	weather.advance(delta,weather_age,incident == "Filtro com poeira",false)
 	sync_filter()
-	if bench.visible:
+	if bench.visible or service.visible:
 		return
 	refresh_hose(delta)
 	if current_state == ShipState.DEPARTING and result_hold > 0.0:
@@ -193,6 +249,7 @@ func _process(delta: float) -> void:
 	if report_open:
 		return
 	ship_visual.ship_class = role
+	ship_visual.service_light = service_pending() and current_state == ShipState.WAITING
 	if current_state == ShipState.WAITING or current_state == ShipState.REFUELING:
 		if training:
 			$CanvasLayer/TimerLabel.text = "Simulação • tempo livre"
@@ -212,6 +269,8 @@ func _process(delta: float) -> void:
 func contract_note() -> String:
 	var notes := {"Cargueiro": "Carga pesada. Use vazão rápida no início e fina na chegada.", "Resgate": "Equipe médica a bordo. Você tem 30 segundos ou menos.", "Pesquisa": "Amostra científica. Tolerância de 1 ponto percentual. Finalize em vazão fina (V)."}
 	var message: String = notes.get(role, "")
+	if service_pending():
+		return "A luz âmbar indica manutenção. Vá até a escotilha sob o lado direito da nave e pressione F."
 	if incident == "Entrega urgente":
 		message += " A janela de partida fecha em 28 segundos."
 	elif incident != "" and not repaired:
@@ -249,6 +308,10 @@ func refresh_instruments() -> void:
 	flow_button.disabled = training or current_state == ShipState.DEPARTING
 	if current_state == ShipState.DEPARTING:
 		action_hint.text = ""
+	elif at_dock and service_pending():
+		pump_btn.disabled = true
+		pump_btn.text = "Motor em manutenção"
+		action_hint.text = "ESCOTILHA   ·   " + ("Óleo do motor" if job == "oil" else "Anel de vedação") + "\nF junto à luz âmbar, à direita da nave"
 	elif hose_state == Hose.HELD:
 		action_hint.text = "BOCAL DA NAVE   ·   Leve a mangueira\nF ao lado da entrada para travar o bico"
 	elif not connected_hose:
@@ -273,6 +336,9 @@ func toggle_flow() -> void:
 
 func interact() -> void:
 	if current_state != ShipState.WAITING and current_state != ShipState.REFUELING:
+		return
+	if service_pending() and $Player.position.distance_to(HATCH) <= 45.0:
+		open_service()
 		return
 	if $Player.position.distance_to($Player.position.clamp(filter_bounds.position, filter_bounds.end)) <= 28.0:
 		open_filter()
@@ -369,13 +435,18 @@ func maintain(action: String, part: int) -> void:
 	remember_service()
 
 func _input(event: InputEvent) -> void:
+	if service.visible and event is InputEventKey:
+		if event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+			close_service()
+			get_viewport().set_input_as_handled()
+		return
 	if bench.visible and event is InputEventKey:
 		if event.pressed and not event.echo:
 			bench.keyboard(event.keycode)
 		get_viewport().set_input_as_handled()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if report_open or bench.visible:
+	if report_open or bench.visible or service.visible:
 		return
 	if not gameplay_paused and event is InputEventKey and event.pressed and not event.echo:
 		if GameManager.weather_demo and event.keycode == KEY_R:
@@ -397,7 +468,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	super._unhandled_input(event)
 
 func _on_pump_pressed() -> void:
-	if gameplay_paused or report_open or bench.visible:
+	if gameplay_paused or report_open or bench.visible or service.visible:
+		return
+	if service_pending():
+		aria_talk(contract_note())
 		return
 	if not is_pump_on and not connected_hose:
 		aria_talk("Trave o bico na entrada da nave com F antes de ligar a bomba." if hose_state == Hose.HELD else "Retire o bico da bomba e leve a mangueira até a nave.")
@@ -449,7 +523,7 @@ func ship_failed(reason: String) -> void:
 	aria_talk(result_notes)
 
 func toggle_pause() -> void:
-	if report_open or bench.visible:
+	if report_open or bench.visible or service.visible:
 		return
 	super.toggle_pause()
 	if gameplay_paused:
@@ -464,6 +538,7 @@ func remember_service() -> void:
 		"ratio_a": ratio_a, "ratio_b": ratio_b, "target": target_volume, "max_time": max_time,
 		"time": time_left, "volume": current_volume, "mix": slider_a_val, "state": current_state,
 		"ship_pos": ship_pos, "player": $Player.position, "hose": connected_hose, "carrying_nozzle": hose_state == Hose.HELD,
+		"job": job, "spec": spec, "level": level, "ring": ring, "serviced": serviced,
 		"gate": gate, "gate_age": gate_age,
 		"grit": dust_zones, "collar": collar, "weather_age": weather_age,
 		"repair": repaired, "fine": fine_flow, "elite": special_contract, "elapsed": service_clock
@@ -494,6 +569,12 @@ func restore_operator(saved: Vector2) -> Vector2:
 	return Vector2(left if pos.x - left < right - pos.x else right, pos.y)
 
 func restore_service(data: Dictionary) -> void:
+	# Serviços já iniciados em versões anteriores continuam como foram contratados.
+	job = data.get("job", "")
+	spec = data.get("spec", 8)
+	level = data.get("level", 0)
+	ring = data.get("ring", 0)
+	serviced = data.get("serviced", false)
 	ship_name = data.name
 	ship_origin = data.origin
 	comp_a_name = data.a
@@ -581,6 +662,21 @@ func _next_shift() -> void:
 
 func _draw() -> void:
 	super._draw()
+	# Juntas de dilatação, grelha e balizadores embutidos na borda do cais.
+	for i in range(12):
+		var x := 20 + i * 112
+		draw_line(Vector2(x+14,458),Vector2(x,478), Color("#314555"),1,true)
+		draw_rect(Rect2(x,478,93,4), Color("#273b47"))
+		for groove in range(8):
+			draw_line(Vector2(x+4+groove*11,479),Vector2(x+9+groove*11,479),Color("#101b25"),2)
+		draw_rect(Rect2(x+97,478,8,2), Color("#b09e75"))
+	if service_pending() and current_state == ShipState.WAITING:
+		var hatch := HATCH - Vector2(0,30)
+		draw_line(ship_pos+Vector2(54,16),hatch, Color("#524d40"),4,true)
+		draw_rect(Rect2(hatch-Vector2(15,7),Vector2(30,15)),Color("#1c303a"))
+		draw_rect(Rect2(hatch-Vector2(12,5),Vector2(24,10)),Color("#bfa276"),false,1)
+		draw_circle(hatch,3,Color("#ffbc64"))
+		draw_string(ThemeDB.fallback_font,hatch+Vector2(-39,24),"ESCOTILHA",HORIZONTAL_ALIGNMENT_CENTER,78,11,Color("#ffcd89"))
 	if is_instance_valid(action_hint) and action_hint.visible and not action_hint.text.is_empty():
 		draw_rect(Rect2(29,350,355,48),Color(0.04,0.08,0.12,0.82))
 	draw_string(ThemeDB.fallback_font,FILTER+Vector2(-60,17),"FILTRO",HORIZONTAL_ALIGNMENT_CENTER,120,12,Color("f6cb91"))

@@ -6,6 +6,7 @@ var ship_class := ""
 var origin: String = "Terra"
 var moving: bool = false
 var pumping: bool = false
+var service_light := false
 var elite: bool = false
 var fill: float = 0.0
 var accent: Color = Color("63dce8")
@@ -122,6 +123,14 @@ func _draw():
 	plate([Vector2(-83, -20), Vector2(-58, -29), Vector2(37, -23), Vector2(105, -1), Vector2(35, 8), Vector2(-66, 9)], hull)
 	plate([Vector2(-66, 9), Vector2(35, 8), Vector2(105, -1), Vector2(36, 24), Vector2(-60, 28), Vector2(-83, 18)], hull.darkened(0.28))
 	draw_line(Vector2(-54, -26), Vector2(35, -21), hull.lightened(0.4), 2.0, true)
+	# Junções rebaixadas e riscos acompanham a curvatura do casco.
+	for i in range(4):
+		var x := -49 + i * 23
+		draw_line(Vector2(x,11),Vector2(x+5,22),hull.darkened(0.5),1,true)
+		draw_line(Vector2(x+1,11),Vector2(x+6,21),hull.lightened(0.03),1,true)
+		draw_line(Vector2(x+8,16),Vector2(x+13,15),hull.lightened(0.15),0.8,true)
+	if service_light:
+		lamp(Vector2(54,16),Color("#ffc66c"),3.5)
 	# Cabine com moldura, vidro escuro e reflexo.
 	plate([Vector2(19, -20), Vector2(52, -15), Vector2(82, -2), Vector2(43, 10), Vector2(17, 6)], Color("14283e"))
 	plate([Vector2(24, -15), Vector2(49, -11), Vector2(70, -2), Vector2(42, 5), Vector2(24, 2)], accent.darkened(0.4))
