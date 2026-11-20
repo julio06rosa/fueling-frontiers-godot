@@ -453,7 +453,7 @@ func toggle_pause() -> void:
 		return
 	super.toggle_pause()
 	if gameplay_paused:
-		weather.breeze.stop()
+		weather.stop_audio()
 		remember_service()
 
 func remember_service() -> void:
@@ -540,7 +540,7 @@ func show_report() -> void:
 	if report_open:
 		return
 	report_open = true
-	weather.breeze.stop()
+	weather.stop_audio()
 	GameManager.active_service = {}
 	SoundManager.set_pump_active(false)
 	$Player.process_mode = Node.PROCESS_MODE_DISABLED
@@ -725,6 +725,8 @@ func replay_forecast() -> void:
 		return
 	GameManager.start_weather_demo()
 	hose.deployed = 0.0
+	weather.stop_audio()
+	weather.last_closure = 0.0
 	weather.shutter = 0.0
 	weather.level = 0.0
 	spawn_new_ship()
