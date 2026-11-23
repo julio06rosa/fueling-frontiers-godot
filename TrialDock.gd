@@ -113,7 +113,7 @@ func _ready() -> void:
 	$CanvasLayer.move_child(bench, -1)
 	$CanvasLayer.move_child(pause_overlay, -1)
 	shortcut_label.text = "Setas   andar     F   interagir     V   vazão     Esc   pausa"
-	$CanvasLayer/DockTitle.text = "MARS STATION   /   DOCA EXPERIMENTAL"
+	$CanvasLayer/DockTitle.text = "MARS STATION   /   DOCA DE ABASTECIMENTO"
 	if GameManager.shift_served >= GameManager.SHIFT_SIZE:
 		show_report()
 	else:

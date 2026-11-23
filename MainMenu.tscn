@@ -255,7 +255,7 @@ offset_right = 1220.0
 offset_bottom = 55.0
 theme_override_colors/font_color = Color(0.53, 0.65, 0.72, 1)
 theme_override_font_sizes/font_size = 13
-text = "VERSÃO DE TESTE  •  DOCA EXPERIMENTAL"
+text = "MARS STATION  /  FRONTIER OPERATIONS"
 horizontal_alignment = 2
 
 [node name="TitleA" type="Label" parent="Interface"]
@@ -380,7 +380,7 @@ offset_bottom = 317.0
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("SecondaryNormal")
 theme_override_styles/hover = SubResource("SecondaryHover")
-text = "Testar alerta de tempestade"
+text = "Simular alerta de tempestade"
 
 [node name="StatusPanel" type="Panel" parent="Interface"]
 layout_mode = 0

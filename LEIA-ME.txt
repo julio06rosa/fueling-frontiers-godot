@@ -1,5 +1,5 @@
-Fueling Frontiers: Mars Station — Doca Experimental
-Versão de teste para Windows · Godot 4.6.1
+Fueling Frontiers: Mars Station
+Guia para Windows · Godot 4.6.1
 Projeto original de Júlio César Duarte da Rosa, Rafael da Rocha da Silva e Paulo Guilherme Richeski Padilha.
 
 COMO ABRIR
@@ -9,10 +9,10 @@ EXPERIMENTAR A BOMBA
 Abra Testar_bomba.cmd para praticar o encaixe com a ARIA em uma partida temporária. O carretel solta a mangueira conforme você anda e a recolhe ao fim do atendimento.
 
 VER A TEMPESTADE AGORA
-Abra Testar_tempestade.cmd ou clique em Testar alerta de tempestade no menu. A demonstração começa no radar, antes do pouso. O alerta espera sua decisão. Use 1 para fechar a doca até a poeira passar, ou 2 para liberar o pouso e ver a poeira sujar o filtro. Os botões também aceitam clique. Use R ou Repetir alerta para comparar as opções. Feche a inspeção do filtro com Esc antes de repetir. A demonstração usa uma partida temporária.
+Abra Testar_tempestade.cmd ou clique em Simular alerta de tempestade no menu. A demonstração começa no radar, antes do pouso. O alerta espera sua decisão. Use 1 para fechar a doca até a poeira passar, ou 2 para liberar o pouso e ver a poeira sujar o filtro. Os botões também aceitam clique. Use R ou Repetir alerta para comparar as opções. Feche a inspeção do filtro com Esc antes de repetir. A demonstração usa uma partida temporária.
 
 SUA PRIMEIRA PARTIDA
-Escolha Treinar com a ARIA. Ande até o engate turquesa à esquerda da doca e aperte F. Ajuste a mistura para 75% de A. Ligue a bomba e pare perto de 100 UF. O treino tem tempo livre e permite continuar se você parar cedo.
+Escolha Treinar com a ARIA. Ande até o engate turquesa à esquerda da doca e aperte F. Leve o bico até o bocal sob a nave e aperte F para conectar. Ajuste a mistura para 75% de A. Ligue a bomba e pare perto de 100 UF. O treino tem tempo livre e permite continuar se você parar cedo.
 O primeiro turno começa assim que a nave de treino sai. Aprove três dos seis contratos para ganhar o bônus de 150 CR. A missão opcional do primeiro turno pede duas notas A ou S e vale 100 CR mais uma insígnia na doca. O relatório mostra os bônus já incluídos no resultado dos contratos.
 
 COMANDOS
@@ -30,8 +30,8 @@ PARA EXPERIMENTAR
 • Compre uma melhoria na oficina e procure o equipamento novo na doca. As missões mudam entre os turnos e concedem insígnias.
 • Pause durante um abastecimento e volte pelo menu. A versão recupera a nave, o volume, a mistura e o tempo restante.
 
-PROGRESSO DA CÓPIA
-A pasta de dados desta edição no Windows é %APPDATA%\FuelingFrontiers_Playtest_Doca. Reiniciar progresso no menu afeta a partida desta edição de teste.
+PROGRESSO SALVO
+A pasta de dados do jogo no Windows é %APPDATA%\FuelingFrontiers_Playtest_Doca. Reiniciar progresso no menu redefine a partida salva nessa pasta.
 
 TRIPULAÇÃO E MANUTENÇÃO
 No menu, clique no retrato para escolher Lia, Davi ou Íris. Os controles são iguais.
