@@ -1,39 +1,70 @@
 # Fueling Frontiers: Mars Station
 
-**Fueling Frontiers: Mars Station** é um jogo 2D de simulação e gerenciamento desenvolvido em **Godot**, com **GDScript**, como projeto acadêmico do curso de Engenharia de Software.
+Uma nave pousa em Marte e pede 100 unidades de combustível, com três partes do componente A para uma do componente B. Na doca, você precisa conectar a mangueira, regular a mistura e decidir quando desligar a bomba. Em **Fueling Frontiers: Mars Station**, a matemática faz parte da operação de uma estação de abastecimento espacial.
 
-O jogador assume a operação de uma estação de abastecimento em Marte. A cada atendimento, uma nave chega com um manifesto de carga: dois componentes de combustível, uma proporção exigida, um volume solicitado e um tempo limite. É preciso interpretar os dados, preparar a mistura e interromper o abastecimento no momento certo.
+![Partida de Fueling Frontiers com a nave atracada, a mangueira conectada e os painéis de mistura e volume durante o abastecimento.](docs/imagens/abastecimento.jpg)
 
-O desempenho determina os **créditos**, a **reputação** e a possibilidade de adquirir melhorias para a estação. Os atendimentos são contínuos: não há uma opção para reiniciar individualmente uma nave após um erro.
+## História e objetivo
 
-## Como jogar
+Zorome herda o posto da família em Marte junto com as dívidas da estação. A corporação HydroCore Inc. quer comprá-lo. A reputação do posto depende dos pilotos que passam pela doca e precisam de combustível para seguir viagem.
 
-Abra o `project.godot` na Godot **4.6.1** e pressione **F5**. No Windows, você também pode extrair o ZIP do repositório e executar `Jogar_no_Windows.cmd`.
+Você escolhe **Lia, Davi ou Íris** para operar a doca. A assistente **ARIA** orienta o primeiro abastecimento. Depois do treino, cada turno traz seis contratos. O objetivo do primeiro turno é aprovar pelo menos três atendimentos. Cumprir os pedidos rende créditos para investir na oficina. Erros de mistura, volume ou prazo afetam o resultado e a reputação da estação.
 
-Escolha Lia, Davi ou Íris no menu e selecione **Treinar com a ARIA**. O primeiro pedido é de 100 UF na proporção de três partes de A para uma de B. Pegue a mangueira na bomba, conecte o bico sob a nave e regule o misturador para 75% de A. Observe o tanque para saber quando parar a bomba.
-
-| Controle | Ação |
+| Ficha do jogo | Detalhes |
 | --- | --- |
-| Setas | Andar pela doca |
-| F | Pegar ou conectar a mangueira, inspecionar o filtro ou abrir a escotilha de manutenção |
-| Q / E | Ajustar a mistura |
-| V | Alternar entre vazão rápida e fina |
-| Espaço | Ligar ou parar a bomba |
-| Esc | Pausar o turno ou fechar a inspeção |
+| Gênero | Simulação e gerenciamento em 2D, para um jogador |
+| Público-alvo | Estudantes de 10 a 18 anos e pessoas que gostam de desafios de lógica e precisão |
+| Tecnologia | Godot 4.6.1 e GDScript · versão 0.12.0 |
+| Plataforma e idioma | Computador, com teclado e mouse · português do Brasil |
 
-## Turnos na estação
+## Como executar
 
-Cada turno tem seis atendimentos. Durante uma tempestade, fechar a comporta protege o filtro e faz a nave aguardar. Liberar o pouso permite recebê-la na poeira, mas pode exigir a limpeza das grades antes do abastecimento. Algumas naves também precisam de óleo ou de um anel de vedação. Use o visor ou a régua da escotilha para escolher a dose ou a peça.
+1. Instale a **Godot 4.6.1**, edição padrão. [Download da Godot](https://godotengine.org/download/archive/4.6.1-stable/)
+2. Na página deste repositório, escolha **Code → Download ZIP** e extraia a pasta inteira. Se preferir usar Git, execute `git clone https://github.com/julio06rosa/fueling-frontiers-godot.git`.
+3. No gerenciador de projetos da Godot, clique em **Importar**, selecione `project.godot` e abra o projeto. Pressione **F5** para iniciar pelo menu principal.
 
-Ao fim do turno, o relatório mostra os resultados. Os créditos podem ser usados na oficina para melhorar a bomba, instalar a válvula automática ou adquirir o sensor de mistura. O jogo salva o progresso localmente e permite retomar um atendimento em andamento.
+No Windows, com a Godot instalada, também é possível abrir [Jogar_no_Windows.cmd](Jogar_no_Windows.cmd) na pasta extraída. O atalho procura a Godot 4.6.1 em Downloads ou um executável da Godot disponível no PATH.
 
-## Documentação
+## Sua primeira partida
+
+1. Escolha um personagem no menu. **Como jogar** abre o guia de controles. **Treinar com a ARIA** inicia um atendimento sem limite de tempo.
+2. Leia o manifesto da ARIA-01. São **100 UF** (unidades de combustível) na proporção **3:1**. Das quatro partes da mistura, três são do componente A. Isso corresponde a **75% de A e 25% de B**.
+3. Caminhe até a bomba à esquerda e pressione **F** para pegar o bico. Passe pela frente da bomba, leve a mangueira até o bocal sob a nave e pressione **F** novamente para travar o encaixe.
+4. Ajuste o misturador para **75% de A**. Pressione **Espaço** para ligar a bomba, acompanhe o volume no tanque e pressione **Espaço** outra vez ao chegar à meta. Ao concluir o treino, o primeiro cargueiro entra na doca com um novo manifesto e um prazo.
+
+## Decisões durante o turno
+
+| Situação | O que o jogador faz |
+| --- | --- |
+| Abastecimento | Interpreta a proporção do manifesto, regula a mistura e alterna para a vazão fina perto do volume solicitado. |
+| Tempestade de poeira | Fecha a comporta e faz a nave aguardar, ou libera o pouso. Com a doca aberta, a poeira suja o filtro e reduz a vazão. A limpeza é feita grade por grade. |
+| Reposição de óleo | Quando a luz da escotilha indica manutenção, compara o nível do visor com a marca de serviço. Se há 0,75 L e a meta é 1,50 L, a dose necessária é de 750 mL. |
+| Troca do anel | Retira o anel rompido, lê as duas extremidades do sulco na régua e escolhe o diâmetro pela diferença. Um encaixe entre 5 mm e 25 mm pede um anel de 20 mm. |
+| Fim do turno | Consulta o relatório de aprovações, créditos e reputação. Na oficina, pode investir em vazão, válvula automática ou sensor de mistura. O progresso é salvo localmente. |
+
+### Controles
+
+| Comando | Ação |
+| --- | --- |
+| Setas | Movimentar o personagem |
+| **F** | Interagir com o equipamento próximo, a mangueira ou a escotilha |
+| **Q / E** | Reduzir ou aumentar a porcentagem de A. Segure **Shift** para ajustar de cinco em cinco pontos percentuais. |
+| **Espaço** | Ligar ou desligar a bomba |
+| **V** | Alternar entre vazão rápida e fina durante os contratos |
+| **1 / 2** | No alerta de tempestade, fechar a doca ou liberar o pouso |
+| **Esc** | Pausar o turno ou sair de uma inspeção |
+
+## Melhorias observadas nos testes de jogabilidade
+
+Nos testes internos, a mensagem de filtro sujo aparecia, mas o equipamento continuava com a mesma aparência. Agora a poeira se acumula nas grades e cada passada da escova mostra o que foi limpo. A frente de poeira agora aparece no horizonte, a comporta cobre o vão da doca e o som do vento muda quando ela fecha. Para comparar as duas decisões, selecione **Simular alerta de tempestade** no menu.
+
+Nos primeiros reparos, era difícil entender por que a nave precisava de óleo ou de outro anel. O visor do reservatório e a régua do encaixe passaram a mostrar o problema antes da escolha. Depois da intervenção, o jogador pode conferir o nível ou a vedação e entender por que a medida funcionou.
+
+## Equipe e documentação
+
+Projeto desenvolvido por **Júlio César Duarte da Rosa**, **Rafael da Rocha da Silva** e **Paulo Guilherme Richeski Padilha**, no curso de Engenharia de Software da Católica de Santa Catarina, para a disciplina **Projeto de Aprendizagem Colaborativa Extensionista IV**.
 
 - [Guia de controles, manutenção e missões](LEIA-ME.txt)
-- [Documento de design do jogo](docs/GDD.md)
+- [Documento de design do jogo · versão 0.9.3](docs/GDD.md)
 - [Checklist de validação](docs/CHECKLIST_VALIDACAO.md)
 - [Histórico de desenvolvimento](docs/CHANGELOG_PROFISSIONAL.md)
-
-## Equipe
-
-Júlio César Duarte da Rosa, Rafael da Rocha da Silva e Paulo Guilherme Richeski Padilha.
