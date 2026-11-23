@@ -75,42 +75,24 @@ func record_service(delta_credits: int) -> void:
 			shift_net += 100
 			lifetime_credits += 100
 
-var weather_demo := false
 var pump_demo := false
 var mechanic := 0
 var service_preview := ""
 
 func _ready() -> void:
 	pump_demo = "--prever-bomba" in OS.get_cmdline_user_args()
-	weather_demo = "--prever-tempestade" in OS.get_cmdline_user_args() or "--simular-operacoes" in OS.get_cmdline_user_args()
 	for job in ["oil", "seal"]:
 		if ("--servico-" + job) in OS.get_cmdline_user_args():
 			service_preview = job
 			pump_demo = true
 			tutorial_done = true
 			shift_served = 2
-	if pump_demo or weather_demo:
+	if pump_demo:
 		var prefs := ConfigFile.new()
 		if prefs.load(SAVE_PATH) == OK:
 			mechanic = clampi(int(prefs.get_value("crew", "mechanic", 0)), 0, 2)
-	if weather_demo:
-		tutorial_done = true
-		shift_served = 1
-	elif not pump_demo:
+	else:
 		load_game()
-
-func start_weather_demo() -> void:
-	weather_demo = true
-	reset_game()
-	tutorial_done = true
-	shift_served = 1
-
-func leave_weather_demo() -> void:
-	if weather_demo:
-		reset_game()
-		weather_demo = false
-		if not pump_demo:
-			load_game()
 
 func reset_game() -> void:
 	credits = 0
@@ -177,7 +159,7 @@ func register_failure(reason: String, delta_credits: int) -> void:
 	save_game()
 
 func save_game() -> void:
-	if weather_demo or pump_demo:
+	if pump_demo:
 		return
 	var config: ConfigFile = ConfigFile.new()
 	config.set_value("crew", "mechanic", mechanic)

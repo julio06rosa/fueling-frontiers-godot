@@ -20,14 +20,9 @@ if /I "%~1"=="anel" (
   start "" "%GODOT_TRIAL%" --path "%~dp0." res://Gameplay.tscn -- --servico-seal
   exit /b
 )
-if /I "%~1"=="operacoes" goto tempestade
-if /I "%~1"=="tempestade" (
-  goto tempestade
-) else if /I "%~1"=="bomba" (
+if /I "%~1"=="bomba" (
   start "" "%GODOT_TRIAL%" --path "%~dp0." res://Gameplay.tscn -- --prever-bomba
 ) else (
   start "" "%GODOT_TRIAL%" --path "%~dp0."
 )
 exit /b
-:tempestade
-start "" "%GODOT_TRIAL%" --path "%~dp0." res://Gameplay.tscn -- --prever-tempestade

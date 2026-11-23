@@ -56,7 +56,7 @@ No Windows, com a Godot instalada, também é possível abrir [Jogar_no_Windows.
 
 ## Melhorias observadas nos testes de jogabilidade
 
-Nos testes internos, a mensagem de filtro sujo aparecia, mas o equipamento continuava com a mesma aparência. Agora a poeira se acumula nas grades e cada passada da escova mostra o que foi limpo. A frente de poeira agora aparece no horizonte, a comporta cobre o vão da doca e o som do vento muda quando ela fecha. Para comparar as duas decisões, selecione **Simular alerta de tempestade** no menu.
+Nos testes internos, a mensagem de filtro sujo aparecia, mas o equipamento continuava com a mesma aparência. Agora a poeira se acumula nas grades e cada passada da escova mostra o que foi limpo. A frente de poeira agora aparece no horizonte, a comporta cobre o vão da doca e o som do vento muda quando ela fecha. O radar apresenta essa decisão no segundo atendimento do turno.
 
 Nos primeiros reparos, era difícil entender por que a nave precisava de óleo ou de outro anel. O visor do reservatório e a régua do encaixe passaram a mostrar o problema antes da escolha. Depois da intervenção, o jogador pode conferir o nível ou a vedação e entender por que a medida funcionou.
 

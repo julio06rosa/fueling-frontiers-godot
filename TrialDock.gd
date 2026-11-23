@@ -24,7 +24,6 @@ var radar_title: Label
 var radar_note: Label
 var close_gate: Button
 var allow_landing: Button
-var repeat_alert: Button
 
 var role := ""
 var incident := ""
@@ -184,7 +183,7 @@ func spawn_new_ship() -> void:
 	ring = 0
 	var preview: String = GameManager.service_preview
 	var slot := 3 if GameManager.shift_number % 2 == 1 else 6
-	if not training and not GameManager.weather_demo and arrivals == slot:
+	if not training and arrivals == slot:
 		job = "oil" if GameManager.shift_number % 2 == 1 else "seal"
 	if preview != "" and arrivals == 3:
 		job = preview
@@ -198,8 +197,6 @@ func spawn_new_ship() -> void:
 		restore_service(GameManager.active_service)
 	elif preview != "":
 		$Player.position = HATCH
-	elif GameManager.weather_demo:
-		$Player.position = Vector2(filter_bounds.position.x - 19.0, FILTER.y)
 	if current_state in [ShipState.WAITING,ShipState.REFUELING] and not training:
 		aria_talk(contract_note())
 	tank_progress.max_value = target_volume
@@ -406,12 +403,6 @@ func open_filter() -> void:
 func maintain(action: String, part: int) -> void:
 	if not bench.visible:
 		return
-	if action == "preview_fault" and GameManager.weather_demo and repaired and incident == "Filtro com poeira":
-		maintain("close",0)
-		GameManager.shift_served = 4
-		GameManager.active_service = {}
-		spawn_new_ship()
-		return
 	if action == "close":
 		bench.hide()
 		$Player.process_mode = Node.PROCESS_MODE_INHERIT
@@ -457,10 +448,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if report_open or bench.visible or service.visible:
 		return
 	if not gameplay_paused and event is InputEventKey and event.pressed and not event.echo:
-		if GameManager.weather_demo and event.keycode == KEY_R:
-			replay_forecast()
-			get_viewport().set_input_as_handled()
-			return
 		if gate in ["forecast", "closed"] and event.keycode != KEY_ESCAPE:
 			if event.keycode in [KEY_1, KEY_2]:
 				choose_gate(event.keycode == KEY_1)
@@ -758,9 +745,7 @@ func build_radar() -> void:
 	allow_landing = pause_button(radar, "[2]  Liberar o pouso", Rect2(324, 85, 286, 42))
 	close_gate.pressed.connect(choose_gate.bind(true))
 	allow_landing.pressed.connect(choose_gate.bind(false))
-	repeat_alert = pause_button($CanvasLayer, "Repetir alerta   [R]", Rect2(30, 50, 240, 29))
-	repeat_alert.pressed.connect(replay_forecast)
-	for button in [close_gate, allow_landing, repeat_alert]:
+	for button in [close_gate, allow_landing]:
 		button.focus_mode = Control.FOCUS_NONE
 
 func update_radar() -> void:
@@ -771,7 +756,6 @@ func update_radar() -> void:
 	radar.visible = showing
 	close_gate.visible = gate == "forecast"
 	allow_landing.visible = gate == "forecast"
-	repeat_alert.visible = GameManager.weather_demo and gate != "forecast"
 	for item in [hud_panel, valve_panel, flow_button, action_hint, flight_label, extension_hud, shortcut_label]:
 		item.visible = not pending
 	$CanvasLayer/AriaPanel.visible = not showing
@@ -826,18 +810,3 @@ func advance_front(delta: float) -> void:
 			save_clock = 0.0
 	update_radar()
 	queue_redraw()
-
-func replay_forecast() -> void:
-	if not GameManager.weather_demo or gameplay_paused or report_open or bench.visible:
-		return
-	GameManager.start_weather_demo()
-	hose.deployed = 0.0
-	weather.stop_audio()
-	weather.last_closure = 0.0
-	weather.shutter = 0.0
-	weather.level = 0.0
-	spawn_new_ship()
-	ship_visual.position = ship_pos
-	refresh_hose(0.0)
-	sync_filter()
-

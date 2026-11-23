@@ -48,9 +48,7 @@ func select_mechanic(index: int) -> void:
 	_play_click()
 
 func _ready() -> void:
-	GameManager.leave_weather_demo()
 	build_crew_picker()
-	$Interface/MainPanel/ModeButton.pressed.connect(_on_storm_pressed)
 	start_button.pressed.connect(_on_start_pressed)
 	$Interface/MainPanel/UpgradeButton.pressed.connect(_on_upgrade_pressed)
 	$Interface/MainPanel/TutorialButton.pressed.connect(_on_tutorial_pressed)
@@ -102,11 +100,6 @@ func refresh_station_data() -> void:
 
 func _on_start_pressed() -> void:
 	_play_click()
-	get_tree().change_scene_to_file("res://Gameplay.tscn")
-
-func _on_storm_pressed() -> void:
-	_play_click()
-	GameManager.start_weather_demo()
 	get_tree().change_scene_to_file("res://Gameplay.tscn")
 
 func _on_upgrade_pressed() -> void:

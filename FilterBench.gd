@@ -77,9 +77,6 @@ func present(failure: String, fixed: bool, remaining: int, collar: int) -> void:
 		keys[i].visible = not complete
 		keys[i].disabled = false
 	if complete:
-		if GameManager.weather_demo and dust:
-			keys[2].text = "Testar vazamento"
-			keys[2].show()
 		title.text = "Filtro em operação"
 		hint.text = "Aletas livres e pressão estável. Volte à doca para continuar."
 		reading.text = "Circuito em espera     ·     F ou Esc para voltar"
@@ -101,8 +98,6 @@ func present(failure: String, fixed: bool, remaining: int, collar: int) -> void:
 
 func _action_button(index: int) -> void:
 	if complete:
-		if GameManager.weather_demo and index == 2 and mode == "Filtro com poeira":
-			command.emit("preview_fault",0)
 		return
 	if mode == "Filtro com poeira":
 		command.emit("brush",index)
