@@ -8,8 +8,8 @@ Extraia o ZIP inteiro para uma pasta nova. Dê dois cliques em Jogar_no_Windows.
 EXPERIMENTAR A BOMBA
 Abra Testar_bomba.cmd para praticar o encaixe com a ARIA em uma partida temporária. O carretel solta a mangueira conforme você anda e a recolhe ao fim do atendimento.
 
-VER A TEMPESTADE AGORA
-Abra Testar_tempestade.cmd ou clique em Simular alerta de tempestade no menu. A demonstração começa no radar, antes do pouso. O alerta espera sua decisão. Use 1 para fechar a doca até a poeira passar, ou 2 para liberar o pouso e ver a poeira sujar o filtro. Os botões também aceitam clique. Use R ou Repetir alerta para comparar as opções. Feche a inspeção do filtro com Esc antes de repetir. A demonstração usa uma partida temporária.
+ALERTA DE TEMPESTADE
+No segundo atendimento do turno, o radar avisa que uma frente de poeira se aproxima. Pressione 1 para fechar a doca e proteger o filtro ou 2 para liberar o pouso na poeira. Você também pode escolher pelo mouse.
 
 SUA PRIMEIRA PARTIDA
 Escolha Treinar com a ARIA. Ande até o engate turquesa à esquerda da doca e aperte F. Leve o bico até o bocal sob a nave e aperte F para conectar. Ajuste a mistura para 75% de A. Ligue a bomba e pare perto de 100 UF. O treino tem tempo livre e permite continuar se você parar cedo.
