@@ -23,9 +23,13 @@ func _draw() -> void:
 	var rim := Color("82989a")
 	var black := Color("192a36")
 	# Feet, inlet pipe, bolted cast housing.
-	for x in [-47, 41]:
-		draw_rect(Rect2(x,-1,9,29),black)
-		draw_rect(Rect2(x-4,24,17,4),steel)
+	for x in [-43, 37]:
+		draw_rect(Rect2(x,15,9,15),black)
+		draw_rect(Rect2(x+1,19,3,10),rim)
+		draw_rect(Rect2(x-6,29,22,4),Color("273b43"))
+		draw_rect(Rect2(x-6,28,22,2),Color("8a9890"))
+		for bolt in [x-3,x+12]:
+			draw_circle(Vector2(bolt,29),1.4,Color("bec0aa"))
 	draw_rect(Rect2(-71,0,20,9),steel)
 	draw_rect(Rect2(-60,-4,5,18),rim)
 	draw_rect(Rect2(51,0,22,9),steel)

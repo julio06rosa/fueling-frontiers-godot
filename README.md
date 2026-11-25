@@ -14,7 +14,7 @@ Você escolhe **Lia, Davi ou Íris** para operar a doca. A assistente **ARIA** o
 | --- | --- |
 | Gênero | Simulação e gerenciamento em 2D, para um jogador |
 | Público-alvo | Estudantes de 10 a 18 anos e pessoas que gostam de desafios de lógica e precisão |
-| Tecnologia | Godot 4.6.1 e GDScript · versão 0.12.0 |
+| Tecnologia | Godot 4.6.1 e GDScript · versão 0.13.0 |
 | Plataforma e idioma | Computador, com teclado e mouse · português do Brasil |
 
 ## Como executar

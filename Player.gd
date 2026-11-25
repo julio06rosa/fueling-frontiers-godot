@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 const SPEED = 250.0
-const DECK := Rect2(45, 422, 1175, 56)
+const DECK := Rect2(45, 422, 1175, 80)
 
 var walk_cycle: float = 0.0
 var step_timer: float = 0.0
