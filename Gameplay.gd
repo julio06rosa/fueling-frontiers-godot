@@ -156,13 +156,13 @@ func _process(delta):
 
 func _draw():
 	# Draw Hangar floor / ceiling lines (Sci-fi industrial)
-	draw_line(Vector2(0, 480), Vector2(1280, 480), Color(0.15, 0.25, 0.35), 4)
+	draw_line(Vector2(0, 390), Vector2(1280, 390), Color(0.15, 0.25, 0.35), 4)
 	draw_line(Vector2(0, 100), Vector2(1280, 100), Color(0.15, 0.25, 0.35), 4)
 	
 	# Draw background hangar columns
 	for i in range(5):
 		var x = 150 + i * 240
-		draw_rect(Rect2(x, 100, 20, 380), Color(0.08, 0.12, 0.2, 0.5), true)
+		draw_rect(Rect2(x, 100, 20, 290), Color(0.08, 0.12, 0.2, 0.5), true)
 		
 	# Draw the spaceship at ship_pos
 	if current_state != ShipState.DEPARTING or ship_pos.x < 1300:
@@ -432,7 +432,7 @@ func spawn_particles():
 	pass
 
 func aria_talk(text: String):
-	aria_label.text = "ARIA: " + text
+	aria_label.text = text
 
 func update_hud_counters():
 	credits_label.text = "Créditos: %d" % GameManager.credits

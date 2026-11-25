@@ -21,7 +21,15 @@ func _draw() -> void:
 	var ink := Color("162a34")
 	var steel := Color("718a8c")
 	var brass := Color("da9b55")
-	# Bolted feet and bevels give the pump a solid silhouette.
+	# Chapa de ancoragem e borda frontal apoiadas sobre a sombra do piso.
+	var base := PackedVector2Array([Vector2(-51,-1),Vector2(47,-1),Vector2(55,6),Vector2(-57,6)])
+	draw_colored_polygon(base,Color("647578"))
+	draw_rect(Rect2(-57,6,112,4),Color("253c45"))
+	draw_line(Vector2(-56,6),Vector2(54,6),Color("8a9890"),1,true)
+	for bolt in [-47,44]:
+		draw_circle(Vector2(bolt,4),3,ink)
+		draw_circle(Vector2(bolt,3),1.7,Color("b2b5a3"))
+		draw_line(Vector2(bolt-1,3),Vector2(bolt+1,3),ink,1)
 	draw_rect(Rect2(-48,-3,96,5),ink)
 	var hull := PackedVector2Array([Vector2(-41,-4),Vector2(-41,-47),Vector2(-33,-57),Vector2(29,-57),Vector2(42,-45),Vector2(42,-4)])
 	draw_colored_polygon(hull,Color("335260"))
@@ -53,4 +61,4 @@ func _draw() -> void:
 	draw_rect(Rect2(-3,-24,3,10),lamp)
 	for x in [-35,35]:
 		draw_circle(Vector2(x,-5),1.5,Color("c0c6b4"))
-	draw_string(ThemeDB.fallback_font,Vector2(-50,17),"BOMBA  01",HORIZONTAL_ALIGNMENT_CENTER,100,12,Color("8de1ce"))
+	draw_string(ThemeDB.fallback_font,Vector2(-50,26),"BOMBA  01",HORIZONTAL_ALIGNMENT_CENTER,100,12,Color("8de1ce"))

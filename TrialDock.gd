@@ -41,6 +41,7 @@ var report_open := false
 var save_clock := 0.0
 var result_hold := 0.0
 var result_notes := ""
+var tutorial_bubble := preload("res://TutorialBubble.gd").new()
 var action_hint: Label
 var flow_button: Button
 var filter_bounds: Rect2
@@ -101,17 +102,18 @@ func _ready() -> void:
 	service.changed.connect(record_adjustment)
 	$CanvasLayer.add_child(bench)
 	bench.command.connect(maintain)
-	action_hint = pause_label($CanvasLayer, "", Rect2(35, 350, 350, 62), 15, Color("9ce6d8"))
+	action_hint = pause_label($CanvasLayer/AriaPanel, "", Rect2(120, 12, 1065, 24), 14, Color("9ce6d8"))
 	action_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	flow_button = pause_button($CanvasLayer, "", Rect2(902, 356, 347, 38))
+	flow_button = pause_button($CanvasLayer, "", Rect2(915, 350, 320, 26))
 	flow_button.pressed.connect(toggle_flow)
 	for control in [pump_btn, slider_a, flow_button]:
 		control.focus_mode = Control.FOCUS_NONE
 	build_radar()
+	$CanvasLayer.add_child(tutorial_bubble)
 	$CanvasLayer.move_child(service, -1)
 	$CanvasLayer.move_child(bench, -1)
 	$CanvasLayer.move_child(pause_overlay, -1)
-	shortcut_label.text = "Setas   andar     F   interagir     V   vazão     Esc   pausa"
+	shortcut_label.text = "Setas  Andar     F  Interagir     Q/E  Mistura     Espaço  Bomba     V  Vazão     Esc  Pausa"
 	$CanvasLayer/DockTitle.text = "MARS STATION   /   DOCA DE ABASTECIMENTO"
 	if GameManager.shift_served >= GameManager.SHIFT_SIZE:
 		show_report()
@@ -213,13 +215,16 @@ func refresh_extension_hud() -> void:
 	if not is_instance_valid(extension_hud):
 		return
 	if training:
-		extension_hud.text = "SIMULADOR DA ARIA\nTreino de abastecimento • 100 UF\nPratique antes do primeiro turno"
+		extension_hud.text = "TREINO COM A ARIA\nSeu primeiro abastecimento"
 	else:
 		var badge := "  •  ELITE" if special_contract else ""
 		extension_hud.text = "TURNO %d   ·   NAVE %d/%d   ·   %s%s\nMeta  %d/%d aprovadas    |    Missão  %d/%d %s" % [GameManager.shift_number, arrivals, GameManager.SHIFT_SIZE, role.to_upper(), badge, GameManager.shift_success, GameManager.goal(), GameManager.mission_count, GameManager.mission_goal(), GameManager.mission_label()]
 	extension_hud.modulate = Color("ffd089") if special_contract else Color("85dcd3")
 
 func _process(delta: float) -> void:
+	tutorial_bubble.hide()
+	if training and current_state == ShipState.DEPARTING:
+		$CanvasLayer/AriaPanel.show()
 	if gameplay_paused or report_open:
 		return
 	if gate in ["forecast", "closed"]:
@@ -256,7 +261,7 @@ func _process(delta: float) -> void:
 	ship_visual.service_light = service_pending() and current_state == ShipState.WAITING
 	if current_state == ShipState.WAITING or current_state == ShipState.REFUELING:
 		if training:
-			$CanvasLayer/TimerLabel.text = "Simulação • tempo livre"
+			$CanvasLayer/TimerLabel.text = "Treino sem limite de tempo"
 			tutorial_prompt()
 		elif previous == ShipState.APPROACHING:
 			aria_talk(contract_note())
@@ -265,6 +270,8 @@ func _process(delta: float) -> void:
 	if current_state == ShipState.DEPARTING:
 		aria_talk(result_notes)
 	refresh_instruments()
+	$CanvasLayer/HUDPanel/TankTitle.text = "Tanque  %.1f / %.1f UF" % [current_volume, target_volume]
+	flight_label.hide()
 	save_clock += delta
 	if save_clock >= 1.0:
 		remember_service()
@@ -283,18 +290,19 @@ func contract_note() -> String:
 	return message
 
 func tutorial_prompt() -> void:
-	var message: String
 	if hose_state == Hose.STOWED:
-		message = "1/4  Pegue o bico no suporte da bomba à esquerda. Aproxime-se com as setas e pressione F."
+		tutorial_bubble.present("pump", "1/4  Pegue a mangueira", "Vá até o suporte à esquerda com as setas. Pressione F perto do bico para pegá-lo.", Rect2(190,548,315,108), Rect2(COUPLING + hose.Pump.HOLSTER - Vector2(9,12),Vector2(18,24)))
 	elif hose_state == Hose.HELD:
-		message = "2/4  Contorne a bomba pela frente (↓). Leve o bico até a entrada âmbar sob a nave e pressione F para travar."
+		tutorial_bubble.present("socket", "2/4  Conecte na nave", "Passe pela frente da bomba (↓). Leve o bico até esta entrada âmbar e pressione F.", Rect2(485,548,315,108), Rect2(hose.socket-Vector2(13,12),Vector2(26,24)))
 	elif absf(slider_a_val - 75.0) > ratio_tolerance:
-		message = "3/4  Leia o manifesto. São 3 partes de A em 4 partes no total. Ajuste A para 75% com o mouse ou Q/E."
+		tutorial_bubble.present("mixture", "3/4  Prepare a mistura", "Em 3:1, A ocupa 3 de 4 partes (75%). Use o mouse ou as teclas Q e E.", Rect2(575,175,300,108), slider_a.get_global_rect())
 	elif not is_pump_on:
-		message = "4/4  Mistura pronta! Ligue a bomba com Espaço ou pelo botão. Observe o tanque e pare perto de 100 UF."
+		tutorial_bubble.present("start", "4/4  Pode abastecer!", "A mistura está pronta. Clique em Ativar bomba ou pressione Espaço.", Rect2(575,235,300,100), pump_btn.get_global_rect())
+	elif current_volume < 95.0:
+		tutorial_bubble.present("tank", "Acompanhe o tanque", "O pedido é de 100 UF. Observe esta barra e pare a bomba quando chegar ao volume.", Rect2(405,225,310,108), tank_progress.get_global_rect())
 	else:
-		message = "Acompanhe o tanque até 100 UF. Você pode parar e continuar." if current_volume < 97.0 else "Tanque cheio! Pressione Espaço ou Parar bomba para concluir o treino."
-	aria_talk(message)
+		tutorial_bubble.present("stop", "Chegou a hora de parar", "O tanque está quase cheio! Em 100 UF, pressione Espaço ou clique em Parar bomba.", Rect2(575,235,300,108), pump_btn.get_global_rect())
+	$CanvasLayer/AriaPanel.hide()
 
 func refresh_instruments() -> void:
 	if not is_instance_valid(action_hint):
@@ -316,19 +324,22 @@ func refresh_instruments() -> void:
 	elif at_dock and service_pending():
 		pump_btn.disabled = true
 		pump_btn.text = "Motor em manutenção"
-		action_hint.text = "ESCOTILHA   ·   " + ("Verificar nível de óleo" if job == "oil" else "Vazamento de óleo") + "\nF junto à luz âmbar, à direita da nave"
+		action_hint.text = "ESCOTILHA  ·  F para inspecionar " + ("o nível de óleo" if job == "oil" else "o vazamento")
 	elif hose_state == Hose.HELD:
-		action_hint.text = "BOCAL DA NAVE   ·   Leve a mangueira\nF ao lado da entrada para travar o bico"
+		action_hint.text = "BOCAL DA NAVE  ·  F para conectar a mangueira"
 	elif not connected_hose:
-		action_hint.text = "BOMBA   ·   Retire a mangueira\nF junto ao bico âmbar no suporte esquerdo"
+		action_hint.text = "BOMBA  ·  F para pegar o bico no suporte à esquerda"
 	elif incident in ["Filtro com poeira", "Pressão oscilante"] and not repaired:
-		action_hint.text = incident.to_upper() + "\nFiltro à direita  →   F para inspecionar"
+		action_hint.text = incident.to_upper() + "  ·  F para inspecionar o filtro à direita"
 	else:
 		action_hint.text = "Mangueira conectada  •  Circuito pronto"
 		if repaired:
-			action_hint.text += "\nManutenção concluída"
+			action_hint.text += "  ·  Manutenção concluída"
 		elif incident == "Entrega urgente":
-			action_hint.text += "\nPrioridade • entrega urgente"
+			action_hint.text += "  ·  Entrega urgente"
+
+	action_hint.visible = not training
+	aria_label.position.y = 15.0 if training else 42.0
 
 func toggle_flow() -> void:
 	if gate in ["forecast", "closed"]:
@@ -659,15 +670,33 @@ func _next_shift() -> void:
 	get_tree().reload_current_scene()
 
 func _draw() -> void:
+	# O piso começa na soleira e avança até a grelha frontal.
+	var deck := PackedVector2Array([Vector2(0,390),Vector2(1280,390),Vector2(1280,516),Vector2(0,516)])
+	draw_polygon(deck, PackedColorArray([Color("283d46"),Color("283d46"),Color("182b36"),Color("182b36")]))
+	draw_rect(Rect2(0,390,1280,5),Color("60777a"))
+	draw_rect(Rect2(0,395,1280,4),Color("101e28"))
+	for joint in range(13):
+		var x := float(joint * 110 - 20)
+		draw_line(Vector2(640+(x-640)*0.82,399),Vector2(x,510),Color("101f29"),2,true)
+		draw_line(Vector2(642+(x-640)*0.82,399),Vector2(x+2,510),Color("344b55"),1,true)
+	draw_line(Vector2(0,470),Vector2(1280,470),Color("344b55"),1)
+	draw_rect(Rect2(0,511,1280,11),Color("101c26"))
+	draw_line(Vector2(0,511),Vector2(1280,511),Color("6c7b7b"),2)
 	super._draw()
+	# Sombras de contato ficam sob as bases, antes dos equipamentos.
+	for contact in [COUPLING, FILTER]:
+		draw_set_transform(contact + Vector2(6,5),0,Vector2(1,0.18))
+		draw_circle(Vector2.ZERO,63 if contact == FILTER else 53,Color(0.02,0.04,0.05,0.38))
+		draw_set_transform(Vector2.ZERO)
+
 	# Juntas de dilatação, grelha e balizadores embutidos na borda do cais.
 	for i in range(12):
 		var x := 20 + i * 112
-		draw_line(Vector2(x+14,458),Vector2(x,478), Color("#314555"),1,true)
-		draw_rect(Rect2(x,478,93,4), Color("#273b47"))
+		draw_line(Vector2(x+14,488),Vector2(x,508), Color("#314555"),1,true)
+		draw_rect(Rect2(x,508,93,4), Color("#273b47"))
 		for groove in range(8):
-			draw_line(Vector2(x+4+groove*11,479),Vector2(x+9+groove*11,479),Color("#101b25"),2)
-		draw_rect(Rect2(x+97,478,8,2), Color("#b09e75"))
+			draw_line(Vector2(x+4+groove*11,509),Vector2(x+9+groove*11,509),Color("#101b25"),2)
+		draw_rect(Rect2(x+97,508,8,2), Color("#b09e75"))
 	if service_pending() and current_state == ShipState.WAITING:
 		var hatch := HATCH - Vector2(0,30)
 		draw_line(ship_pos+Vector2(54,16),hatch, Color("#524d40"),4,true)
@@ -675,12 +704,7 @@ func _draw() -> void:
 		draw_rect(Rect2(hatch-Vector2(12,5),Vector2(24,10)),Color("#bfa276"),false,1)
 		draw_circle(hatch,3,Color("#ffbc64"))
 		draw_string(ThemeDB.fallback_font,hatch+Vector2(-39,24),"ESCOTILHA",HORIZONTAL_ALIGNMENT_CENTER,78,11,Color("#ffcd89"))
-	if is_instance_valid(action_hint) and action_hint.visible and not action_hint.text.is_empty():
-		draw_rect(Rect2(29,350,355,48),Color(0.04,0.08,0.12,0.82))
 	draw_string(ThemeDB.fallback_font,FILTER+Vector2(-60,17),"FILTRO",HORIZONTAL_ALIGNMENT_CENTER,120,12,Color("f6cb91"))
-	# Backplate keeps contract targets readable as the ochre storm crosses the window.
-	if is_instance_valid(extension_hud) and extension_hud.visible:
-		draw_rect(Rect2(389,102,501,93),Color(0.04,0.08,0.12,0.76))
 	# Cada nível da bomba instala um cilindro físico ao lado do engate.
 	for index in range(GameManager.upgrade_pump_speed):
 		var rect := Rect2(390 + index * 18, 425, 14, 32)
@@ -756,9 +780,10 @@ func update_radar() -> void:
 	radar.visible = showing
 	close_gate.visible = gate == "forecast"
 	allow_landing.visible = gate == "forecast"
-	for item in [hud_panel, valve_panel, flow_button, action_hint, flight_label, extension_hud, shortcut_label]:
+	for item in [hud_panel, valve_panel, flow_button, extension_hud, shortcut_label]:
 		item.visible = not pending
 	$CanvasLayer/AriaPanel.visible = not showing
+	flight_label.hide()
 	match gate:
 		"forecast":
 			radar_title.text = "Alerta de tempestade"
