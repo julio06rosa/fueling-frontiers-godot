@@ -1,0 +1,13 @@
+FUELING FRONTIERS — TESTE DOS BALÕES DO TUTORIAL
+
+Extraia este ZIP em uma pasta própria.
+Importe project.godot na Godot e pressione F5.
+No menu, use Treinar com a ARIA.
+
+O treino mostra um balão por vez e destaca o elemento da próxima ação.
+Avance pegando o bico com F, conectando na nave e regulando a mistura.
+Observe o tanque e pare a bomba em 100 UF.
+Os balões avançam com suas ações. Esta versão usa um salvamento próprio.
+
+Inclui o piso, as bases dos equipamentos e os painéis da prévia anterior.
+Validado com Godot 4.7.2. O projeto declara compatibilidade com 4.6.

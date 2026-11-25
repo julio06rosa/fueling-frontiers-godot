@@ -318,11 +318,17 @@ func apply_presentation() -> void:
 		button.add_theme_stylebox_override("focus", ui_style(Color(0, 0, 0, 0), Color("bcffff"), 7))
 	tank_progress.add_theme_stylebox_override("background", ui_style(Color("091321"), Color("294355"), 6))
 	tank_progress.add_theme_stylebox_override("fill", ui_style(Color("36b8ad"), Color("71e0cc"), 6))
-	$CanvasLayer/HUDPanel/Title.text = "01 / MANIFESTO DE CARGA"
-	$CanvasLayer/ValvePanel/Title.text = "02 / MISTURADOR QUÍMICO"
+	$CanvasLayer/HUDPanel/Title.text = "MANIFESTO DE CARGA"
+	$CanvasLayer/ValvePanel/Title.text = "MISTURADOR QUÍMICO"
 	$CanvasLayer/TopHUD/MenuButton.text = "Pausar / Menu"
 	status_label.add_theme_font_size_override("font_size", 22)
 	status_label.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	status_label.position = Vector2(350, 338)
 	status_label.size = Vector2(580, 142)
 	extension_hud.add_theme_font_size_override("font_size", 16)
+	var mission_style := ui_style(Color("101f31"), Color("2a465c"), 8)
+	mission_style.content_margin_left = 14
+	mission_style.content_margin_right = 14
+	mission_style.content_margin_top = 12
+	mission_style.content_margin_bottom = 12
+	extension_hud.add_theme_stylebox_override("normal", mission_style)

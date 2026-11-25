@@ -2,8 +2,8 @@ extends Control
 
 # Local coordinates span the exterior opening, from the lintel to the deck.
 const SPAN := 1280.0
-const TRAVEL := 380.0
-const SLAT_HEIGHT := 38
+const TRAVEL := 290.0
+const SLAT_HEIGHT := 29
 const GUIDE := 16.0
 
 var curtain := Node2D.new()
@@ -31,14 +31,14 @@ func _draw_curtain() -> void:
 	for row in range(10):
 		var y := float(row * SLAT_HEIGHT)
 		var face := Color("40545d") if row % 2 == 0 else Color("3b4e57")
-		curtain.draw_rect(Rect2(0, y + 2, SPAN, 31), face)
+		curtain.draw_rect(Rect2(0, y + 2, SPAN, SLAT_HEIGHT - 7), face)
 		curtain.draw_rect(Rect2(0, y + 2, SPAN, 2), Color("758484"))
-		curtain.draw_rect(Rect2(0, y + 27, SPAN, 6), face.darkened(0.19))
+		curtain.draw_rect(Rect2(0, y + SLAT_HEIGHT - 11, SPAN, 6), face.darkened(0.19))
 		for column in range(4):
 			var x := 143.0 + column * 300.0 + (85.0 if row % 2 else 0.0)
-			curtain.draw_line(Vector2(x, y + 5), Vector2(x, y + 26), Color("2e4049"), 2)
+			curtain.draw_line(Vector2(x, y + 5), Vector2(x, y + SLAT_HEIGHT - 12), Color("2e4049"), 2)
 			curtain.draw_circle(Vector2(x - 7, y + 10), 2, Color("86918e"))
-			curtain.draw_circle(Vector2(x + 7, y + 21), 2, Color("293b44"))
+			curtain.draw_circle(Vector2(x + 7, y + SLAT_HEIGHT - 17), 2, Color("293b44"))
 	# Reinforced leading bar with two worn ochre safety markings and a rubber seal.
 	curtain.draw_rect(Rect2(0, TRAVEL - 22, SPAN, 17), Color("293941"))
 	curtain.draw_rect(Rect2(0, TRAVEL - 23, SPAN, 2), Color("82908e"))
