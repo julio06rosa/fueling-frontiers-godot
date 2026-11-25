@@ -17,7 +17,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="Fueling Frontiers: Mars Station"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="FuelingFrontiers_Playtest_Doca"
-config/version="0.12.0"
+config/version="0.13.0"
 run/main_scene="res://MainMenu.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
