@@ -4,9 +4,9 @@ Uma nave pousa em Marte e pede 100 unidades de combustível, com três partes do
 
 ![Partida de Fueling Frontiers com a nave atracada, a mangueira conectada e os painéis de mistura e volume durante o abastecimento.](docs/imagens/abastecimento.jpg)
 
-## História e objetivo
+## O último posto de abastecimento de Marte
 
-Zorome herda o posto da família em Marte junto com as dívidas da estação. A corporação HydroCore Inc. quer comprá-lo. A reputação do posto depende dos pilotos que passam pela doca e precisam de combustível para seguir viagem.
+Em 2187, Marte é escala para dezenas de missões de exploração. Uma falha na rede de distribuição deixou a Mars Station como o último posto em operação. As naves aguardam em órbita e o combustível que resta precisa chegar à nave certa, na mistura certa. Você acaba de assumir a doca.
 
 Você escolhe **Lia, Davi ou Íris** para operar a doca. A assistente **ARIA** orienta o primeiro abastecimento. Depois do treino, cada turno traz seis contratos. O objetivo do primeiro turno é aprovar pelo menos três atendimentos. Cumprir os pedidos rende créditos para investir na oficina. Erros de mistura, volume ou prazo afetam o resultado e a reputação da estação.
 

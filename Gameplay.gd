@@ -376,7 +376,7 @@ func validate_refuel():
 		status_label.text = "ABASTECIMENTO PERFEITO!\n+%d Créditos | +5%% Reputação" % earned
 		status_label.add_theme_color_override("font_color", Color(0.12, 0.8, 0.5))
 		
-		aria_talk("Excepcional, Zorome! Mistura exata e volume perfeito. O capitão está muito satisfeito!")
+		aria_talk("Abastecimento aprovado. A nave está liberada para seguir missão!")
 		if has_node("Player"):
 			$Player.play_anim("celebrate")
 		if has_node("/root/SoundManager"):

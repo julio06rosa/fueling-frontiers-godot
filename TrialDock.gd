@@ -200,7 +200,9 @@ func spawn_new_ship() -> void:
 		restore_service(GameManager.active_service)
 	elif preview != "":
 		$Player.position = HATCH
-	if current_state in [ShipState.WAITING,ShipState.REFUELING] and not training:
+	if training and current_state == ShipState.APPROACHING:
+		aria_talk("A primeira nave da fila pediu 100 UF. Vamos conferir a mistura antes de abrir a válvula.")
+	elif current_state in [ShipState.WAITING,ShipState.REFUELING] and not training:
 		aria_talk(contract_note())
 	tank_progress.max_value = target_volume
 	tank_progress.value = current_volume
@@ -292,7 +294,7 @@ func contract_note() -> String:
 
 func tutorial_prompt() -> void:
 	if hose_state == Hose.STOWED:
-		tutorial_bubble.present("pump", "1/4  Pegue a mangueira", "Vá até o suporte à esquerda com as setas. Pressione F perto do bico para pegá-lo.", Rect2(190,548,315,108), Rect2(COUPLING + hose.Pump.HOLSTER - Vector2(9,12),Vector2(18,24)))
+		tutorial_bubble.present("pump", "1/4  Pegue a mangueira", "A primeira nave precisa de 100 UF. Use as setas até a bomba à esquerda e pressione F para pegar o bico.", Rect2(190,548,315,108), Rect2(COUPLING + hose.Pump.HOLSTER - Vector2(9,12),Vector2(18,24)))
 	elif hose_state == Hose.HELD:
 		tutorial_bubble.present("socket", "2/4  Conecte na nave", "Passe pela frente da bomba (↓). Leve o bico até esta entrada âmbar e pressione F.", Rect2(485,548,315,108), Rect2(hose.socket-Vector2(13,12),Vector2(26,24)))
 	elif not training_retry.is_empty() and not is_pump_on:

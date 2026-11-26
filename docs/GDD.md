@@ -12,7 +12,9 @@
 
 ## História e objetivo
 
-Zorome herda o posto da família em Marte e as dívidas da estação. A HydroCore Inc. quer comprá-lo. Para manter a doca em operação, o jogador escolhe Lia, Davi ou Íris, atende pilotos e investe a receita na oficina. A escolha muda a aparência do operador. Os três usam os mesmos equipamentos.
+**O último posto de abastecimento de Marte.** Em 2187, uma falha na rede de distribuição deixa a Mars Station como o último posto capaz de atender as naves que cruzam Marte. A fila cresce em órbita e as missões perdem suas janelas de lançamento. O jogador acaba de ser contratado para assumir a doca.
+
+O menu apresenta a crise. Na chegada da primeira nave, a ARIA informa o pedido de 100 UF, e o primeiro balão orienta o jogador a pegar o bico na bomba. Lia, Davi e Íris são as três opções de operador e usam os mesmos equipamentos. Atender bem os pilotos rende créditos para melhorar a bomba, instalar a válvula automática e adquirir o sensor de mistura.
 
 A matemática aparece onde uma medida muda o resultado da operação. Uma proporção determina o ajuste do misturador, uma diferença de níveis determina quanto óleo repor e uma medida do encaixe determina qual vedação instalar.
 
