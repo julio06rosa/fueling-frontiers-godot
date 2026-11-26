@@ -48,13 +48,29 @@ jobs:
         shell: pwsh
         run: |
           $pasta = "$env:RUNNER_TEMP\teste"
-          function Jogar([string[]]$opcoes) {
-            $p = Start-Process "$pasta\FuelingFrontiers.exe" -WorkingDirectory $pasta -ArgumentList $opcoes -PassThru
-            if (-not $p.WaitForExit(90000)) { $p.Kill(); throw 'O jogo excedeu o tempo de teste' }
-            if ($p.ExitCode -ne 0) { throw "Jogo encerrou com código $($p.ExitCode)" }
+          function Jogar($etapa, [string[]]$opcoes) {
+            $log = "$env:RUNNER_TEMP\$etapa.log"
+            $saida = "$env:RUNNER_TEMP\$etapa-out.txt"
+            $erros = "$env:RUNNER_TEMP\$etapa-err.txt"
+            Write-Output "Iniciando $etapa em $pasta"
+            $p = Start-Process "$pasta\FuelingFrontiers.exe" -WorkingDirectory $pasta -ArgumentList ($opcoes + @('--verbose','--log-file',$log)) -RedirectStandardOutput $saida -RedirectStandardError $erros -PassThru
+            try {
+              if (-not $p.WaitForExit(30000)) {
+                $p.Refresh()
+                Write-Output "Janela: $($p.MainWindowTitle)"
+                $p.Kill()
+                throw "Tempo excedido em $etapa"
+              }
+              if ($p.ExitCode -ne 0) { throw "$etapa encerrou com código $($p.ExitCode)" }
+            } finally {
+              foreach ($f in $log,$saida,$erros) {
+                if (Test-Path $f) { Get-Content $f -Tail 35 }
+              }
+            }
           }
-          Jogar @('--headless','--quit-after','120','--log-file',"$env:RUNNER_TEMP\menu.log")
-          Jogar @('--headless','--fixed-fps','60','--script',"$env:GITHUB_WORKSPACE\.github\validar-entrega.gd",'--log-file',"$env:RUNNER_TEMP\treino.log")
+          $script = "$env:GITHUB_WORKSPACE/.github/validar-entrega.gd".Replace('\','/')
+          Jogar 'menu' @('--headless','--fixed-fps','60','--quit-after','120')
+          Jogar 'treino' @('--headless','--fixed-fps','60','--quit-after','2400','--script',$script)
           $log = Get-Content "$env:RUNNER_TEMP\treino.log" -Raw
           Write-Output $log
           if ($log -notmatch 'ENTREGA_OK' -or $log -match '(SCRIPT ERROR|ERROR):') { throw 'Falha no treino exportado' }
@@ -77,3 +93,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create v0.13.0 FuelingFrontiers-Windows-x64.zip --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "Fueling Frontiers 0.13.0" --notes "Jogo completo para Windows de 64 bits. Extraia o ZIP e abra FuelingFrontiers.exe. O pacote inclui instruções para a primeira partida."
+      - name: Conferir o download público sem login
+        run: |
+          url="https://github.com/$GITHUB_REPOSITORY/releases/download/v0.13.0/FuelingFrontiers-Windows-x64.zip"
+          curl --fail --location --silent --show-error --retry 5 --retry-all-errors "$url" -o /tmp/entrega-publica.zip
+          cmp FuelingFrontiers-Windows-x64.zip /tmp/entrega-publica.zip
