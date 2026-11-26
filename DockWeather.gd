@@ -29,7 +29,7 @@ func _ready() -> void:
 	sky.position = storm_door.position
 	sky.size = storm_door.size
 	storm_door.set_closure(shutter)
-	breeze.stream = AudioStreamWAV.load_from_file("res://Ventania.wav")
+	breeze.stream = preload("res://Ventania.wav")
 	if breeze.stream:
 		breeze.stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
 		breeze.stream.loop_end = int(breeze.stream.get_length()*breeze.stream.mix_rate)
@@ -42,11 +42,11 @@ func _ready() -> void:
 	AudioServer.add_bus_effect(index, wind_filter)
 	breeze.bus = wind_bus
 	add_child(breeze)
-	motor.stream = AudioStreamWAV.load_from_file("res://ShutterMotor.wav")
+	motor.stream = preload("res://ShutterMotor.wav")
 	if motor.stream:
 		motor.stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
 		motor.stream.loop_end = int(round(motor.stream.get_length() * motor.stream.mix_rate))
-	seal.stream = AudioStreamWAV.load_from_file("res://ShutterSeal.wav")
+	seal.stream = preload("res://ShutterSeal.wav")
 	seal.volume_db = -9.0
 	add_child(motor)
 	add_child(seal)

@@ -17,7 +17,13 @@ Você escolhe **Lia, Davi ou Íris** para operar a doca. A assistente **ARIA** o
 | Tecnologia | Godot 4.6.1 e GDScript · versão 0.13.0 |
 | Plataforma e idioma | Computador, com teclado e mouse · português do Brasil |
 
-## Como executar
+## Baixar e jogar no Windows
+
+[Baixar Fueling Frontiers 0.13.0 para Windows 64 bits](https://github.com/julio06rosa/fueling-frontiers-godot/releases/download/v0.13.0/FuelingFrontiers-Windows-x64.zip)
+
+Extraia o ZIP inteiro e abra **FuelingFrontiers.exe**. O executável contém os dados do jogo e funciona sem instalar o Godot. Escolha um personagem e selecione **Treinar com a ARIA** para aprender a abastecer a primeira nave.
+
+## Executar o código-fonte
 
 1. Instale a **Godot 4.6.1**, edição padrão. [Download da Godot](https://godotengine.org/download/archive/4.6.1-stable/)
 2. Na página deste repositório, escolha **Code → Download ZIP** e extraia a pasta inteira. Se preferir usar Git, execute `git clone https://github.com/julio06rosa/fueling-frontiers-godot.git`.
@@ -65,6 +71,6 @@ Nos primeiros reparos, era difícil entender por que a nave precisava de óleo o
 Projeto desenvolvido por **Júlio César Duarte da Rosa**, **Rafael da Rocha da Silva** e **Paulo Guilherme Richeski Padilha**, no curso de Engenharia de Software da Católica de Santa Catarina, para a disciplina **Projeto de Aprendizagem Colaborativa Extensionista IV**.
 
 - [Guia de controles, manutenção e missões](LEIA-ME.txt)
-- [Documento de design do jogo · versão 0.9.3](docs/GDD.md)
+- [Documento de design do jogo · versão 0.13.0](docs/GDD.md)
 - [Checklist de validação](docs/CHECKLIST_VALIDACAO.md)
 - [Histórico de desenvolvimento](docs/CHANGELOG_PROFISSIONAL.md)

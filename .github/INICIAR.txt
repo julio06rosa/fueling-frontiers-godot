@@ -1,0 +1,11 @@
+Fueling Frontiers: Mars Station — Windows 64 bits
+
+1. Extraia o ZIP para uma pasta no computador.
+2. Abra FuelingFrontiers.exe. O jogo já vem completo.
+3. Escolha seu personagem e clique em Treinar com a ARIA.
+4. Caminhe com as setas e pressione F para pegar o bico da bomba à esquerda.
+   Siga os balões na tela. Esc abre a pausa.
+
+Equipe: Júlio César Duarte da Rosa, Rafael da Rocha da Silva e Paulo Guilherme Richeski Padilha.
+Jogo desenvolvido com Godot Engine. Licenças: https://godotengine.org/license/
+Código-fonte e guia: https://github.com/julio06rosa/fueling-frontiers-godot

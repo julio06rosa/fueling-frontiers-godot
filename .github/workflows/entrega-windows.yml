@@ -1,0 +1,79 @@
+name: Entrega para Windows
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/entrega-windows.yml']
+permissions:
+  contents: read
+jobs:
+  exportar:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preparar Godot 4.6.1 e o modelo oficial de distribuição
+        shell: pwsh
+        run: |
+          $base = 'https://github.com/godotengine/godot-builds/releases/download/4.6.1-stable'
+          function Baixar($nome, $hash, $destino) {
+            curl.exe --fail --location --retry 3 --silent --show-error "$base/$nome" --output $destino
+            if ($LASTEXITCODE -ne 0 -or (Get-FileHash $destino).Hash -ne $hash) { throw "Download inválido de $nome" }
+          }
+          $pasta = "$env:RUNNER_TEMP\godot"
+          Baixar 'Godot_v4.6.1-stable_win64.exe.zip' '088da0457e2d1f7f8a45e6d4605a42b756ea33b9ccd75059bdbc01bb31c2b40d' "$env:RUNNER_TEMP\godot.zip"
+          Expand-Archive "$env:RUNNER_TEMP\godot.zip" $pasta
+          Baixar 'Godot_v4.6.1-stable_export_templates.tpz' 'e6d372afd4fdfaae9571eb5e3568afcd96ce6db9a569244034154faf0ac69875' "$env:RUNNER_TEMP\templates.zip"
+          $destino = New-Item -ItemType Directory -Force "$env:APPDATA\Godot\export_templates\4.6.1.stable"
+          $zip = [IO.Compression.ZipFile]::OpenRead("$env:RUNNER_TEMP\templates.zip")
+          try {
+            foreach ($nome in 'windows_release_x86_64.exe','windows_debug_x86_64.exe','version.txt') {
+              $item = $zip.GetEntry("templates/$nome")
+              [IO.Compression.ZipFileExtensions]::ExtractToFile($item, "$destino\$nome", $true)
+            }
+          } finally { $zip.Dispose() }
+          "GODOT=$pasta\Godot_v4.6.1-stable_win64_console.exe" >> $env:GITHUB_ENV
+      - name: Exportar e extrair a distribuição em uma pasta limpa
+        shell: pwsh
+        run: |
+          $pasta = New-Item -ItemType Directory "$env:RUNNER_TEMP\jogo"
+          & $env:GODOT --headless --path . --import
+          if ($LASTEXITCODE -ne 0) { throw 'Falha ao importar o projeto' }
+          & $env:GODOT --headless --path . --export-release 'Windows Desktop' "$pasta\FuelingFrontiers.exe"
+          if ($LASTEXITCODE -ne 0) { throw 'Falha ao exportar para Windows' }
+          Copy-Item .github/INICIAR.txt $pasta
+          Compress-Archive "$pasta\*" "$env:RUNNER_TEMP\FuelingFrontiers-Windows-x64.zip"
+          Expand-Archive "$env:RUNNER_TEMP\FuelingFrontiers-Windows-x64.zip" "$env:RUNNER_TEMP\teste"
+      - name: Executar o jogo distribuído e concluir o treino
+        shell: pwsh
+        run: |
+          $pasta = "$env:RUNNER_TEMP\teste"
+          function Jogar([string[]]$opcoes) {
+            $p = Start-Process "$pasta\FuelingFrontiers.exe" -WorkingDirectory $pasta -ArgumentList $opcoes -PassThru
+            if (-not $p.WaitForExit(90000)) { $p.Kill(); throw 'O jogo excedeu o tempo de teste' }
+            if ($p.ExitCode -ne 0) { throw "Jogo encerrou com código $($p.ExitCode)" }
+          }
+          Jogar @('--headless','--quit-after','120','--log-file',"$env:RUNNER_TEMP\menu.log")
+          Jogar @('--headless','--fixed-fps','60','--script',"$env:GITHUB_WORKSPACE\.github\validar-entrega.gd",'--log-file',"$env:RUNNER_TEMP\treino.log")
+          $log = Get-Content "$env:RUNNER_TEMP\treino.log" -Raw
+          Write-Output $log
+          if ($log -notmatch 'ENTREGA_OK' -or $log -match '(SCRIPT ERROR|ERROR):') { throw 'Falha no treino exportado' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: entrega-windows
+          path: ${{ runner.temp }}/FuelingFrontiers-Windows-x64.zip
+  publicar:
+    needs: exportar
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: entrega-windows
+      - name: Publicar o pacote aprovado
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create v0.13.0 FuelingFrontiers-Windows-x64.zip --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "Fueling Frontiers 0.13.0" --notes "Jogo completo para Windows de 64 bits. Extraia o ZIP e abra FuelingFrontiers.exe. O pacote inclui instruções para a primeira partida."
