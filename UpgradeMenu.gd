@@ -1,5 +1,9 @@
 extends Control
 
+const PUMP_LEVEL_BASE_COST := 1400
+const VALVE_COST := 3600
+const SENSOR_COST := 1200
+
 var btn_speed: Button
 var btn_valve: Button
 var btn_helper: Button
@@ -27,7 +31,7 @@ func update_ui() -> void:
 		btn_speed.text = "MÁXIMO"
 		btn_speed.disabled = true
 	else:
-		var cost = (GameManager.upgrade_pump_speed + 1) * 500
+		var cost = (GameManager.upgrade_pump_speed + 1) * PUMP_LEVEL_BASE_COST
 		btn_speed.text = "Comprar (Lvl %d) - %d C" % [GameManager.upgrade_pump_speed + 1, cost]
 		btn_speed.disabled = GameManager.credits < cost
 		
@@ -36,7 +40,7 @@ func update_ui() -> void:
 		btn_valve.text = "ADQUIRIDO"
 		btn_valve.disabled = true
 	else:
-		var cost = 800
+		var cost = VALVE_COST
 		btn_valve.text = "Comprar - %d C" % cost
 		btn_valve.disabled = GameManager.credits < cost
 		
@@ -45,12 +49,12 @@ func update_ui() -> void:
 		btn_helper.text = "ADQUIRIDO"
 		btn_helper.disabled = true
 	else:
-		var cost = 400
+		var cost = SENSOR_COST
 		btn_helper.text = "Comprar - %d C" % cost
 		btn_helper.disabled = GameManager.credits < cost
 
 func _on_speed_pressed() -> void:
-	var cost = (GameManager.upgrade_pump_speed + 1) * 500
+	var cost = (GameManager.upgrade_pump_speed + 1) * PUMP_LEVEL_BASE_COST
 	if GameManager.credits >= cost and GameManager.upgrade_pump_speed < 3:
 		GameManager.credits -= cost
 		GameManager.upgrade_pump_speed += 1
@@ -60,7 +64,7 @@ func _on_speed_pressed() -> void:
 		update_ui()
 
 func _on_valve_pressed() -> void:
-	var cost = 800
+	var cost = VALVE_COST
 	if GameManager.credits >= cost and not GameManager.upgrade_auto_valve:
 		GameManager.credits -= cost
 		GameManager.upgrade_auto_valve = true
@@ -70,7 +74,7 @@ func _on_valve_pressed() -> void:
 		update_ui()
 
 func _on_helper_pressed() -> void:
-	var cost = 400
+	var cost = SENSOR_COST
 	if GameManager.credits >= cost and not GameManager.upgrade_helper_hud:
 		GameManager.credits -= cost
 		GameManager.upgrade_helper_hud = true

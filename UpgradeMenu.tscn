@@ -219,7 +219,7 @@ theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("ButtonNormal")
 theme_override_styles/hover = SubResource("ButtonHover")
 theme_override_styles/disabled = SubResource("ButtonDisabled")
-text = "Comprar - 500 C"
+text = "Comprar"
 
 [node name="Divider1" type="HSeparator" parent="Panel/VBox"]
 layout_mode = 2
@@ -255,7 +255,7 @@ theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("ButtonNormal")
 theme_override_styles/hover = SubResource("ButtonHover")
 theme_override_styles/disabled = SubResource("ButtonDisabled")
-text = "Comprar - 800 C"
+text = "Comprar"
 
 [node name="Divider2" type="HSeparator" parent="Panel/VBox"]
 layout_mode = 2
@@ -291,7 +291,7 @@ theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("ButtonNormal")
 theme_override_styles/hover = SubResource("ButtonHover")
 theme_override_styles/disabled = SubResource("ButtonDisabled")
-text = "Comprar - 400 C"
+text = "Comprar"
 
 [node name="Footer" type="Label" parent="."]
 layout_mode = 0

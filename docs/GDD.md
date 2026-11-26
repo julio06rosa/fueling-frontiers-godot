@@ -76,7 +76,7 @@ A escotilha sinaliza um serviço ocasional e a bomba aguarda a conclusão do rep
 
 A estação começa com 0 créditos e 50% de reputação. No primeiro turno, a meta é aprovar três das seis naves. A meta sobe para quatro no segundo turno e para cinco a partir do terceiro. Atingi-la rende 150 créditos extras. A missão opcional alterna entre notas A ou S, cargueiros aprovados e acertos consecutivos. Cumpri-la rende mais 100 créditos e uma insígnia.
 
-Ao fim do turno, o relatório reúne aprovações, saldo e variação de reputação. O jogador decide quando iniciar o próximo turno. Na oficina, os três níveis de vazão custam 500, 1.000 e 1.500 créditos. A válvula automática custa 800 e o sensor de mistura custa 400.
+Ao fim do turno, o relatório reúne aprovações, saldo e variação de reputação. O jogador decide quando iniciar o próximo turno. Na oficina, os três níveis de vazão custam 1.400, 2.800 e 4.200 créditos. A válvula automática custa 3.600 e o sensor de mistura custa 1.200. Com esses preços, o primeiro cargueiro, mesmo com o bônus de rapidez, ainda não paga uma melhoria sozinho.
 
 O progresso fica no computador que executou o jogo. O salvamento guarda o personagem, o treino, o turno, as compras e os dados do atendimento em andamento, incluindo mangueira, mistura, tempo e volume. Pausar permite consultar as opções sem consumir o prazo. Reiniciar o progresso pelo menu exige confirmação.
 
