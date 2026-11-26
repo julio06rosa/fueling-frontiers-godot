@@ -70,7 +70,16 @@ jobs:
           }
           $script = "$env:GITHUB_WORKSPACE/.github/validar-entrega.gd".Replace('\','/')
           Jogar 'menu' @('--headless','--fixed-fps','60','--quit-after','120')
-          Jogar 'treino' @('--headless','--fixed-fps','60','--quit-after','2400','--script',$script)
+          $menu = Get-Content "$env:RUNNER_TEMP\menu.log" -Raw
+          if ($menu -notmatch 'MainMenu.gdc' -or $menu -match '(SCRIPT ERROR|ERROR):') { throw 'O executável não carregou o menu' }
+          # O modelo de distribuição inicia a cena principal. O editor da mesma versão
+          # permite conduzir as ações do treino sobre os dados contidos no próprio EXE.
+          $pacote = "$pasta\FuelingFrontiers.exe"
+          Push-Location $pasta
+          try {
+            & $env:GODOT --headless --fixed-fps 60 --quit-after 2400 --main-pack $pacote --script $script --log-file "$env:RUNNER_TEMP\treino.log"
+            if ($LASTEXITCODE -ne 0) { throw "Treino encerrou com código $LASTEXITCODE" }
+          } finally { Pop-Location }
           $log = Get-Content "$env:RUNNER_TEMP\treino.log" -Raw
           Write-Output $log
           if ($log -notmatch 'ENTREGA_OK' -or $log -match '(SCRIPT ERROR|ERROR):') { throw 'Falha no treino exportado' }
