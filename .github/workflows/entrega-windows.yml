@@ -1,9 +1,8 @@
-name: Entrega para Windows
+name: Teste da composição no Windows
 on:
   workflow_dispatch:
   push:
-    branches: [main]
-    paths: ['.github/workflows/entrega-windows.yml']
+    branches: ['testes/mistura-entregue']
 permissions:
   contents: read
 jobs:
@@ -83,27 +82,16 @@ jobs:
           $log = Get-Content "$env:RUNNER_TEMP\treino.log" -Raw
           Write-Output $log
           if ($log -notmatch 'ENTREGA_OK' -or $log -match '(SCRIPT ERROR|ERROR):') { throw 'Falha no treino exportado' }
+      - name: Verificar as proporções na versão exportada
+        shell: pwsh
+        run: |
+          $pacote = "$env:RUNNER_TEMP/teste/FuelingFrontiers.exe"
+          $script = "$env:GITHUB_WORKSPACE/.github/validar-mistura.gd".Replace('\','/')
+          $log = "$env:RUNNER_TEMP/mistura.log"
+          & $env:GODOT --headless --fixed-fps 60 --quit-after 2400 --main-pack $pacote --script $script --log-file $log
+          $resultado = Get-Content $log -Raw
+          if ($LASTEXITCODE -ne 0 -or $resultado -notmatch 'MISTURA_OK' -or $resultado -match '(SCRIPT ERROR|ERROR):') { throw $resultado }
       - uses: actions/upload-artifact@v4
         with:
-          name: entrega-windows
-          path: ${{ runner.temp }}/FuelingFrontiers-Windows-x64.zip
-  publicar:
-    needs: exportar
-    if: github.ref == 'refs/heads/main'
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: entrega-windows
-      - name: Publicar o pacote aprovado
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release create v0.13.0 FuelingFrontiers-Windows-x64.zip --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "Fueling Frontiers 0.13.0" --notes "Jogo completo para Windows de 64 bits. Extraia o ZIP e abra FuelingFrontiers.exe. O pacote inclui instruções para a primeira partida."
-      - name: Conferir o download público sem login
-        run: |
-          url="https://github.com/$GITHUB_REPOSITORY/releases/download/v0.13.0/FuelingFrontiers-Windows-x64.zip"
-          curl --fail --location --silent --show-error --retry 5 --retry-all-errors "$url" -o /tmp/entrega-publica.zip
-          cmp FuelingFrontiers-Windows-x64.zip /tmp/entrega-publica.zip
+          name: FuelingFrontiers-Teste-Mistura-Windows-x64
+          path: ${{ runner.temp }}/teste/*

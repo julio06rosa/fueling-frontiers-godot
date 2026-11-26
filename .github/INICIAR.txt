@@ -1,4 +1,4 @@
-Fueling Frontiers: Mars Station — Windows 64 bits
+Fueling Frontiers: Mars Station — Teste da mistura 0.13.1-rc1 — Windows 64 bits
 
 1. Extraia o ZIP para uma pasta no computador.
 2. Abra FuelingFrontiers.exe. O jogo já vem completo.

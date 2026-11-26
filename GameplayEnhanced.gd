@@ -102,9 +102,9 @@ func _process(delta: float) -> void:
 
 func validate_refuel() -> void:
 	var target_pct: float = float(ratio_a) / float(ratio_a + ratio_b) * 100.0
-	var ratio_error: float = abs(slider_a_val - target_pct)
+	var ratio_error: float = abs(delivered_a_percent() - target_pct)
 	var volume_error_pct: float = abs(current_volume - target_volume) / target_volume * 100.0
-	var successful: bool = ratio_error <= ratio_tolerance and volume_error_pct <= 3.0 and (not requires_fine_finish or fine_flow)
+	var successful: bool = ratio_within_tolerance(ratio_error) and volume_error_pct <= 3.0 and (not requires_fine_finish or fine_flow)
 	var credits_before: int = GameManager.credits
 	var elapsed_seconds: float = service_clock
 
@@ -122,12 +122,12 @@ func validate_refuel() -> void:
 			update_hud_counters()
 
 		var grade: String = performance_grade(ratio_error, volume_error_pct)
-		status_label.text += "\nClassificação %s  •  mistura ±%.1f%%  •  volume ±%.1f%%  •  %.1fs" % [grade, ratio_error, volume_error_pct, elapsed_seconds]
+		status_label.text += "\nClassificação %s  •  mistura ±%.1f p.p.  •  volume ±%.1f%%  •  %.1fs" % [grade, ratio_error, volume_error_pct, elapsed_seconds]
 		var earned_total: int = maxi(0, GameManager.credits - credits_before)
 		GameManager.register_success(streak, earned_total, grade)
 	else:
 		streak = 0
-		status_label.text += "\nDiagnóstico  •  mistura ±%.1f%%  •  volume ±%.1f%%  •  %.1fs" % [ratio_error, volume_error_pct, elapsed_seconds]
+		status_label.text += "\nDiagnóstico  •  mistura ±%.1f p.p.  •  volume ±%.1f%%  •  %.1fs" % [ratio_error, volume_error_pct, elapsed_seconds]
 		GameManager.register_failure("Reabastecimento recusado", GameManager.credits - credits_before)
 
 	refresh_extension_hud()

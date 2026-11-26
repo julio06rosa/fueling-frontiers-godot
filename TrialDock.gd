@@ -41,6 +41,7 @@ var report_open := false
 var save_clock := 0.0
 var result_hold := 0.0
 var result_notes := ""
+var training_retry := ""
 var tutorial_bubble := preload("res://TutorialBubble.gd").new()
 var action_hint: Label
 var flow_button: Button
@@ -294,6 +295,8 @@ func tutorial_prompt() -> void:
 		tutorial_bubble.present("pump", "1/4  Pegue a mangueira", "Vá até o suporte à esquerda com as setas. Pressione F perto do bico para pegá-lo.", Rect2(190,548,315,108), Rect2(COUPLING + hose.Pump.HOLSTER - Vector2(9,12),Vector2(18,24)))
 	elif hose_state == Hose.HELD:
 		tutorial_bubble.present("socket", "2/4  Conecte na nave", "Passe pela frente da bomba (↓). Leve o bico até esta entrada âmbar e pressione F.", Rect2(485,548,315,108), Rect2(hose.socket-Vector2(13,12),Vector2(26,24)))
+	elif not training_retry.is_empty() and not is_pump_on:
+		tutorial_bubble.present("retry", "Tanque de treino esvaziado", training_retry, Rect2(575,175,315,108), slider_a.get_global_rect())
 	elif absf(slider_a_val - 75.0) > ratio_tolerance:
 		tutorial_bubble.present("mixture", "3/4  Prepare a mistura", "Em 3:1, A ocupa 3 de 4 partes (75%). Use o mouse ou as teclas Q e E.", Rect2(575,175,300,108), slider_a.get_global_rect())
 	elif not is_pump_on:
@@ -485,12 +488,21 @@ func _on_pump_pressed() -> void:
 	if training and not is_pump_on and absf(slider_a_val - 75.0) > ratio_tolerance:
 		tutorial_prompt()
 		return
+	if not is_pump_on:
+		training_retry = ""
 	super._on_pump_pressed()
 	remember_service()
 
 func validate_refuel() -> void:
 	if training:
-		if absf(slider_a_val - 75.0) > ratio_tolerance or current_volume < target_volume * 0.97:
+		if current_volume < target_volume * 0.97:
+			tutorial_prompt()
+			return
+		if not ratio_within_tolerance(delivered_a_percent() - 75.0):
+			training_retry = "Entraram %.1f%% de A. Ajuste para 75%% e ligue a bomba para repetir sem penalidade." % delivered_a_percent()
+			current_volume = 0.0
+			delivered_a_volume = 0.0
+			tank_progress.value = 0.0
 			tutorial_prompt()
 			return
 		GameManager.tutorial_done = true
@@ -504,12 +516,12 @@ func validate_refuel() -> void:
 		ship_depart()
 	else:
 		var target_a := float(ratio_a) * 100.0 / (ratio_a + ratio_b)
-		var mix_error := slider_a_val - target_a
+		var mix_error := delivered_a_percent() - target_a
 		var extra := current_volume - target_volume
 		super.validate_refuel()
-		var mix_note := "Mistura dentro da faixa."
-		if absf(mix_error) > ratio_tolerance:
-			mix_note = "%s em excesso por %.1f pontos percentuais." % [comp_a_name if mix_error > 0 else comp_b_name, absf(mix_error)]
+		var mix_note := "Tanque: %.1f%% de %s (pedido: %.1f%%)." % [delivered_a_percent(), comp_a_name, target_a]
+		if not ratio_within_tolerance(mix_error):
+			mix_note += " %s em excesso por %.1f pontos percentuais." % [comp_a_name if mix_error > 0 else comp_b_name, absf(mix_error)]
 		var volume_note := "Volume dentro da faixa."
 		if absf(extra) > target_volume * 0.03:
 			volume_note = ("Sobraram %.1f UF." if extra > 0 else "Faltaram %.1f UF.") % absf(extra)
@@ -542,7 +554,7 @@ func remember_service() -> void:
 	GameManager.active_service = {
 		"name": ship_name, "origin": ship_origin, "a": comp_a_name, "b": comp_b_name,
 		"ratio_a": ratio_a, "ratio_b": ratio_b, "target": target_volume, "max_time": max_time,
-		"time": time_left, "volume": current_volume, "mix": slider_a_val, "state": current_state,
+		"time": time_left, "volume": current_volume, "delivered_a": delivered_a_volume, "mix": slider_a_val, "state": current_state,
 		"ship_pos": ship_pos, "player": $Player.position, "hose": connected_hose, "carrying_nozzle": hose_state == Hose.HELD,
 		"job": job, "spec": spec, "level": level, "ring": ring, "serviced": serviced,
 		"service_phase": service_phase, "service_dose": service_dose,
@@ -594,6 +606,8 @@ func restore_service(data: Dictionary) -> void:
 	max_time = data.max_time
 	time_left = data.time
 	current_volume = data.volume
+	# Saves from 0.13.0 only store the last setting, not the inflow history.
+	delivered_a_volume = clampf(data.get("delivered_a", current_volume * data.mix / 100.0), 0.0, current_volume)
 	slider_a.value = data.mix
 	current_state = data.state
 	is_pump_on = current_state == ShipState.REFUELING

@@ -14,14 +14,12 @@ Você escolhe **Lia, Davi ou Íris** para operar a doca. A assistente **ARIA** o
 | --- | --- |
 | Gênero | Simulação e gerenciamento em 2D, para um jogador |
 | Público-alvo | Estudantes de 10 a 18 anos e pessoas que gostam de desafios de lógica e precisão |
-| Tecnologia | Godot 4.6.1 e GDScript · versão 0.13.0 |
+| Tecnologia | Godot 4.6.1 e GDScript · versão 0.13.1-rc1 |
 | Plataforma e idioma | Computador, com teclado e mouse · português do Brasil |
 
-## Baixar e jogar no Windows
+## Experimentar a versão 0.13.1-rc1 no Windows
 
-[Baixar Fueling Frontiers 0.13.0 para Windows 64 bits](https://github.com/julio06rosa/fueling-frontiers-godot/releases/download/v0.13.0/FuelingFrontiers-Windows-x64.zip)
-
-Extraia o ZIP inteiro e abra **FuelingFrontiers.exe**. O executável contém os dados do jogo e funciona sem instalar o Godot. Escolha um personagem e selecione **Treinar com a ARIA** para aprender a abastecer a primeira nave.
+Na execução concluída de **Teste da composição no Windows**, baixe o artefato **FuelingFrontiers-Teste-Mistura-Windows-x64**, extraia a pasta e abra **FuelingFrontiers.exe**. O progresso desta versão fica em uma pasta própria. A candidata calcula a proporção do combustível que entrou no tanque durante todo o abastecimento. [Ver execuções da branch de teste](https://github.com/julio06rosa/fueling-frontiers-godot/actions?query=branch%3Atestes%2Fmistura-entregue)
 
 ## Executar o código-fonte
 
@@ -71,6 +69,6 @@ Nos primeiros reparos, era difícil entender por que a nave precisava de óleo o
 Projeto desenvolvido por **Júlio César Duarte da Rosa**, **Rafael da Rocha da Silva** e **Paulo Guilherme Richeski Padilha**, no curso de Engenharia de Software da Católica de Santa Catarina, para a disciplina **Projeto de Aprendizagem Colaborativa Extensionista IV**.
 
 - [Guia de controles, manutenção e missões](LEIA-ME.txt)
-- [Documento de design do jogo · versão 0.13.0](docs/GDD.md)
+- [Documento de design do jogo · versão 0.13.1-rc1](docs/GDD.md)
 - [Checklist de validação](docs/CHECKLIST_VALIDACAO.md)
 - [Histórico de desenvolvimento](docs/CHANGELOG_PROFISSIONAL.md)

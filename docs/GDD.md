@@ -1,6 +1,6 @@
 # Fueling Frontiers: Mars Station
 
-**Documento de design do jogo · Versão 0.13.0 · Entrega N3**
+**Documento de design do jogo · Versão candidata 0.13.1-rc1 · Avaliação da mistura**
 
 | Ficha | Descrição |
 | --- | --- |
@@ -33,6 +33,27 @@ Cada turno tem seis contratos. Antes de ligar a bomba, o operador lê o manifest
 | Pesquisa | Pede 200 UF, exige concluir em vazão fina e admite um erro de mistura menor. |
 
 A nave recebe o combustível quando o operador encerra o fluxo. Nos contratos, o jogo avalia a mistura, o desvio de volume e as condições do pedido. Um erro aparece no resultado em pontos percentuais ou em UF. Esgotar o prazo ou transbordar também pode comprometer o atendimento.
+
+### Composição efetivamente entregue
+
+Cada vez que a bomba injeta combustível, o tanque recebe a quantidade de A correspondente ao ajuste daquele momento. A porcentagem avaliada na entrega é **100 × volume acumulado de A ÷ volume total no tanque**. A vazão fina e a sujeira do filtro alteram o volume que entra por segundo. Mover o controle com o fluxo parado não muda o combustível já entregue. A classificação, o diagnóstico e a recompensa usam a composição acumulada. O contrato de Pesquisa aceita um desvio de até 1 ponto percentual; os demais, até 2. A tolerância de volume nos contratos é de 3%.
+
+No treino sem cronômetro, o operador pode experimentar de novo. Quando encerra um tanque com pelo menos 97 UF e a composição está incorreta, a ARIA informa a porcentagem obtida, esvazia o tanque de treino e permite repetir sem cobrança. O novo salvamento guarda o volume de A e o volume total para retomar o atendimento.
+
+### Resultado do teste solicitado na devolutiva docente
+
+No cenário controlado de 100 UF na proporção 3:1, entraram 95 UF com 25% de A e as últimas 5 UF com 75% de A. Isso soma 23,75 + 3,75 = **27,50 UF de A**. O ajuste final indicava 75%, mas o tanque continha apenas **27,5% de A**.
+
+| Cenário | Resultado observado |
+| --- | --- |
+| 95 UF a 25% e 5 UF a 75% na versão 0.13.0 | Aprovado indevidamente. |
+| Mesma operação na candidata, incluindo salvar e retomar após 95 UF | Recusado por um desvio de 47,5 pontos percentuais, com o volume correto. |
+| 100 UF a 75%, controle movido para 25% antes de encerrar, sem novo fluxo | Aprovado. |
+| 50 UF a 50% em vazão rápida e 50 UF a 100% em vazão fina | Aprovado com 75% de A no tanque. |
+| Válvula automática, ajuste de 75% e fluxo que ultrapassaria a meta | Parou em 100 UF, com 75 UF de A contabilizadas. |
+| Treino com mistura errada, seguido de nova tentativa correta | O treino esvaziou o tanque e permitiu concluir sem penalidade. |
+
+A verificação acima é automatizada. A observação de 3 ou 4 pessoas que nunca jogaram continua pendente. [Roteiro e ficha de observação](OBSERVACAO_PRIMEIRA_PARTIDA.md)
 
 ## Tempestade e filtro
 
