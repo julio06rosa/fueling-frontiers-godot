@@ -1,8 +1,8 @@
-Fueling Frontiers: Mars Station — Teste da mistura 0.13.1-rc1 — Windows 64 bits
+Fueling Frontiers: Mars Station — Teste da primeira fase 0.13.1-rc2 — Windows 64 bits
 
 1. Extraia o ZIP para uma pasta no computador.
 2. Abra FuelingFrontiers.exe. O jogo já vem completo.
-3. Escolha seu personagem e clique em Treinar com a ARIA.
+3. Escolha seu personagem e clique em Fase 1 • Aprender a jogar.
 4. Caminhe com as setas e pressione F para pegar o bico da bomba à esquerda.
    Siga os balões na tela. Esc abre a pausa.
 

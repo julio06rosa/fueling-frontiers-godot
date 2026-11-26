@@ -1,4 +1,4 @@
-name: Teste da composição no Windows
+name: Teste da primeira fase no Windows
 on:
   workflow_dispatch:
   push:
@@ -93,5 +93,5 @@ jobs:
           if ($LASTEXITCODE -ne 0 -or $resultado -notmatch 'MISTURA_OK' -or $resultado -match '(SCRIPT ERROR|ERROR):') { throw $resultado }
       - uses: actions/upload-artifact@v4
         with:
-          name: FuelingFrontiers-Teste-Mistura-Windows-x64
+          name: FuelingFrontiers-Fase1-Windows-x64
           path: ${{ runner.temp }}/teste/*

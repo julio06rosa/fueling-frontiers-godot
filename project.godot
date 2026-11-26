@@ -14,10 +14,10 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="Fueling Frontiers: Mars Station (Teste de mistura)"
+config/name="Fueling Frontiers: Mars Station (Teste da primeira fase)"
 config/use_custom_user_dir=true
-config/custom_user_dir_name="FuelingFrontiers_Teste_Mistura"
-config/version="0.13.1-rc1"
+config/custom_user_dir_name="FuelingFrontiers_Teste_Fase1"
+config/version="0.13.1-rc2"
 run/main_scene="res://MainMenu.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 

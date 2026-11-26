@@ -14,12 +14,12 @@ Você escolhe **Lia, Davi ou Íris** para operar a doca. A assistente **ARIA** o
 | --- | --- |
 | Gênero | Simulação e gerenciamento em 2D, para um jogador |
 | Público-alvo | Estudantes de 10 a 18 anos e pessoas que gostam de desafios de lógica e precisão |
-| Tecnologia | Godot 4.6.1 e GDScript · versão 0.13.1-rc1 |
+| Tecnologia | Godot 4.6.1 e GDScript · versão 0.13.1-rc2 |
 | Plataforma e idioma | Computador, com teclado e mouse · português do Brasil |
 
-## Experimentar a versão 0.13.1-rc1 no Windows
+## Experimentar a versão 0.13.1-rc2 no Windows
 
-Na execução concluída de **Teste da composição no Windows**, baixe o artefato **FuelingFrontiers-Teste-Mistura-Windows-x64**, extraia a pasta e abra **FuelingFrontiers.exe**. O progresso desta versão fica em uma pasta própria. A candidata calcula a proporção do combustível que entrou no tanque durante todo o abastecimento. [Ver execuções da branch de teste](https://github.com/julio06rosa/fueling-frontiers-godot/actions?query=branch%3Atestes%2Fmistura-entregue)
+Na execução concluída de **Teste da primeira fase no Windows**, baixe o artefato **FuelingFrontiers-Fase1-Windows-x64**, extraia a pasta e abra **FuelingFrontiers.exe**. O progresso desta versão fica em uma pasta própria. A candidata calcula a proporção do combustível que entrou no tanque durante todo o abastecimento. [Ver execuções da branch de teste](https://github.com/julio06rosa/fueling-frontiers-godot/actions?query=branch%3Atestes%2Fmistura-entregue)
 
 ## Executar o código-fonte
 
@@ -31,7 +31,7 @@ No Windows, com a Godot instalada, também é possível abrir [Jogar_no_Windows.
 
 ## Sua primeira partida
 
-1. Escolha um personagem no menu. **Como jogar** abre o guia de controles. **Treinar com a ARIA** inicia um atendimento sem limite de tempo.
+1. Escolha um personagem no menu. **Como jogar** abre o guia de controles. **Fase 1 • Aprender a jogar** inicia um atendimento sem limite de tempo.
 2. Leia o manifesto da ARIA-01. São **100 UF** (unidades de combustível) na proporção **3:1**. Das quatro partes da mistura, três são do componente A. Isso corresponde a **75% de A e 25% de B**.
 3. Caminhe até a bomba à esquerda e pressione **F** para pegar o bico. Passe pela frente da bomba, leve a mangueira até o bocal sob a nave e pressione **F** novamente para travar o encaixe.
 4. Ajuste o misturador para **75% de A**. Pressione **Espaço** para ligar a bomba, acompanhe o volume no tanque e pressione **Espaço** outra vez ao chegar à meta. Ao concluir o treino, o primeiro cargueiro entra na doca com um novo manifesto e um prazo.
@@ -69,6 +69,6 @@ Nos primeiros reparos, era difícil entender por que a nave precisava de óleo o
 Projeto desenvolvido por **Júlio César Duarte da Rosa**, **Rafael da Rocha da Silva** e **Paulo Guilherme Richeski Padilha**, no curso de Engenharia de Software da Católica de Santa Catarina, para a disciplina **Projeto de Aprendizagem Colaborativa Extensionista IV**.
 
 - [Guia de controles, manutenção e missões](LEIA-ME.txt)
-- [Documento de design do jogo · versão 0.13.1-rc1](docs/GDD.md)
+- [Documento de design do jogo · versão 0.13.1-rc2](docs/GDD.md)
 - [Checklist de validação](docs/CHECKLIST_VALIDACAO.md)
 - [Histórico de desenvolvimento](docs/CHANGELOG_PROFISSIONAL.md)

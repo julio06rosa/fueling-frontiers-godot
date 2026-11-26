@@ -1,6 +1,6 @@
 # Fueling Frontiers: Mars Station
 
-**Documento de design do jogo · Versão candidata 0.13.1-rc1 · Avaliação da mistura**
+**Documento de design do jogo · Versão candidata 0.13.1-rc2 · Avaliação da mistura**
 
 | Ficha | Descrição |
 | --- | --- |
@@ -14,7 +14,7 @@
 
 **O último posto de abastecimento de Marte.** Em 2187, uma falha na rede de distribuição deixa a Mars Station como o último posto capaz de atender as naves que cruzam Marte. A fila cresce em órbita e as missões perdem suas janelas de lançamento. O jogador acaba de ser contratado para assumir a doca.
 
-O menu apresenta a crise. Na chegada da primeira nave, a ARIA informa o pedido de 100 UF, e o primeiro balão orienta o jogador a pegar o bico na bomba. Lia, Davi e Íris são as três opções de operador e usam os mesmos equipamentos. Atender bem os pilotos rende créditos para melhorar a bomba, instalar a válvula automática e adquirir o sensor de mistura.
+O menu apresenta a crise. Na chegada da primeira nave, a ARIA informa o pedido de 100 UF, e o primeiro balão ensina a caminhar com as setas até o bico marcado na bomba. Lia, Davi e Íris são as três opções de operador e usam os mesmos equipamentos. Atender bem os pilotos rende créditos para melhorar a bomba, instalar a válvula automática e adquirir o sensor de mistura.
 
 A matemática aparece onde uma medida muda o resultado da operação. Uma proporção determina o ajuste do misturador, uma diferença de níveis determina quanto óleo repor e uma medida do encaixe determina qual vedação instalar.
 
@@ -22,7 +22,7 @@ A matemática aparece onde uma medida muda o resultado da operação. Uma propor
 
 O menu oferece um guia de controles e um treino sem limite de tempo. ARIA acompanha uma encomenda de 100 UF na proporção 3 para 1. A nave precisa de três partes de A para uma de B. O jogador ajusta A para 75% e vê B completar os outros 25%.
 
-Na doca, seis balões acompanham as ações de pegar o bico na bomba, encaixá-lo na nave, ajustar a mistura, ligar a bomba, observar o tanque e interromper o fluxo. A dica aponta para o equipamento ou o controle da etapa atual. O treino ajuda a parar no volume correto. Concluí-lo libera os contratos cronometrados.
+Na doca, oito passos ensinam a caminhar até a bomba, pegar o bico, levá-lo à nave, conectar a mangueira, ajustar a mistura, ligar a bomba, observar o tanque e interromper o fluxo. A dica aponta para o equipamento ou o controle da etapa atual. Se o jogador parar antes de 100 UF, o balão mostra quanto falta e ensina a religar a bomba. Concluí-lo libera os contratos cronometrados.
 
 ## Um turno na doca
 
@@ -40,7 +40,7 @@ A nave recebe o combustível quando o operador encerra o fluxo. Nos contratos, o
 
 Cada vez que a bomba injeta combustível, o tanque recebe a quantidade de A correspondente ao ajuste daquele momento. A porcentagem avaliada na entrega é **100 × volume acumulado de A ÷ volume total no tanque**. A vazão fina e a sujeira do filtro alteram o volume que entra por segundo. Mover o controle com o fluxo parado não muda o combustível já entregue. A classificação, o diagnóstico e a recompensa usam a composição acumulada. O contrato de Pesquisa aceita um desvio de até 1 ponto percentual; os demais, até 2. A tolerância de volume nos contratos é de 3%.
 
-No treino sem cronômetro, o operador pode experimentar de novo. Quando encerra um tanque com pelo menos 97 UF e a composição está incorreta, a ARIA informa a porcentagem obtida, esvazia o tanque de treino e permite repetir sem cobrança. O novo salvamento guarda o volume de A e o volume total para retomar o atendimento.
+No treino sem cronômetro, o operador pode experimentar de novo. Quando encerra um tanque de 100 UF e a composição está incorreta, a ARIA informa a porcentagem obtida, esvazia o tanque de treino e permite repetir sem cobrança. O novo salvamento guarda o volume de A e o volume total para retomar o atendimento.
 
 ### Resultado do teste solicitado na devolutiva docente
 

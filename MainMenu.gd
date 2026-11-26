@@ -86,7 +86,7 @@ func refresh_station_data() -> void:
 	if GameManager.shift_served >= GameManager.SHIFT_SIZE:
 		start_button.text = "RELATÓRIO DO TURNO   >"
 	elif not GameManager.tutorial_done:
-		start_button.text = "TREINAR COM A ARIA   >"
+		start_button.text = "FASE 1 • APRENDER A JOGAR   >"
 	else:
 		start_button.text = "CONTINUAR TURNO %d   >" % GameManager.shift_number
 

@@ -292,21 +292,38 @@ func contract_note() -> String:
 		message += " " + incident + ". Use F ao lado do filtro à direita para abrir a tampa."
 	return message
 
+func rack_in_reach() -> bool:
+	return $Player.hand_position().distance_to(rack_grip()) <= 30.0
+
+func socket_in_reach() -> bool:
+	return hose.deployed > 0.94 and $Player.hand_position().distance_to(hose.socket) <= 42.0
+
 func tutorial_prompt() -> void:
+	var rack_target := Rect2(rack_grip() - Vector2(9,12),Vector2(18,24))
+	var socket_target := Rect2(hose.socket - Vector2(13,12),Vector2(26,24))
 	if hose_state == Hose.STOWED:
-		tutorial_bubble.present("pump", "1/4  Pegue a mangueira", "A primeira nave precisa de 100 UF. Use as setas até a bomba à esquerda e pressione F para pegar o bico.", Rect2(190,548,315,108), Rect2(COUPLING + hose.Pump.HOLSTER - Vector2(9,12),Vector2(18,24)))
+		if rack_in_reach():
+			tutorial_bubble.present("pump", "2/8  Pegue o bico", "Pressione F para retirar o bico do suporte.", Rect2(190,548,315,108), rack_target)
+		else:
+			tutorial_bubble.present("walk", "1/8  Caminhe até a bomba", "Use as setas para chegar ao bico marcado na bomba.", Rect2(190,548,315,108), rack_target)
 	elif hose_state == Hose.HELD:
-		tutorial_bubble.present("socket", "2/4  Conecte na nave", "Passe pela frente da bomba (↓). Leve o bico até esta entrada âmbar e pressione F.", Rect2(485,548,315,108), Rect2(hose.socket-Vector2(13,12),Vector2(26,24)))
+		if socket_in_reach():
+			tutorial_bubble.present("socket", "4/8  Conecte a mangueira", "Pressione F para travar o bico na entrada da nave.", Rect2(485,548,315,108), socket_target)
+		else:
+			tutorial_bubble.present("carry", "3/8  Leve o bico até a nave", "Passe pela frente da bomba (↓). Leve o bico até a nave.", Rect2(485,548,315,108), socket_target)
 	elif not training_retry.is_empty() and not is_pump_on:
 		tutorial_bubble.present("retry", "Tanque de treino esvaziado", training_retry, Rect2(575,175,315,108), slider_a.get_global_rect())
 	elif absf(slider_a_val - 75.0) > ratio_tolerance:
-		tutorial_bubble.present("mixture", "3/4  Prepare a mistura", "Em 3:1, A ocupa 3 de 4 partes (75%). Use o mouse ou as teclas Q e E.", Rect2(575,175,300,108), slider_a.get_global_rect())
+		tutorial_bubble.present("mixture", "5/8  Calcule a mistura", "3 de 4 partes = 75% de A. E aumenta e Q diminui.", Rect2(575,175,300,108), slider_a.get_global_rect())
 	elif not is_pump_on:
-		tutorial_bubble.present("start", "4/4  Pode abastecer!", "A mistura está pronta. Clique em Ativar bomba ou pressione Espaço.", Rect2(575,235,300,100), pump_btn.get_global_rect())
+		var dica := "Pressione Espaço ou clique em Ativar bomba."
+		if current_volume > 0.0:
+			dica = "Faltam %.1f UF. Pressione Espaço para continuar." % (target_volume - current_volume)
+		tutorial_bubble.present("start", "6/8  Ligue a bomba", dica, Rect2(575,235,300,100), pump_btn.get_global_rect())
 	elif current_volume < 95.0:
-		tutorial_bubble.present("tank", "Acompanhe o tanque", "O pedido é de 100 UF. Observe esta barra e pare a bomba quando chegar ao volume.", Rect2(405,225,310,108), tank_progress.get_global_rect())
+		tutorial_bubble.present("tank", "7/8  Acompanhe o tanque", "O pedido é de 100 UF. Veja a barra encher.", Rect2(405,225,310,108), tank_progress.get_global_rect())
 	else:
-		tutorial_bubble.present("stop", "Chegou a hora de parar", "O tanque está quase cheio! Em 100 UF, pressione Espaço ou clique em Parar bomba.", Rect2(575,235,300,108), pump_btn.get_global_rect())
+		tutorial_bubble.present("stop", "8/8  Pare em 100 UF", "Em 100 UF, pressione Espaço de novo para entregar.", Rect2(575,235,300,108), pump_btn.get_global_rect())
 	$CanvasLayer/AriaPanel.hide()
 
 func refresh_instruments() -> void:
@@ -364,8 +381,8 @@ func interact() -> void:
 	if $Player.position.distance_to($Player.position.clamp(filter_bounds.position, filter_bounds.end)) <= 28.0:
 		open_filter()
 		return
-	var by_rack: bool = $Player.hand_position().distance_to(rack_grip()) <= 30.0
-	var by_ship: bool = hose.deployed > 0.94 and $Player.hand_position().distance_to(hose.socket) <= 42.0
+	var by_rack := rack_in_reach()
+	var by_ship := socket_in_reach()
 	if hose_state == Hose.STOWED and by_rack:
 		hose_state = Hose.HELD
 		aria_talk("Bico na mão. Passe pela frente da bomba e leve a mangueira ao bocal iluminado sob a nave.")
@@ -497,7 +514,7 @@ func _on_pump_pressed() -> void:
 
 func validate_refuel() -> void:
 	if training:
-		if current_volume < target_volume * 0.97:
+		if current_volume < target_volume:
 			tutorial_prompt()
 			return
 		if not ratio_within_tolerance(delivered_a_percent() - 75.0):
@@ -510,7 +527,7 @@ func validate_refuel() -> void:
 		GameManager.tutorial_done = true
 		GameManager.active_service = {}
 		GameManager.save_game()
-		result_notes = "Treino concluído. Agora começa seu turno com seis contratos."
+		result_notes = "Primeira nave abastecida! Agora leia o manifesto da próxima nave. Os seis contratos do turno têm prazo."
 		status_label.text = "TREINAMENTO CONCLUÍDO"
 		status_label.add_theme_color_override("font_color", Color("86edd1"))
 		SoundManager.play_success()
