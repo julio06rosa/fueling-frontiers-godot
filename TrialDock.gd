@@ -85,7 +85,10 @@ func complete_service() -> void:
 	aria_talk(result + " A bomba está liberada para abastecer.")
 	remember_service()
 
+var leaving_demo := false
+
 func _ready() -> void:
+	get_tree().auto_accept_quit = false
 	# A demonstração começa na chegada da segunda nave, quando o radar detecta poeira.
 	GameManager.pump_demo = true
 	GameManager.reset_game()
@@ -474,7 +477,7 @@ func maintain(action: String, part: int) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F5:
 		get_viewport().set_input_as_handled()
-		get_tree().reload_current_scene.call_deferred()
+		finish_demo.call_deferred(true)
 		return
 	if service.visible and event is InputEventKey:
 		if event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
@@ -662,9 +665,23 @@ func restore_service(data: Dictionary) -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST and is_node_ready():
-		remember_service()
+		finish_demo.call_deferred(false)
+
+func finish_demo(repeat: bool) -> void:
+	if leaving_demo:
+		return
+	leaving_demo = true
+	set_process(false)
+	set_process_input(false)
+	weather.stop_audio()
+	await get_tree().create_timer(0.5).timeout
+	if repeat:
+		get_tree().reload_current_scene()
+	else:
+		get_tree().quit()
 
 func _exit_tree() -> void:
+	get_tree().auto_accept_quit = true
 	if is_instance_valid(pump_btn):
 		remember_service()
 

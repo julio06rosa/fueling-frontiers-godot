@@ -69,7 +69,7 @@ jobs:
             }
           }
           $script = "$env:GITHUB_WORKSPACE/.github/validar-tempestade.gd".Replace('\','/')
-          Jogar 'doca' @('--headless','--max-fps','60','--quit-after','1')
+          Jogar 'doca' @('--headless','--fixed-fps','60','--time-scale','0.01','--quit-after','1')
           $menu = Get-Content "$env:RUNNER_TEMP\doca.log" -Raw
           if ($menu -notmatch 'TrialDock.gdc' -or $menu -match '(SCRIPT ERROR|ERROR):') { throw 'O executável não carregou a doca' }
           # O modelo de distribuição inicia a cena principal. O editor da mesma versão
