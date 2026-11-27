@@ -1,11 +1,9 @@
-Fueling Frontiers: Mars Station — Versão 0.13.1 — Windows 64 bits
+Fueling Frontiers: Mars Station — Demonstração da tempestade
+Windows de 64 bits
 
-1. Extraia o ZIP para uma pasta no computador.
-2. Abra FuelingFrontiers.exe. O jogo já vem completo.
-3. Escolha seu personagem e clique em Fase 1 • Aprender a jogar.
-4. Caminhe com as setas e pressione F para pegar o bico da bomba à esquerda.
-   Siga os balões na tela. Esc abre a pausa.
+1. Extraia o ZIP e abra FuelingFrontiers-Tempestade.exe. O alerta aparece imediatamente.
+2. Pressione 1 ou clique em Fechar a doca. Observe a comporta e o som do vento. Após a rajada, o filtro está protegido.
+3. Pressione F5 para voltar ao alerta. Pressione 2 ou clique em Liberar o pouso. A poeira entra e suja as grades do filtro. Quando a nave atracar, aproxime-se do filtro à direita e pressione F para inspecioná-lo.
 
-Equipe: Júlio César Duarte da Rosa, Rafael da Rocha da Silva e Paulo Guilherme Richeski Padilha.
-Jogo desenvolvido com Godot Engine. Licenças: https://godotengine.org/license/
-Código-fonte e guia: https://github.com/julio06rosa/fueling-frontiers-godot
+Para repetir, pressione F5 ou feche e abra o executável novamente.
+Jogo criado com Godot Engine. Licenças: https://godotengine.org/license/

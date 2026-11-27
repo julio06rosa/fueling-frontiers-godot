@@ -1,8 +1,8 @@
-name: Entrega para Windows
+name: Demonstração da tempestade no Windows
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: ['demo/tempestade-professora']
     paths: ['.github/workflows/entrega-windows.yml']
 permissions:
   contents: read
@@ -39,12 +39,12 @@ jobs:
           $pasta = New-Item -ItemType Directory "$env:RUNNER_TEMP\jogo"
           & $env:GODOT --headless --path . --import
           if ($LASTEXITCODE -ne 0) { throw 'Falha ao importar o projeto' }
-          & $env:GODOT --headless --path . --export-release 'Windows Desktop' "$pasta\FuelingFrontiers.exe"
+          & $env:GODOT --headless --path . --export-release 'Windows Desktop' "$pasta\FuelingFrontiers-Tempestade.exe"
           if ($LASTEXITCODE -ne 0) { throw 'Falha ao exportar para Windows' }
           Copy-Item .github/INICIAR.txt $pasta
-          Compress-Archive "$pasta\*" "$env:RUNNER_TEMP\FuelingFrontiers-Windows-x64.zip"
-          Expand-Archive "$env:RUNNER_TEMP\FuelingFrontiers-Windows-x64.zip" "$env:RUNNER_TEMP\teste"
-      - name: Executar o jogo distribuído e concluir o treino
+          Compress-Archive "$pasta\*" "$env:RUNNER_TEMP\FuelingFrontiers-Tempestade-Windows-x64.zip"
+          Expand-Archive "$env:RUNNER_TEMP\FuelingFrontiers-Tempestade-Windows-x64.zip" "$env:RUNNER_TEMP\teste"
+      - name: Abrir diretamente na doca e testar as duas decisões do radar
         shell: pwsh
         run: |
           $pasta = "$env:RUNNER_TEMP\teste"
@@ -53,7 +53,7 @@ jobs:
             $saida = "$env:RUNNER_TEMP\$etapa-out.txt"
             $erros = "$env:RUNNER_TEMP\$etapa-err.txt"
             Write-Output "Iniciando $etapa em $pasta"
-            $p = Start-Process "$pasta\FuelingFrontiers.exe" -WorkingDirectory $pasta -ArgumentList ($opcoes + @('--verbose','--log-file',$log)) -RedirectStandardOutput $saida -RedirectStandardError $erros -PassThru
+            $p = Start-Process "$pasta\FuelingFrontiers-Tempestade.exe" -WorkingDirectory $pasta -ArgumentList ($opcoes + @('--verbose','--log-file',$log)) -RedirectStandardOutput $saida -RedirectStandardError $erros -PassThru
             try {
               if (-not $p.WaitForExit(30000)) {
                 $p.Refresh()
@@ -68,13 +68,13 @@ jobs:
               }
             }
           }
-          $script = "$env:GITHUB_WORKSPACE/.github/validar-entrega.gd".Replace('\','/')
-          Jogar 'menu' @('--headless','--fixed-fps','60','--quit-after','120')
-          $menu = Get-Content "$env:RUNNER_TEMP\menu.log" -Raw
-          if ($menu -notmatch 'MainMenu.gdc' -or $menu -match '(SCRIPT ERROR|ERROR):') { throw 'O executável não carregou o menu' }
+          $script = "$env:GITHUB_WORKSPACE/.github/validar-tempestade.gd".Replace('\','/')
+          Jogar 'doca' @('--headless','--fixed-fps','60','--quit-after','120')
+          $menu = Get-Content "$env:RUNNER_TEMP\doca.log" -Raw
+          if ($menu -notmatch 'TrialDock.gdc' -or $menu -match '(SCRIPT ERROR|ERROR):') { throw 'O executável não carregou a doca' }
           # O modelo de distribuição inicia a cena principal. O editor da mesma versão
           # permite conduzir as ações do treino sobre os dados contidos no próprio EXE.
-          $pacote = "$pasta\FuelingFrontiers.exe"
+          $pacote = "$pasta\FuelingFrontiers-Tempestade.exe"
           Push-Location $pasta
           try {
             & $env:GODOT --headless --fixed-fps 60 --quit-after 2400 --main-pack $pacote --script $script --log-file "$env:RUNNER_TEMP\treino.log"
@@ -82,23 +82,14 @@ jobs:
           } finally { Pop-Location }
           $log = Get-Content "$env:RUNNER_TEMP\treino.log" -Raw
           Write-Output $log
-          if ($log -notmatch 'ENTREGA_OK' -or $log -match '(SCRIPT ERROR|ERROR):') { throw 'Falha no treino exportado' }
-      - name: Verificar as proporções na versão exportada
-        shell: pwsh
-        run: |
-          $pacote = "$env:RUNNER_TEMP/teste/FuelingFrontiers.exe"
-          $script = "$env:GITHUB_WORKSPACE/.github/validar-mistura.gd".Replace('\','/')
-          $log = "$env:RUNNER_TEMP/mistura.log"
-          & $env:GODOT --headless --fixed-fps 60 --quit-after 2400 --main-pack $pacote --script $script --log-file $log
-          $resultado = Get-Content $log -Raw
-          if ($LASTEXITCODE -ne 0 -or $resultado -notmatch 'MISTURA_OK' -or $resultado -match '(SCRIPT ERROR|ERROR):') { throw $resultado }
+          if ($log -notmatch 'TEMPESTADE_OK' -or $log -match '(SCRIPT ERROR|ERROR):') { throw 'Falha no treino exportado' }
       - uses: actions/upload-artifact@v4
         with:
           name: entrega-windows
-          path: ${{ runner.temp }}/FuelingFrontiers-Windows-x64.zip
+          path: ${{ runner.temp }}/FuelingFrontiers-Tempestade-Windows-x64.zip
   publicar:
     needs: exportar
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/demo/tempestade-professora'
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -110,9 +101,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create v0.13.1 FuelingFrontiers-Windows-x64.zip --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "Fueling Frontiers 0.13.1" --notes "Jogo completo para Windows de 64 bits. Extraia o ZIP e abra FuelingFrontiers.exe. O pacote inclui instruções para a primeira partida."
+          gh release create demo-tempestade-0.13.1 --prerelease --latest=false FuelingFrontiers-Tempestade-Windows-x64.zip --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "Demonstração da tempestade para Windows" --notes "Demonstração independente. Tecla 1 fecha a doca, 2 libera o pouso e F5 reinicia o alerta. Extraia o ZIP e abra FuelingFrontiers-Tempestade.exe. O pacote inclui instruções para a primeira partida."
       - name: Conferir o download público sem login
         run: |
-          url="https://github.com/$GITHUB_REPOSITORY/releases/download/v0.13.1/FuelingFrontiers-Windows-x64.zip"
+          url="https://github.com/$GITHUB_REPOSITORY/releases/download/demo-tempestade-0.13.1/FuelingFrontiers-Tempestade-Windows-x64.zip"
           curl --fail --location --silent --show-error --retry 5 --retry-all-errors "$url" -o /tmp/entrega-publica.zip
-          cmp FuelingFrontiers-Windows-x64.zip /tmp/entrega-publica.zip
+          cmp FuelingFrontiers-Tempestade-Windows-x64.zip /tmp/entrega-publica.zip

@@ -86,6 +86,11 @@ func complete_service() -> void:
 	remember_service()
 
 func _ready() -> void:
+	# A demonstração começa na chegada da segunda nave, quando o radar detecta poeira.
+	GameManager.pump_demo = true
+	GameManager.reset_game()
+	GameManager.tutorial_done = true
+	GameManager.shift_served = 1
 	filter_bounds = machine_bounds($FilterBody)
 	pump_bounds = machine_bounds($PumpBody)
 	super._ready()
@@ -467,6 +472,10 @@ func maintain(action: String, part: int) -> void:
 	remember_service()
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F5:
+		get_viewport().set_input_as_handled()
+		get_tree().reload_current_scene.call_deferred()
+		return
 	if service.visible and event is InputEventKey:
 		if event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
 			close_service()
@@ -819,7 +828,7 @@ func update_radar() -> void:
 	flight_label.hide()
 	match gate:
 		"forecast":
-			radar_title.text = "Alerta de tempestade"
+			radar_title.text = "Alerta de tempestade    •    F5 para repetir"
 			radar_note.text = "Poeira se aproxima. Feche a doca para proteger o filtro ou deixe a nave pousar agora."
 		"closed":
 			radar_title.text = "Fechando a doca" if gate_age < DOOR_CLOSE_TIME else "Comporta fechada"
