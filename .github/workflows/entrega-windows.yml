@@ -69,7 +69,7 @@ jobs:
             }
           }
           $script = "$env:GITHUB_WORKSPACE/.github/validar-tempestade.gd".Replace('\','/')
-          Jogar 'doca' @('--headless','--fixed-fps','60','--quit-after','120')
+          Jogar 'doca' @('--headless','--max-fps','60','--quit-after','1')
           $menu = Get-Content "$env:RUNNER_TEMP\doca.log" -Raw
           if ($menu -notmatch 'TrialDock.gdc' -or $menu -match '(SCRIPT ERROR|ERROR):') { throw 'O executável não carregou a doca' }
           # O modelo de distribuição inicia a cena principal. O editor da mesma versão
@@ -77,7 +77,7 @@ jobs:
           $pacote = "$pasta\FuelingFrontiers-Tempestade.exe"
           Push-Location $pasta
           try {
-            & $env:GODOT --headless --fixed-fps 60 --quit-after 2400 --main-pack $pacote --script $script --log-file "$env:RUNNER_TEMP\treino.log"
+            & $env:GODOT --headless --max-fps 60 --quit-after 2400 --main-pack $pacote --script $script --log-file "$env:RUNNER_TEMP\treino.log"
             if ($LASTEXITCODE -ne 0) { throw "Treino encerrou com código $LASTEXITCODE" }
           } finally { Pop-Location }
           $log = Get-Content "$env:RUNNER_TEMP\treino.log" -Raw

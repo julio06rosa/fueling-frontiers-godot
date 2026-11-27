@@ -35,5 +35,8 @@ func verificar() -> void:
     if doca.gate != "exposed" or doca.dust_zones != 7 or doca.weather.shutter > 0.01:
         quit(6)
         return
+    doca.set_process(false)
+    doca.weather.stop_audio()
+    await create_timer(0.7).timeout
     print("TEMPESTADE_OK")
     quit()
