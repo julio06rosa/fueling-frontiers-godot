@@ -27,6 +27,7 @@ var flow_factor: float = 1.0
 var ratio_tolerance: float = 2.0
 
 var current_volume: float = 0.0
+var delivered_a_volume := 0.0
 var slider_a_val: float = 50.0 # 0% to 100%
 var is_pump_on: bool = false
 var fuel_color: Color = Color(0.12, 0.66, 0.63) # Teal default
@@ -117,10 +118,11 @@ func _process(delta):
 				
 			if current_state == ShipState.REFUELING:
 				# Refueling logic
-				var flow = GameManager.get_flow_rate() * flow_factor * delta
-				current_volume += flow
-				if training:
-					current_volume = minf(current_volume, target_volume)
+				var added_volume: float = GameManager.get_flow_rate() * flow_factor * delta
+				if training or GameManager.upgrade_auto_valve:
+					added_volume = clampf(added_volume, 0.0, maxf(0.0, target_volume - current_volume))
+				delivered_a_volume += added_volume * slider_a_val / 100.0
+				current_volume += added_volume
 				tank_progress.value = current_volume
 				
 				# A válvula automática fecha exatamente no volume solicitado.
@@ -263,6 +265,7 @@ func spawn_new_ship():
 	
 	# Reset refueling progress
 	current_volume = 0.0
+	delivered_a_volume = 0.0
 	is_pump_on = false
 	pump_btn.text = "Ativar Bomba"
 	tank_progress.max_value = target_volume
@@ -344,15 +347,21 @@ func _on_pump_pressed():
 		# Validate immediately when pump is turned off
 		validate_refuel()
 
+func delivered_a_percent() -> float:
+	return 100.0 * delivered_a_volume / current_volume if current_volume > 0.0 else 0.0
+
+func ratio_within_tolerance(error: float) -> bool:
+	return absf(error) <= ratio_tolerance or is_equal_approx(absf(error), ratio_tolerance)
+
 func validate_refuel():
 	# Calculate target percentage
 	var total_parts = float(ratio_a + ratio_b)
 	var target_pct_a = (float(ratio_a) / total_parts) * 100.0
 	
-	var pct_diff = abs(slider_a_val - target_pct_a)
+	var pct_diff = abs(delivered_a_percent() - target_pct_a)
 	var vol_diff = abs(current_volume - target_volume)
 	
-	var is_ratio_ok = pct_diff <= ratio_tolerance
+	var is_ratio_ok = ratio_within_tolerance(pct_diff)
 	var is_volume_ok = vol_diff <= target_volume * 0.03 # 3% tolerance
 	
 	if is_ratio_ok and is_volume_ok and (not requires_fine_finish or fine_flow):
@@ -367,7 +376,7 @@ func validate_refuel():
 		status_label.text = "ABASTECIMENTO PERFEITO!\n+%d Créditos | +5%% Reputação" % earned
 		status_label.add_theme_color_override("font_color", Color(0.12, 0.8, 0.5))
 		
-		aria_talk("Excepcional, Zorome! Mistura exata e volume perfeito. O capitão está muito satisfeito!")
+		aria_talk("Abastecimento aprovado. A nave está liberada para seguir missão!")
 		if has_node("Player"):
 			$Player.play_anim("celebrate")
 		if has_node("/root/SoundManager"):

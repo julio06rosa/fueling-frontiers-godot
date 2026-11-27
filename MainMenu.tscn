@@ -296,7 +296,7 @@ offset_right = 795.0
 offset_bottom = 251.0
 theme_override_colors/font_color = Color(0.55, 0.66, 0.73, 1)
 theme_override_font_sizes/font_size = 16
-text = "Você comanda uma doca de abastecimento no limite da civilização."
+text = "O último posto de abastecimento de Marte"
 
 [node name="MainPanel" type="Panel" parent="Interface"]
 layout_mode = 0
@@ -314,7 +314,7 @@ offset_right = 350.0
 offset_bottom = 44.0
 theme_override_colors/font_color = Color(0.4, 0.84, 0.82, 1)
 theme_override_font_sizes/font_size = 13
-text = "PAINEL DE OPERAÇÕES"
+text = "MARTE  /  2187"
 
 [node name="Heading" type="Label" parent="Interface/MainPanel"]
 layout_mode = 0
@@ -324,7 +324,7 @@ offset_right = 492.0
 offset_bottom = 86.0
 theme_override_colors/font_color = Color(0.9, 0.94, 0.96, 1)
 theme_override_font_sizes/font_size = 24
-text = "Pronto para o próximo turno?"
+text = "As naves aguardam em órbita"
 
 [node name="Text" type="Label" parent="Interface/MainPanel"]
 layout_mode = 0
@@ -334,7 +334,7 @@ offset_right = 492.0
 offset_bottom = 146.0
 theme_override_colors/font_color = Color(0.57, 0.68, 0.75, 1)
 theme_override_font_sizes/font_size = 16
-text = "Prepare a mistura e atenda seis naves por turno. A ARIA acompanha seu primeiro abastecimento."
+text = "A rede de combustível falhou. Você acaba de assumir o último posto em operação."
 autowrap_mode = 2
 
 [node name="StartButton" type="Button" parent="Interface/MainPanel"]
